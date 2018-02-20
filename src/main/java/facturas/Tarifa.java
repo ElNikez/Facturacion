@@ -2,14 +2,19 @@ package facturas;
 
 public class Tarifa {
 
-    private double precioPorMinuto;
+    private float precio;
 
-    public Tarifa() {
+    public Tarifa(){
         super();
     }
 
-    public Tarifa(double precio) {
-        this.precioPorMinuto = precio;
+    public Tarifa(Tarifa tarifa){
+
+        this.precio= precio;
     }
 
+    public float getPrecio(){
+
+        return precio;
+    }
 }

@@ -21,4 +21,8 @@ public class Llamada {
     public Calendar getFechaDeLlamada() {
         return fechaDeLlamada;
     }
+
+    public int getDuracionDeLlamada(){
+        return duracionDeLlamada;
+    }
 }

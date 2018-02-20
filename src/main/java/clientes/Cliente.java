@@ -3,12 +3,13 @@ package clientes;
 import facturas.Tarifa;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Cliente {
 
     private String nif, nombre, correoElectronico;
     private Direccion direccion;
-    private Calendar fechaDeAlta;
+    private Date fechaDeAlta;
     private Tarifa tarifa;
 
     public Cliente() {
@@ -20,15 +21,28 @@ public class Cliente {
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.direccion = direccion;
-        this.fechaDeAlta = Calendar.getInstance();
+        this.fechaDeAlta = null;
         this.tarifa = tarifa;
     }
 
-    public String getNif() {
+    //Recuperar los datos de un cliente a partir de su NIF.
+    public String getNif(){
         return nif;
     }
 
-    public Calendar getFechaDeAlta() {
+    public Tarifa getTarifa(){
+        return tarifa;
+    }
+
+    public boolean setTarifa(Tarifa nuevaTarifa){
+
+        tarifa = nuevaTarifa;
+        return true;
+    }
+
+    public Date getFecha(){
+
         return fechaDeAlta;
+
     }
 }
