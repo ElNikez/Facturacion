@@ -1,6 +1,6 @@
 package clientes;
 
-import tarifas.Tarifa;
+import facturas.Tarifa;
 
 public class Empresa extends Cliente {
 

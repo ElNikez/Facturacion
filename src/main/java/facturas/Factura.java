@@ -1,7 +1,5 @@
 package facturas;
 
-import tarifas.Tarifa;
-
 import java.util.Calendar;
 
 public class Factura {

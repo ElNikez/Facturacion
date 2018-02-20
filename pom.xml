@@ -19,14 +19,21 @@
             <artifactId>hamcrest-core</artifactId>
             <version>${hamcrest.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>es.uji.belfern</groupId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.CursoJRD</groupId>
             <artifactId>GeneradorDatosINE</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.5</version>
         </dependency>
     </dependencies>
 
     <build>
+        <finalName>Facturación</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

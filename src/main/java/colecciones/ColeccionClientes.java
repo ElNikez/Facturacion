@@ -12,4 +12,8 @@ public class ColeccionClientes {
         clientes = new HashMap<>();
     }
 
+    public void darAltaCliente(Cliente cliente) {
+        clientes.put(cliente.getNif(), cliente);
+    }
+
 }

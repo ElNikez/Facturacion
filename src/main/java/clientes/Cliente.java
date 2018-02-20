@@ -1,6 +1,6 @@
 package clientes;
 
-import tarifas.Tarifa;
+import facturas.Tarifa;
 
 import java.util.Calendar;
 
@@ -22,6 +22,10 @@ public class Cliente {
         this.direccion = direccion;
         this.fechaDeAlta = Calendar.getInstance();
         this.tarifa = tarifa;
+    }
+
+    public String getNif() {
+        return nif;
     }
 
     public Calendar getFechaDeAlta() {
