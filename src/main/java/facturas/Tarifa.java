@@ -8,9 +8,14 @@ public class Tarifa {
         super();
     }
 
-    public Tarifa(Tarifa tarifa){
+    public Tarifa(float precio){
 
         this.precio= precio;
+    }
+
+    public Tarifa(Tarifa tarifa){
+
+        this.precio= tarifa.precio;
     }
 
     public float getPrecio(){

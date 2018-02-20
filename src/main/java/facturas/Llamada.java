@@ -17,6 +17,11 @@ public class Llamada {
         this.fechaDeLlamada = Calendar.getInstance();
         this.duracionDeLlamada = duracionDeLlamada;
     }
+    public Llamada(Llamada llamada) {
+        this.numeroDeTelefono = numeroDeTelefono;
+        this.fechaDeLlamada = Calendar.getInstance();
+        this.duracionDeLlamada = duracionDeLlamada;
+    }
 
     public Calendar getFechaDeLlamada() {
         return fechaDeLlamada;

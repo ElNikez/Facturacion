@@ -9,7 +9,7 @@ public class Cliente {
 
     private String nif, nombre, correoElectronico;
     private Direccion direccion;
-    private Date fechaDeAlta;
+    private Calendar fechaDeAlta;
     private Tarifa tarifa;
 
     public Cliente() {
@@ -23,6 +23,14 @@ public class Cliente {
         this.direccion = direccion;
         this.fechaDeAlta = null;
         this.tarifa = tarifa;
+    }
+    public Cliente(Cliente cliente) {
+        this.nif = cliente.nif;
+        this.nombre = cliente.nombre;
+        this.correoElectronico = cliente.correoElectronico;
+        this.direccion = cliente.direccion;
+        this.fechaDeAlta = Calendar.getInstance();
+        this.tarifa = cliente.tarifa;
     }
 
     //Recuperar los datos de un cliente a partir de su NIF.
@@ -40,7 +48,7 @@ public class Cliente {
         return true;
     }
 
-    public Date getFecha(){
+    public Calendar getFecha(){
 
         return fechaDeAlta;
 
