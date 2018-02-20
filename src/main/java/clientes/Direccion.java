@@ -3,7 +3,8 @@ package clientes;
 public class Direccion {
 
     private int codigoPostal;
-    private String poblacion, provincia;
+    private String poblacion;
+    private String provincia;
 
     public Direccion() {
         super();
@@ -13,6 +14,12 @@ public class Direccion {
         this.codigoPostal = codigoPostal;
         this.poblacion = poblacion;
         this.provincia = provincia;
+    }
+
+    public Direccion(Direccion direccion) {
+        this.codigoPostal = direccion.codigoPostal;
+        this.poblacion = direccion.poblacion;
+        this.provincia = direccion.provincia;
     }
 
 }

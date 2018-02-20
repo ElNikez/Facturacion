@@ -12,4 +12,8 @@ public class Empresa extends Cliente {
         super(nif, nombre, correoElectronico, direccion,tarifa);
     }
 
+    public Empresa(Empresa empresa) {
+        super(empresa);
+    }
+
 }

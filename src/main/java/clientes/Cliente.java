@@ -1,13 +1,16 @@
 package clientes;
 
 import facturas.Tarifa;
+import interfaces.Fecha;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class Cliente {
+public class Cliente implements Fecha {
 
-    private String nif, nombre, correoElectronico;
+    private String nif;
+    private String nombre;
+    private String correoElectronico;
     private Direccion direccion;
     private Calendar fechaDeAlta;
     private Tarifa tarifa;
@@ -21,19 +24,19 @@ public class Cliente {
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.direccion = direccion;
-        this.fechaDeAlta = null;
+        this.fechaDeAlta = Calendar.getInstance();
         this.tarifa = tarifa;
     }
+
     public Cliente(Cliente cliente) {
         this.nif = cliente.nif;
         this.nombre = cliente.nombre;
         this.correoElectronico = cliente.correoElectronico;
         this.direccion = cliente.direccion;
-        this.fechaDeAlta = Calendar.getInstance();
+        this.fechaDeAlta = cliente.getFecha();
         this.tarifa = cliente.tarifa;
     }
 
-    //Recuperar los datos de un cliente a partir de su NIF.
     public String getNif(){
         return nif;
     }
@@ -43,13 +46,12 @@ public class Cliente {
     }
 
     public boolean setTarifa(Tarifa nuevaTarifa){
-
         tarifa = nuevaTarifa;
+
         return true;
     }
 
     public Calendar getFecha(){
-
         return fechaDeAlta;
 
     }

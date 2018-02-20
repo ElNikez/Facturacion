@@ -1,8 +1,10 @@
 package facturas;
 
+import interfaces.Fecha;
+
 import java.util.Calendar;
 
-public class Llamada {
+public class Llamada implements Fecha {
 
     private int numeroDeTelefono;
     private Calendar fechaDeLlamada;
@@ -23,7 +25,7 @@ public class Llamada {
         this.duracionDeLlamada = duracionDeLlamada;
     }
 
-    public Calendar getFechaDeLlamada() {
+    public Calendar getFecha() {
         return fechaDeLlamada;
     }
 
