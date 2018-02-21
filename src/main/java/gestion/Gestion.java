@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class Gestion {
 
-    private static Map<String, Cliente> listaClientes;
-    private static Map<String, HashSet<Llamada>> listaLlamadas;
-    private static Map<String, HashSet<Factura>> listafacturasCliente;
-    private static Map<Integer, Factura> listafacturasPorCodigo;
+    private Map<String, Cliente> listaClientes;
+    private Map<String, HashSet<Llamada>> listaLlamadas;
+    private Map<String, HashSet<Factura>> listafacturasCliente;
+    private Map<Integer, Factura> listafacturasPorCodigo;
 
     public Gestion() {
         listaClientes = new HashMap<>();
@@ -24,18 +24,6 @@ public class Gestion {
         listafacturasPorCodigo = new HashMap<>();
     }
 
-    public static Map<String, Cliente> listarClientes() {
-        return listaClientes;
-    }
-
-    public static HashSet<Factura> listarFacturas(String nif) {
-        if (listafacturasCliente.containsKey(nif))
-            return listafacturasCliente.get(nif);
-
-        return null;
-    }
-
-    //Cambiar la tarifa de un cliente. y devuelve el valor de la antigua tarifa
     public boolean darDeAltaCliente(Cliente cliente) {
         String nif = cliente.getNif();
 
@@ -48,11 +36,9 @@ public class Gestion {
         return false;
     }
 
-    public boolean darDeBaja(Cliente cliente) {
-        String nif = cliente.getNif();
-
+    public boolean darDeBaja(String nif) {
         if (listaClientes.containsKey(nif)) {
-            listaClientes.remove(cliente);
+            listaClientes.remove(nif);
 
             return true;
         }
@@ -60,66 +46,80 @@ public class Gestion {
         return false;
     }
 
-    public boolean cambiarTarifa(Cliente cliente, Tarifa nuevaTarifa) {
-        String nif = cliente.getNif();
-
+    public boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) {
         if (listaClientes.containsKey(nif)) {
-            return cliente.setTarifa(nuevaTarifa);
+            listaClientes.get(nif).setTarifa(nuevaTarifa);
+
+            return true;
         }
 
         return false;
     }
 
-    public Cliente getCliente(String nif) {
-        if (listaClientes.containsKey(nif)) {
+    public Cliente mostrarCliente(String nif) {
+        if (listaClientes.containsKey(nif))
             return listaClientes.get(nif);
-        }
 
         return null;
     }
+
+    public Map<String, Cliente> listarClientes() {
+        return listaClientes;
+    }
+
+
 
     public boolean darDeAltaLlamada(String nif, Llamada llamada) {
-        if (!listaLlamadas.containsKey(nif)) {
-            HashSet<Llamada> llamadasClientes = listaLlamadas.get(nif);
-            llamadasClientes.add(llamada);
-
-            return true;
-        }
+        if (!listaLlamadas.containsKey(nif))
+            return listaLlamadas.get(nif).add(llamada);
 
         return false;
-
     }
 
-    public HashSet<Llamada> getClienteLlamadas(String nif) {
-        if (listaLlamadas.containsKey(nif)) {
+    public HashSet<Llamada> mostrarLlamadasDeCliente(String nif) {
+        if (listaLlamadas.containsKey(nif))
             return listaLlamadas.get(nif);
-        }
 
         return null;
     }
+
+    public HashSet<Llamada> listarLlamadas(String nif) {
+        if (listaLlamadas.containsKey(nif))
+            return listaLlamadas.get(nif);
+
+        return null;
+    }
+
+
 
     public Factura emitirFactura(String nif, int codigoFact, Calendar fechaFacturacion) {
         Cliente cliente = listaClientes.get(nif);
         Tarifa tarifaAplicada = cliente.getTarifa();
-        Calendar fechaEmision = Calendar.getInstance();
         HashSet<Llamada> llamadasCliente = listaLlamadas.get(nif);
         int duracionTotal = 0;
 
         for (Llamada llamada : llamadasCliente)
             duracionTotal += llamada.getDuracionDeLlamada();
 
-        double tarifa = tarifaAplicada.getPrecio();
-        double importe = tarifa * duracionTotal;
+        double precioMinuto = tarifaAplicada.getPrecio();
+        double importe = (precioMinuto / 60) * duracionTotal;
         Factura facturaCliente = new Factura(codigoFact, tarifaAplicada, importe);
 
         return facturaCliente;
     }
 
-    public Factura getFactura(String codigo) {
-        if (listafacturasPorCodigo.containsKey(codigo)) {
+    public Factura mostrarFactura(String codigo) {
+        if (listafacturasPorCodigo.containsKey(codigo))
             return listafacturasPorCodigo.get(codigo);
-        }
 
         return null;
     }
+
+    public HashSet<Factura> listarFacturas(String nif) {
+        if (listafacturasCliente.containsKey(nif))
+            return listafacturasCliente.get(nif);
+
+        return null;
+    }
+
 }

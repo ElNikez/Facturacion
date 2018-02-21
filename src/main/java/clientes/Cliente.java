@@ -45,10 +45,8 @@ public class Cliente implements Fecha {
         return tarifa;
     }
 
-    public boolean setTarifa(Tarifa nuevaTarifa){
-        tarifa = nuevaTarifa;
-
-        return true;
+    public void setTarifa(Tarifa tarifa) {
+        this.tarifa = tarifa;
     }
 
     public Calendar getFecha(){
