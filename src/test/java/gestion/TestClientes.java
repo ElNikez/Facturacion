@@ -1,5 +1,9 @@
-package clientes;
+package gestion;
 
+import clientes.Cliente;
+import clientes.Direccion;
+import clientes.Empresa;
+import clientes.Particular;
 import es.uji.belfern.generador.GeneradorDatosINE;
 import facturas.Tarifa;
 import gestion.Gestion;
@@ -7,14 +11,14 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.Assert.*;
 
-public class TestColeccionClientes {
+public class TestClientes {
 
-    private Gestion gestion;
     private static GeneradorDatosINE generador;
     private static Cliente empresa;
     private static Cliente particular;
     private static Cliente hombre;
     private static Cliente mujer;
+    private Gestion gestion;
 
     @BeforeAll
     public static void init() {
@@ -50,11 +54,6 @@ public class TestColeccionClientes {
         assertTrue(gestion.darDeAltaCliente(particular));
         assertTrue(gestion.darDeAltaCliente(hombre));
         assertTrue(gestion.darDeAltaCliente(mujer));
-
-        assertFalse(gestion.darDeAltaCliente(empresa));
-        assertFalse(gestion.darDeAltaCliente(particular));
-        assertFalse(gestion.darDeAltaCliente(hombre));
-        assertFalse(gestion.darDeAltaCliente(mujer));
     }
 
     @Test
@@ -64,15 +63,10 @@ public class TestColeccionClientes {
         gestion.darDeAltaCliente(hombre);
         gestion.darDeAltaCliente(mujer);
 
-        assertTrue(gestion.darDeBaja(empresa));
-        assertTrue(gestion.darDeBaja(particular));
-        assertTrue(gestion.darDeBaja(hombre));
-        assertTrue(gestion.darDeBaja(mujer));
-
-        assertNull(gestion.getCliente(empresa.getNif()));
-        assertNull(gestion.getCliente(particular.getNif()));
-        assertNull(gestion.getCliente(hombre.getNif()));
-        assertNull(gestion.getCliente(mujer.getNif()));
+        assertTrue(gestion.darDeBaja(empresa.getNif()));
+        assertTrue(gestion.darDeBaja(particular.getNif()));
+        assertTrue(gestion.darDeBaja(hombre.getNif()));
+        assertTrue(gestion.darDeBaja(mujer.getNif()));
     }
 
     @Test
@@ -82,10 +76,33 @@ public class TestColeccionClientes {
         gestion.darDeAltaCliente(hombre);
         gestion.darDeAltaCliente(mujer);
 
-        assertTrue(gestion.cambiarTarifa(empresa, new Tarifa(50)));
-        assertTrue(gestion.cambiarTarifa(particular, new Tarifa(1)));
-        assertTrue(gestion.cambiarTarifa(hombre, new Tarifa(15)));
-        assertTrue(gestion.cambiarTarifa(mujer, new Tarifa(10)));
+        assertTrue(gestion.cambiarTarifa(empresa.getNif(), new Tarifa(50)));
+        assertTrue(gestion.cambiarTarifa(particular.getNif(), new Tarifa(1)));
+        assertTrue(gestion.cambiarTarifa(hombre.getNif(), new Tarifa(15)));
+        assertTrue(gestion.cambiarTarifa(mujer.getNif(), new Tarifa(10)));
+    }
+
+    @Test
+    public void testMostrarCliente() {
+        gestion.darDeAltaCliente(empresa);
+        gestion.darDeAltaCliente(particular);
+        gestion.darDeAltaCliente(hombre);
+        gestion.darDeAltaCliente(mujer);
+
+        assertNotNull(gestion.mostrarCliente(empresa.getNif()));
+        assertNotNull(gestion.mostrarCliente(particular.getNif()));
+        assertNotNull(gestion.mostrarCliente(hombre.getNif()));
+        assertNotNull(gestion.mostrarCliente(mujer.getNif()));
+    }
+
+    @Test
+    public void testListarClientes() {
+        gestion.darDeAltaCliente(empresa);
+        gestion.darDeAltaCliente(particular);
+        gestion.darDeAltaCliente(hombre);
+        gestion.darDeAltaCliente(mujer);
+
+        assertNotNull(gestion.listarClientes());
     }
 
 }
