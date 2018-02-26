@@ -36,7 +36,7 @@ public class Gestion {
         return false;
     }
 
-    public boolean darDeBaja(String nif) {
+    public boolean darDeBajaCliente(String nif) {
         if (listaClientes.containsKey(nif)) {
             listaClientes.remove(nif);
 
@@ -70,10 +70,12 @@ public class Gestion {
 
 
     public boolean darDeAltaLlamada(String nif, Llamada llamada) {
-        if (!listaLlamadas.containsKey(nif))
-            return listaLlamadas.get(nif).add(llamada);
+        if(!listaLlamadas.containsKey(nif))
+            listaLlamadas.put(nif, new HashSet<>());
 
-        return false;
+        listaLlamadas.get(nif).add(llamada);
+
+        return true;
     }
 
     public HashSet<Llamada> mostrarLlamadasDeCliente(String nif) {
@@ -89,7 +91,6 @@ public class Gestion {
 
         return null;
     }
-
 
 
     public Factura emitirFactura(String nif, int codigoFact, Calendar fechaFacturacion) {

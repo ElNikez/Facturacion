@@ -1,15 +1,13 @@
-package gestion;
+package clientes;
 
-import clientes.Cliente;
-import clientes.Direccion;
-import clientes.Empresa;
-import clientes.Particular;
 import es.uji.belfern.generador.GeneradorDatosINE;
 import facturas.Tarifa;
 import gestion.Gestion;
 import org.junit.jupiter.api.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestClientes {
 
@@ -48,14 +46,18 @@ public class TestClientes {
         gestion = null;
     }
 
+    @DisplayName("Dar de alta")
     @Test
     public void testDarDeAltaCliente() {
-        assertTrue(gestion.darDeAltaCliente(empresa));
-        assertTrue(gestion.darDeAltaCliente(particular));
-        assertTrue(gestion.darDeAltaCliente(hombre));
-        assertTrue(gestion.darDeAltaCliente(mujer));
+        assertAll("dar de alta",
+                () -> assertTrue(gestion.darDeAltaCliente(empresa)),
+                () -> assertTrue(gestion.darDeAltaCliente(particular)),
+                () -> assertTrue(gestion.darDeAltaCliente(hombre)),
+                () -> assertTrue(gestion.darDeAltaCliente(mujer))
+        );
     }
 
+    @DisplayName("Dar de baja")
     @Test
     public void testDarDeBaja() {
         gestion.darDeAltaCliente(empresa);
@@ -63,12 +65,15 @@ public class TestClientes {
         gestion.darDeAltaCliente(hombre);
         gestion.darDeAltaCliente(mujer);
 
-        assertTrue(gestion.darDeBaja(empresa.getNif()));
-        assertTrue(gestion.darDeBaja(particular.getNif()));
-        assertTrue(gestion.darDeBaja(hombre.getNif()));
-        assertTrue(gestion.darDeBaja(mujer.getNif()));
+        assertAll("Dar de baja",
+                () -> assertTrue(gestion.darDeBajaCliente(empresa.getNif())),
+                () -> assertTrue(gestion.darDeBajaCliente(particular.getNif())),
+                () -> assertTrue(gestion.darDeBajaCliente(hombre.getNif())),
+                () -> assertTrue(gestion.darDeBajaCliente(mujer.getNif()))
+        );
     }
 
+    @DisplayName("Cambiar la tarifa")
     @Test
     public void testCambiarTarifa() {
         gestion.darDeAltaCliente(empresa);
@@ -82,6 +87,7 @@ public class TestClientes {
         assertTrue(gestion.cambiarTarifa(mujer.getNif(), new Tarifa(10)));
     }
 
+    @DisplayName("Mostrar un cliente")
     @Test
     public void testMostrarCliente() {
         gestion.darDeAltaCliente(empresa);
@@ -95,6 +101,7 @@ public class TestClientes {
         assertNotNull(gestion.mostrarCliente(mujer.getNif()));
     }
 
+    @DisplayName("Mostrar los clientes")
     @Test
     public void testListarClientes() {
         gestion.darDeAltaCliente(empresa);
