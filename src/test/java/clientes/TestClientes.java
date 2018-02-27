@@ -5,18 +5,17 @@ import facturas.Tarifa;
 import gestion.Gestion;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Test clientes")
 public class TestClientes {
 
+    private static Gestion gestion;
     private static GeneradorDatosINE generador;
     private static Cliente empresa;
     private static Cliente particular;
     private static Cliente hombre;
     private static Cliente mujer;
-    private Gestion gestion;
 
     @BeforeAll
     public static void init() {
@@ -81,10 +80,12 @@ public class TestClientes {
         gestion.darDeAltaCliente(hombre);
         gestion.darDeAltaCliente(mujer);
 
-        assertTrue(gestion.cambiarTarifa(empresa.getNif(), new Tarifa(50)));
-        assertTrue(gestion.cambiarTarifa(particular.getNif(), new Tarifa(1)));
-        assertTrue(gestion.cambiarTarifa(hombre.getNif(), new Tarifa(15)));
-        assertTrue(gestion.cambiarTarifa(mujer.getNif(), new Tarifa(10)));
+        assertAll("Cambiar la tarifa",
+                () -> assertTrue(gestion.cambiarTarifa(empresa.getNif(), new Tarifa(50))),
+                () -> assertTrue(gestion.cambiarTarifa(particular.getNif(), new Tarifa(1))),
+                () -> assertTrue(gestion.cambiarTarifa(hombre.getNif(), new Tarifa(15))),
+                () -> assertTrue(gestion.cambiarTarifa(mujer.getNif(), new Tarifa(10)))
+        );
     }
 
     @DisplayName("Mostrar un cliente")
@@ -95,10 +96,12 @@ public class TestClientes {
         gestion.darDeAltaCliente(hombre);
         gestion.darDeAltaCliente(mujer);
 
-        assertNotNull(gestion.mostrarCliente(empresa.getNif()));
-        assertNotNull(gestion.mostrarCliente(particular.getNif()));
-        assertNotNull(gestion.mostrarCliente(hombre.getNif()));
-        assertNotNull(gestion.mostrarCliente(mujer.getNif()));
+        assertAll("Mostrar un cliente",
+                () -> assertNotNull(gestion.mostrarCliente(empresa.getNif())),
+                () -> assertNotNull(gestion.mostrarCliente(particular.getNif())),
+                () -> assertNotNull(gestion.mostrarCliente(hombre.getNif())),
+                () -> assertNotNull(gestion.mostrarCliente(mujer.getNif()))
+        );
     }
 
     @DisplayName("Mostrar los clientes")
