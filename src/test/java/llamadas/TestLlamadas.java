@@ -20,7 +20,7 @@ public class TestLlamadas {
     private static Llamada llamada1;
     private static Llamada llamada2;
     private static Llamada llamada3;
-    private Gestion gestion;
+    private static Gestion gestion;
 
     @BeforeAll
     public static void init() {

@@ -16,7 +16,7 @@ public class TestClientes {
     private static Cliente particular;
     private static Cliente hombre;
     private static Cliente mujer;
-    private Gestion gestion;
+    private static Gestion gestion;
 
     @BeforeAll
     public static void init() {
