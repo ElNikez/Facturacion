@@ -22,4 +22,9 @@ public class Tarifa {
 
         return precio;
     }
+
+    @Override
+    public String toString() {
+        return "Tarifa{" + "precio=" + precio + '}';
+    }
 }

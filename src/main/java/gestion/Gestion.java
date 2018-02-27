@@ -107,6 +107,8 @@ public class Gestion {
         int codigoFactura = listafacturasPorCodigo.size();
         Factura facturaCliente = new Factura(codigoFactura, tarifaAplicada, importe);
 
+        if(listafacturasCliente.get(nif)==null)
+            listafacturasCliente.put(nif,new HashSet<>());
         listafacturasCliente.get(nif).add(facturaCliente);
         listafacturasPorCodigo.put(codigoFactura, facturaCliente);
 

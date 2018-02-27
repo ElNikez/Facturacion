@@ -32,7 +32,7 @@ public class TestFacturas {
         llamada1 = new Llamada(666666666, 1000);
         llamada2 = new Llamada(666666666, 500);
         llamada3 = new Llamada(123456789, 666);
-        factura1 = new Factura(0, new Tarifa(10), 1299600);
+        factura1 = new Factura(0, new Tarifa(10), 361);
 
     }
 
@@ -61,7 +61,27 @@ public class TestFacturas {
         gestion = null;
     }
 
+    @DisplayName("Emitir factura")
+    @Test
+    public void testEmitirFactura(){
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
 
+        Calendar fechaFact = Calendar.getInstance();
+        Calendar fechaEmi = Calendar.getInstance();
+        fechaFact.set(Calendar.MONTH,fechaFact.get(Calendar.MONTH)-1);
+
+        Factura facturaTest = gestion.emitirFactura(cliente.getNif(),fechaFact,fechaEmi);
+
+        System.out.println( "facturatest:"+facturaTest.getCodigoFactura()+" "+
+                facturaTest.getTarifaAplicada().toString());
+        System.out.println( "facturatest:"+factura1.getCodigoFactura()+" "+
+                factura1.getTarifaAplicada().toString());
+
+        assertEquals(factura1,facturaTest);
+
+    }
 
 
     @DisplayName("Listar facturas")
@@ -71,9 +91,16 @@ public class TestFacturas {
         gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
 
+
        assertNull(gestion.listarFacturas(cliente.getNif()));
 
-       gestion.emitirFactura(cliente.getNif(), )
+       Calendar fechaFact = Calendar.getInstance();
+       Calendar fechaEmi = Calendar.getInstance();
+       fechaFact.set(Calendar.MONTH,fechaFact.get(Calendar.MONTH)-1);
+
+       gestion.emitirFactura(cliente.getNif(),fechaFact,fechaEmi);
+
+       assertNotNull(gestion.listarFacturas(cliente.getNif()));
 
 
 
