@@ -21,7 +21,6 @@ public class TestFacturas {
     private static Llamada llamada2;
     private static Llamada llamada3;
     private static Factura factura1;
-    private static Factura factura2;
     private static Gestion gestion;
 
 
