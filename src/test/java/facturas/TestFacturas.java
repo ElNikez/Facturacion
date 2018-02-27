@@ -44,16 +44,16 @@ public class TestFacturas {
         llamada2 = null;
         llamada3 = null;
         generador = null;
-        factura1 =null;
+        factura1 = null;
     }
 
     @BeforeEach
     public void setUp() {
         gestion = new Gestion();
         gestion.darDeAltaCliente(cliente);
-        gestion.darDeAltaLlamada(cliente.getNif(),llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(),llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(),llamada3);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
     }
 
     @AfterEach
@@ -63,23 +63,21 @@ public class TestFacturas {
 
     @DisplayName("Emitir factura")
     @Test
-    public void testEmitirFactura(){
+    public void testEmitirFactura() {
         gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
 
         Calendar fechaFact = Calendar.getInstance();
         Calendar fechaEmi = Calendar.getInstance();
-        fechaFact.set(Calendar.MONTH,fechaFact.get(Calendar.MONTH)-1);
+        fechaFact.set(Calendar.MONTH, fechaFact.get(Calendar.MONTH) - 1);
 
-        Factura facturaTest = gestion.emitirFactura(cliente.getNif(),fechaFact,fechaEmi);
+        Factura facturaTest = gestion.emitirFactura(cliente.getNif(), fechaFact, fechaEmi);
 
-        System.out.println( "facturatest:"+facturaTest.getCodigoFactura()+" "+
-                facturaTest.getTarifaAplicada().toString());
-        System.out.println( "facturatest:"+factura1.getCodigoFactura()+" "+
-                factura1.getTarifaAplicada().toString());
+        System.out.println("facturatest:" + facturaTest.getCodigoFactura() + " " + facturaTest.getTarifaAplicada().toString());
+        System.out.println("facturatest:" + factura1.getCodigoFactura() + " " + factura1.getTarifaAplicada().toString());
 
-        assertEquals(factura1,facturaTest);
+        assertEquals(factura1, facturaTest);
 
     }
 
@@ -92,16 +90,15 @@ public class TestFacturas {
         gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
 
 
-       assertNull(gestion.listarFacturas(cliente.getNif()));
+        assertNull(gestion.listarFacturas(cliente.getNif()));
 
-       Calendar fechaFact = Calendar.getInstance();
-       Calendar fechaEmi = Calendar.getInstance();
-       fechaFact.set(Calendar.MONTH,fechaFact.get(Calendar.MONTH)-1);
+        Calendar fechaFact = Calendar.getInstance();
+        Calendar fechaEmi = Calendar.getInstance();
+        fechaFact.set(Calendar.MONTH, fechaFact.get(Calendar.MONTH) - 1);
 
-       gestion.emitirFactura(cliente.getNif(),fechaFact,fechaEmi);
+        gestion.emitirFactura(cliente.getNif(), fechaFact, fechaEmi);
 
-       assertNotNull(gestion.listarFacturas(cliente.getNif()));
-
+        assertNotNull(gestion.listarFacturas(cliente.getNif()));
 
 
     }
