@@ -92,14 +92,14 @@ public class Gestion {
     }
 
 
-    public Factura emitirFactura(String nif, Calendar fechaFacturacion) {
+    public Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
         Tarifa tarifaAplicada = listaClientes.get(nif).getTarifa();
         HashSet<Llamada> llamadasCliente = listaLlamadas.get(nif);
 
         int duracionTotal = 0;
 
         for (Llamada llamada : llamadasCliente)
-            if(llamada.getFecha().compareTo(fechaFacturacion) > 0)
+            if(llamada.getFecha().after(fechaFacturacion) && llamada.getFecha().before(fechaEmision))
                 duracionTotal += llamada.getDuracionDeLlamada();
 
         double precioMinuto = tarifaAplicada.getPrecio();
