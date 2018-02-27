@@ -115,7 +115,7 @@ public class Gestion {
         return facturaCliente;
     }
 
-    public Factura mostrarFactura(String codigo) {
+    public Factura mostrarFactura(int codigo) {
         if (listafacturasPorCodigo.containsKey(codigo))
             return listafacturasPorCodigo.get(codigo);
 

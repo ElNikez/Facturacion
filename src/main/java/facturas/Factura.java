@@ -39,7 +39,8 @@ public class Factura implements Fecha {
         if (this == o) return true;
         if (!(o instanceof Factura)) return false;
         Factura factura = (Factura) o;
-        return codigoFactura == factura.codigoFactura && Double.compare(factura.importeTotal, importeTotal) == 0 && Objects.equals(tarifaAplicada.getPrecio(), factura.tarifaAplicada.getPrecio()) ;
+        return codigoFactura == factura.codigoFactura && Double.compare(factura.importeTotal, importeTotal)
+                == 0 && Objects.equals(tarifaAplicada.getPrecio(), factura.tarifaAplicada.getPrecio()) ;
     }
 
     public int getCodigoFactura() {
