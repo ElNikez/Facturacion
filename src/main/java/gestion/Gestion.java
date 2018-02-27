@@ -12,10 +12,10 @@ import java.util.Map;
 
 public class Gestion {
 
-    private Map<String, Cliente> listaClientes;
-    private Map<String, HashSet<Llamada>> listaLlamadas;
-    private Map<String, HashSet<Factura>> listafacturasCliente;
-    private Map<Integer, Factura> listafacturasPorCodigo;
+    private static Map<String, Cliente> listaClientes;
+    private static Map<String, HashSet<Llamada>> listaLlamadas;
+    private static Map<String, HashSet<Factura>> listafacturasCliente;
+    private static Map<Integer, Factura> listafacturasPorCodigo;
 
     public Gestion() {
         listaClientes = new HashMap<>();
@@ -68,9 +68,8 @@ public class Gestion {
     }
 
 
-
     public boolean darDeAltaLlamada(String nif, Llamada llamada) {
-        if(!listaLlamadas.containsKey(nif))
+        if (!listaLlamadas.containsKey(nif))
             listaLlamadas.put(nif, new HashSet<>());
 
         listaLlamadas.get(nif).add(llamada);
@@ -93,18 +92,23 @@ public class Gestion {
     }
 
 
-    public Factura emitirFactura(String nif, int codigoFact, Calendar fechaFacturacion) {
-        Cliente cliente = listaClientes.get(nif);
-        Tarifa tarifaAplicada = cliente.getTarifa();
+    public Factura emitirFactura(String nif, Calendar fechaFacturacion) {
+        Tarifa tarifaAplicada = listaClientes.get(nif).getTarifa();
         HashSet<Llamada> llamadasCliente = listaLlamadas.get(nif);
+
         int duracionTotal = 0;
 
         for (Llamada llamada : llamadasCliente)
-            duracionTotal += llamada.getDuracionDeLlamada();
+            if(llamada.getFecha().compareTo(fechaFacturacion) > 0)
+                duracionTotal += llamada.getDuracionDeLlamada();
 
         double precioMinuto = tarifaAplicada.getPrecio();
         double importe = (precioMinuto / 60) * duracionTotal;
-        Factura facturaCliente = new Factura(codigoFact, tarifaAplicada, importe);
+        int codigoFactura = listafacturasPorCodigo.size();
+        Factura facturaCliente = new Factura(codigoFactura, tarifaAplicada, importe);
+
+        listafacturasCliente.get(nif).add(facturaCliente);
+        listafacturasPorCodigo.put(codigoFactura, facturaCliente);
 
         return facturaCliente;
     }
@@ -121,6 +125,11 @@ public class Gestion {
             return listafacturasCliente.get(nif);
 
         return null;
+    }
+
+    public int cantidadFacturas(){
+        System.out.println( "resultado:"+listafacturasPorCodigo.size());
+        return listafacturasPorCodigo.size();
     }
 
 }

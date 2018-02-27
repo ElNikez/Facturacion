@@ -5,7 +5,12 @@ import clientes.Direccion;
 import clientes.Empresa;
 import es.uji.belfern.generador.GeneradorDatosINE;
 import gestion.Gestion;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.*;
+
+import java.util.Calendar;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFacturas {
 
@@ -27,6 +32,53 @@ public class TestFacturas {
         llamada1 = new Llamada(666666666, 1000);
         llamada2 = new Llamada(666666666, 500);
         llamada3 = new Llamada(123456789, 666);
-        factura1 = new Factura()
+        factura1 = new Factura(0, new Tarifa(10), 1299600);
+
     }
+
+
+    @AfterAll
+    public static void finish() {
+        cliente = null;
+        llamada1 = null;
+        llamada2 = null;
+        llamada3 = null;
+        generador = null;
+        factura1 =null;
+    }
+
+    @BeforeEach
+    public void setUp() {
+        gestion = new Gestion();
+        gestion.darDeAltaCliente(cliente);
+        gestion.darDeAltaLlamada(cliente.getNif(),llamada1);
+        gestion.darDeAltaLlamada(cliente.getNif(),llamada2);
+        gestion.darDeAltaLlamada(cliente.getNif(),llamada3);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        gestion = null;
+    }
+
+
+
+
+    @DisplayName("Listar facturas")
+    @Test
+    public void testListarFacturasDeCliente() {
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
+
+       assertNull(gestion.listarFacturas(cliente.getNif()));
+
+       gestion.emitirFactura(cliente.getNif(), )
+
+
+
+    }
+
 }
+
+
