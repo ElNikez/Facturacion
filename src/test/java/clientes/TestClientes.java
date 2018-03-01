@@ -48,7 +48,7 @@ public class TestClientes {
     @DisplayName("Dar de alta")
     @Test
     public void testDarDeAltaCliente() {
-        assertAll("dar de alta",
+        assertAll("Dar de alta",
                 () -> assertTrue(gestion.darDeAltaCliente(empresa)),
                 () -> assertTrue(gestion.darDeAltaCliente(particular)),
                 () -> assertTrue(gestion.darDeAltaCliente(hombre)),
