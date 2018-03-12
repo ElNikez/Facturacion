@@ -1,6 +1,7 @@
 import clientes.Cliente;
 import clientes.Direccion;
 import clientes.Empresa;
+import clientes.Particular;
 import facturas.Factura;
 import facturas.Llamada;
 import facturas.Tarifa;
@@ -42,30 +43,58 @@ public class Main {
                             consola.mostrarDatos("1-Empresa ");
                             consola.mostrarDatos("2-Partiular ");
 
+                            String tipocliente = consola.pedirDatos();
+
+                            if(tipocliente =="1") {
+
+
+                                consola.mostrarDatos("Introduce el NIF: ");
+                                nif = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce el nombre: ");
+                                String nombre = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce el correo electrónico: ");
+                                String correoElectronico = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce el código postal: ");
+                                int codpostal = Integer.parseInt(consola.pedirDatos());
+                                consola.mostrarDatos("Introduce la población: ");
+                                String poblacion = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce la provincia: ");
+                                String provincia = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce la tarifa: ");
+                                tarifa = Float.parseFloat(consola.pedirDatos());
+
+                                Cliente empresa = new Empresa(nif, nombre, correoElectronico, new Direccion(codpostal, poblacion, provincia), new Tarifa(tarifa));
+
+                                gestion.darDeAltaCliente(empresa);
+
+                            }else{
+
+                                consola.mostrarDatos("Introduce el NIF: ");
+                                nif = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce el nombre: ");
+                                String nombre = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce apellidos: ");
+                                String apellidos = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce el correo electrónico: ");
+                                String correoElectronico = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce el código postal: ");
+                                int codpostal = Integer.parseInt(consola.pedirDatos());
+                                consola.mostrarDatos("Introduce la población: ");
+                                String poblacion = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce la provincia: ");
+                                String provincia = consola.pedirDatos();
+                                consola.mostrarDatos("Introduce la tarifa: ");
+                                tarifa = Float.parseFloat(consola.pedirDatos());
+
+                                Cliente particular = new Particular(nif, nombre,apellidos, correoElectronico, new Direccion(codpostal, poblacion, provincia), new Tarifa(tarifa));
+
+                                gestion.darDeAltaCliente(particular);
 
 
 
 
-                            consola.mostrarDatos("Introduce el NIF: ");
-                            nif = consola.pedirDatos();
-                            consola.mostrarDatos("Introduce el nombre: ");
-                            String nombre = consola.pedirDatos();
-                            consola.mostrarDatos("Introduce el correo electrónico: ");
-                            String correoElectronico = consola.pedirDatos();
-                            consola.mostrarDatos("Introduce el código postal: ");
-                            int codpostal = Integer.parseInt(consola.pedirDatos());
-                            consola.mostrarDatos("Introduce la población: ");
-                            String poblacion = consola.pedirDatos();
-                            consola.mostrarDatos("Introduce la provincia: ");
-                            String provincia = consola.pedirDatos();
-                            consola.mostrarDatos("Introduce la tarifa: ");
-                            tarifa = Float.parseFloat(consola.pedirDatos());
 
-                            Cliente empresa = new Empresa(nif, nombre, correoElectronico, new Direccion(codpostal, poblacion, provincia), new Tarifa(tarifa));
-
-                           gestion.darDeAltaCliente(empresa);
-
-
+                            }
 
 
 
