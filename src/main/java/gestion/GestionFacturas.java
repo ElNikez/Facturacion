@@ -1,18 +1,18 @@
 package gestion;
 
 import facturas.Factura;
-import misc.Consola;
 
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Scanner;
 
 public class GestionFacturas {
 
-    private Consola consola;
+    Scanner scanner = new Scanner(System.in);
 
     public Factura emitirFactura() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = fechaEmision;
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
@@ -21,15 +21,15 @@ public class GestionFacturas {
     }
 
     public Factura mostrarFactura() {
-        consola.mostrarDatos("Introduce el código de la factura: ");
-        int codigo = Integer.parseInt(consola.pedirDatos());
+        System.out.print("Introduce el código de la factura: ");
+        int codigo = scanner.nextInt();
 
         return Gestion.mostrarFactura(codigo);
     }
 
     public HashSet<Factura> listarFacturas() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
 
         return Gestion.listarFacturas(nif);
     }

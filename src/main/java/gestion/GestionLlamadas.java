@@ -4,25 +4,26 @@ import facturas.Llamada;
 import misc.Consola;
 
 import java.util.HashSet;
+import java.util.Scanner;
 
 public class GestionLlamadas {
 
-    private Consola consola;
+    Scanner scanner = new Scanner(System.in);
 
     public boolean darDeAltaLlamada() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el número de teléfono: ");
-        int numeroDeTelefono = Integer.parseInt(consola.pedirDatos());
-        consola.mostrarDatos("Introduce la duración (en ms): ");
-        int duracionDeLlamada = Integer.parseInt(consola.pedirDatos());
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
+        System.out.print("Introduce el número de teléfono: ");
+        int numeroDeTelefono = scanner.nextInt();
+        System.out.print("Introduce la duración (en ms): ");
+        int duracionDeLlamada = scanner.nextInt();
 
         return Gestion.darDeAltaLlamada(nif, new Llamada(numeroDeTelefono, duracionDeLlamada));
     }
 
     public HashSet<Llamada> listarLlamadas() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
 
         return Gestion.listarLlamadas(nif);
     }

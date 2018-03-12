@@ -3,6 +3,7 @@ package gestion;
 import clientes.Cliente;
 import clientes.Direccion;
 import clientes.Empresa;
+import clientes.Particular;
 import facturas.Tarifa;
 import misc.Consola;
 import misc.MenuClientes;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class GestionClientes {
 
-    private Consola consola;
+    Scanner scanner = new Scanner(System.in);
 
     public void darDeAltaCliente() {
 //        consola.mostrarDatos(MenuClientes.mostrarMenu());
@@ -27,11 +28,10 @@ public class GestionClientes {
 //            default:
 //                break;
 //        }
-        consola.mostrarDatos("1.- Añadir empresa\n");
-        consola.mostrarDatos("1.- Añadir partocilar\n");
-
-        consola.mostrarDatos("Introduce una opción: ");
-        int opcion = Integer.parseInt(consola.pedirDatos());
+        System.out.print("1.- Añadir empresa\n");
+        System.out.print("2.- Añadir partocilar\n");
+        System.out.print("Introduce una opción: ");
+        int opcion = scanner.nextByte();
         switch(opcion) {
             case 1:
                 darDeAltaEmpresa();
@@ -45,76 +45,76 @@ public class GestionClientes {
     }
 
     public void darDeAltaEmpresa() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el nombre: ");
-        String nombre = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el correo electrónico: ");
-        String correoElectronico = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el código postal: ");
-        int codpostal = Integer.parseInt(consola.pedirDatos());
-        consola.mostrarDatos("Introduce la población: ");
-        String poblacion = consola.pedirDatos();
-        consola.mostrarDatos("Introduce la provincia: ");
-        String provincia = consola.pedirDatos();
-        consola.mostrarDatos("Introduce la tarifa: ");
-        float tarifa = Float.parseFloat(consola.pedirDatos());
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
+        System.out.print("Introduce el nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Introduce el correo electrónico: ");
+        String correoElectronico = scanner.nextLine();
+        System.out.print("Introduce el código postal: ");
+        int codpostal = scanner.nextInt();
+        System.out.print("Introduce la población: ");
+        String poblacion = scanner.nextLine();
+        System.out.print("Introduce la provincia: ");
+        String provincia = scanner.nextLine();
+        System.out.print("Introduce la tarifa: ");
+        float tarifa = scanner.nextFloat();
 
         Cliente empresa = new Empresa(nif, nombre, correoElectronico, new Direccion(codpostal, poblacion, provincia), new Tarifa(tarifa));
 
         Gestion.darDeAltaCliente(empresa);
     }
 
-    private void darDeAltaParticular() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el nombre: ");
-        String nombre = consola.pedirDatos();
-        consola.mostrarDatos("Introduce los apellidos: ");
-        String apellidos = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el correo electrónico: ");
-        String correoElectronico = consola.pedirDatos();
-        consola.mostrarDatos("Introduce el código postal: ");
-        int codpostal = Integer.parseInt(consola.pedirDatos());
-        consola.mostrarDatos("Introduce la población: ");
-        String poblacion = consola.pedirDatos();
-        consola.mostrarDatos("Introduce la provincia: ");
-        String provincia = consola.pedirDatos();
-        consola.mostrarDatos("Introduce la tarifa: ");
-        float tarifa = Float.parseFloat(consola.pedirDatos());
+    public void darDeAltaParticular() {
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
+        System.out.print("Introduce el nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Introduce los apellidos: ");
+        String apellidos = scanner.nextLine();
+        System.out.print("Introduce el correo electrónico: ");
+        String correoElectronico = scanner.nextLine();
+        System.out.print("Introduce el código postal: ");
+        int codpostal = scanner.nextInt();
+        System.out.print("Introduce la población: ");
+        String poblacion = scanner.nextLine();
+        System.out.print("Introduce la provincia: ");
+        String provincia = scanner.nextLine();
+        System.out.print("Introduce la tarifa: ");
+        float tarifa = scanner.nextFloat();
 
-        Cliente empresa = new Empresa(nif, nombre, correoElectronico, new Direccion(codpostal, poblacion, provincia), new Tarifa(tarifa));
+        Cliente empresa = new Particular(nif, nombre, apellidos, correoElectronico, new Direccion(codpostal, poblacion, provincia), new Tarifa(tarifa));
 
         Gestion.darDeAltaCliente(empresa);
     }
 
     public void darDeBajaCliente() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
 
         Gestion.darDeBajaCliente(nif);
     }
 
     public void cambiarTarifa() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
-        consola.mostrarDatos("Introduce la nueva tarifa: ");
-        float tarifa = Float.parseFloat(consola.pedirDatos());
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
+        System.out.print("Introduce la nueva tarifa: ");
+        float tarifa = scanner.nextFloat();
 
         Gestion.cambiarTarifa(nif, new Tarifa(tarifa));
     }
 
     public void mostrarCliente() {
-        consola.mostrarDatos("Introduce el NIF: ");
-        String nif = consola.pedirDatos();
+        System.out.print("Introduce el NIF: ");
+        String nif = scanner.nextLine();
 
-        consola.mostrarDatos(Gestion.mostrarCliente(nif));
+        System.out.print(Gestion.mostrarCliente(nif));
     }
 
     public void listarClientes() {
         Collection<Cliente> lista = Gestion.listarClientes();
         for (Cliente cliente : lista)
-            consola.mostrarDatos(cliente.toString());
+            System.out.print(cliente.toString());
     }
 
 }
