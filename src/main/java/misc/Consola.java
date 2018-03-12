@@ -14,9 +14,7 @@ public class Consola {
         System.out.println(dato);
     }
 
-    public String pedirDatos(String dato) {
-        mostrarDatos("Introduce " + dato + ": ");
-
+    public String pedirDatos() {
         return scanner.nextLine();
     }
 

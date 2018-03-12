@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestFacturas {
 
     private static GeneradorDatosINE generador;
+    private static Gestion gestion;
     private static Cliente cliente;
     private static Llamada llamada1;
     private static Llamada llamada2;
     private static Llamada llamada3;
     private static Factura factura;
-    private static Gestion gestion;
 
     @BeforeAll
     public static void init() {
@@ -57,15 +57,11 @@ public class TestFacturas {
     @DisplayName("Emitir factura")
     @Test
     public void testEmitirFactura() {
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
+        Calendar fechaEmision = Calendar.getInstance();
+        Calendar fechaFacturacion = fechaEmision;
+        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
-        Calendar fechaFact = Calendar.getInstance();
-        Calendar fechaEmi = Calendar.getInstance();
-        fechaFact.set(Calendar.MONTH, fechaFact.get(Calendar.MONTH) - 1);
-
-        Factura facturaTest = gestion.emitirFactura(cliente.getNif(), fechaFact, fechaEmi);
+        Factura facturaTest = gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
         assertEquals(factura, facturaTest);
     }
@@ -73,17 +69,13 @@ public class TestFacturas {
     @DisplayName("Listar facturas")
     @Test
     public void testListarFacturasDeCliente() {
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
-
         assertNull(gestion.listarFacturas(cliente.getNif()));
 
-        Calendar fechaFact = Calendar.getInstance();
-        Calendar fechaEmi = Calendar.getInstance();
-        fechaFact.set(Calendar.MONTH, fechaFact.get(Calendar.MONTH) - 1);
+        Calendar fechaFacturacion = Calendar.getInstance();
+        Calendar fechaEmision = Calendar.getInstance();
+        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.MONTH - 1);
 
-        gestion.emitirFactura(cliente.getNif(), fechaFact, fechaEmi);
+        gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
         assertNotNull(gestion.listarFacturas(cliente.getNif()));
     }
@@ -91,16 +83,13 @@ public class TestFacturas {
     @DisplayName("Mostrar Facturas")
     @Test
     public void testMostrarFacturas() {
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
-
-        Calendar fechaFact = Calendar.getInstance();
-        Calendar fechaEmi = Calendar.getInstance();
+        Calendar fechaFacturacion = Calendar.getInstance();
+        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.MONTH - 1);
+        Calendar fechaEmision = Calendar.getInstance();
 
         assertNull(gestion.mostrarFactura(factura.getCodigoFactura()));
 
-        gestion.emitirFactura(cliente.getNif(), fechaFact, fechaEmi);
+        gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
         assertNotNull(gestion.mostrarFactura(factura.getCodigoFactura()));
     }

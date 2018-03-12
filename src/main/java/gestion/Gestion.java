@@ -5,10 +5,7 @@ import facturas.Factura;
 import facturas.Llamada;
 import facturas.Tarifa;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class Gestion {
 
@@ -24,7 +21,9 @@ public class Gestion {
         listafacturasPorCodigo = new HashMap<>();
     }
 
-    public boolean darDeAltaCliente(Cliente cliente) {
+    // GESTIÓN DE CLIENTES
+
+    public static boolean darDeAltaCliente(Cliente cliente) {
         String nif = cliente.getNif();
 
         if (!listaClientes.containsKey(nif)) {
@@ -36,7 +35,7 @@ public class Gestion {
         return false;
     }
 
-    public boolean darDeBajaCliente(String nif) {
+    public static boolean darDeBajaCliente(String nif) {
         if (listaClientes.containsKey(nif)) {
             listaClientes.remove(nif);
 
@@ -46,7 +45,7 @@ public class Gestion {
         return false;
     }
 
-    public boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) {
+    public static boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) {
         if (listaClientes.containsKey(nif)) {
             listaClientes.get(nif).setTarifa(nuevaTarifa);
 
@@ -56,19 +55,20 @@ public class Gestion {
         return false;
     }
 
-    public Cliente mostrarCliente(String nif) {
+    public static Cliente mostrarCliente(String nif) {
         if (listaClientes.containsKey(nif))
             return listaClientes.get(nif);
 
         return null;
     }
 
-    public Map<String, Cliente> listarClientes() {
-        return listaClientes;
+    public static Collection<Cliente> listarClientes() {
+        return listaClientes.values();
     }
 
+    // GESTIÓN DE LLAMADAS
 
-    public boolean darDeAltaLlamada(String nif, Llamada llamada) {
+    public static boolean darDeAltaLlamada(String nif, Llamada llamada) {
         if (!listaLlamadas.containsKey(nif))
             listaLlamadas.put(nif, new HashSet<>());
 
@@ -77,29 +77,23 @@ public class Gestion {
         return true;
     }
 
-    public HashSet<Llamada> mostrarLlamadasDeCliente(String nif) {
+    public static HashSet<Llamada> listarLlamadas(String nif) {
         if (listaLlamadas.containsKey(nif))
             return listaLlamadas.get(nif);
 
         return null;
     }
 
-    public HashSet<Llamada> listarLlamadas(String nif) {
-        if (listaLlamadas.containsKey(nif))
-            return listaLlamadas.get(nif);
+    // GESTIÓN DE FACTURAS
 
-        return null;
-    }
-
-
-    public Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
+    public static Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
         Tarifa tarifaAplicada = listaClientes.get(nif).getTarifa();
         HashSet<Llamada> llamadasCliente = listaLlamadas.get(nif);
 
         int duracionTotal = 0;
 
         for (Llamada llamada : llamadasCliente)
-            if(llamada.getFecha().after(fechaFacturacion) && llamada.getFecha().before(fechaEmision))
+            if (llamada.getFecha().after(fechaFacturacion) && llamada.getFecha().before(fechaEmision))
                 duracionTotal += llamada.getDuracionDeLlamada();
 
         double precioMinuto = tarifaAplicada.getPrecio();
@@ -107,30 +101,29 @@ public class Gestion {
         int codigoFactura = listafacturasPorCodigo.size();
         Factura facturaCliente = new Factura(codigoFactura, tarifaAplicada, importe);
 
-        if(listafacturasCliente.get(nif)==null)
-            listafacturasCliente.put(nif,new HashSet<>());
+        if (listafacturasCliente.get(nif) == null)
+            listafacturasCliente.put(nif, new HashSet<>());
         listafacturasCliente.get(nif).add(facturaCliente);
         listafacturasPorCodigo.put(codigoFactura, facturaCliente);
 
         return facturaCliente;
     }
 
-    public Factura mostrarFactura(int codigo) {
+    public static Factura mostrarFactura(int codigo) {
         if (listafacturasPorCodigo.containsKey(codigo))
             return listafacturasPorCodigo.get(codigo);
 
         return null;
     }
 
-    public HashSet<Factura> listarFacturas(String nif) {
+    public static HashSet<Factura> listarFacturas(String nif) {
         if (listafacturasCliente.containsKey(nif))
             return listafacturasCliente.get(nif);
 
         return null;
     }
 
-    public int cantidadFacturas(){
-        System.out.println( "resultado:"+listafacturasPorCodigo.size());
+    public static int cantidadFacturas() {
         return listafacturasPorCodigo.size();
     }
 
