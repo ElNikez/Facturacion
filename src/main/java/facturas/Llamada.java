@@ -25,6 +25,10 @@ public class Llamada implements Fecha {
         this.duracionDeLlamada = duracionDeLlamada;
     }
 
+    public int getNumero() {
+        return numeroDeTelefono;
+    }
+
     public Calendar getFecha() {
         return fechaDeLlamada;
     }

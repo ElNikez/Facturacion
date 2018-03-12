@@ -36,6 +36,13 @@ public class Cliente implements Fecha {
         this.fechaDeAlta = cliente.getFecha();
         this.tarifa = cliente.tarifa;
     }
+    public String getNombre(){
+        return nombre;
+    }
+
+    public String getcorreo(){
+        return correoElectronico;
+    }
 
     public String getNif(){
         return nif;
