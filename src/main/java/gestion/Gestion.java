@@ -4,10 +4,11 @@ import clientes.Cliente;
 import facturas.Factura;
 import facturas.Llamada;
 import facturas.Tarifa;
+import interfaces.Fecha;
 
 import java.util.*;
 
-public class Gestion {
+public  class Gestion{
 
     private static Map<String, Cliente> listaClientes;
     private static Map<String, HashSet<Llamada>> listaLlamadas;
@@ -126,5 +127,25 @@ public class Gestion {
     public static int cantidadFacturas() {
         return listafacturasPorCodigo.size();
     }
+
+
+
+
+public static <T extends Fecha> HashSet<T> muestraColeccionEntreFechas( HashSet<T> coleccion, Calendar fechaInicio, Calendar fechaFin){
+
+    HashSet<T> listaResultado = new HashSet<T>();
+
+    for (T dato : coleccion) {
+
+        if (dato.getFecha().after(fechaInicio) && dato.getFecha().before(fechaFin)) {
+
+            listaResultado.add(dato);
+        }
+    }
+    return listaResultado;
+
+
+}
+
 
 }
