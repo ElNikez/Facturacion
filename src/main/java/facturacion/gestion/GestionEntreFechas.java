@@ -1,4 +1,4 @@
-package facturacion.misc;
+package facturacion.gestion;
 
 import facturacion.interfaces.Fecha;
 

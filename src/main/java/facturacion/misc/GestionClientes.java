@@ -6,6 +6,7 @@ import facturacion.clientes.Empresa;
 import facturacion.clientes.Particular;
 import facturacion.facturas.Tarifa;
 import facturacion.gestion.Gestion;
+import facturacion.gestion.GestionEntreFechas;
 
 import java.util.Calendar;
 import java.util.Collection;

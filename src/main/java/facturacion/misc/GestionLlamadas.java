@@ -2,9 +2,7 @@ package facturacion.misc;
 
 import facturacion.facturas.Llamada;
 import facturacion.gestion.Gestion;
-import facturacion.misc.Consola;
-import facturacion.misc.GestionEntreFechas;
-import facturacion.misc.Mensaje;
+import facturacion.gestion.GestionEntreFechas;
 
 import java.util.Calendar;
 import java.util.Collection;

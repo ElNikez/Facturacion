@@ -2,6 +2,7 @@ package facturacion.misc;
 
 import facturacion.facturas.Factura;
 import facturacion.gestion.Gestion;
+import facturacion.gestion.GestionEntreFechas;
 
 import java.util.Calendar;
 import java.util.Collection;
