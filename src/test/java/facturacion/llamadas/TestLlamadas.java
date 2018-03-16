@@ -1,16 +1,16 @@
-package llamadas;
+package facturacion.llamadas;
 
-import clientes.Cliente;
-import clientes.Direccion;
+import facturacion.clientes.Cliente;
+import facturacion.clientes.Direccion;
 import es.uji.belfern.generador.GeneradorDatosINE;
-import facturas.Llamada;
-import facturas.Tarifa;
-import gestion.Gestion;
+import facturacion.facturas.Llamada;
+import facturacion.facturas.Tarifa;
+import facturacion.gestion.Gestion;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test llamadas")
+@DisplayName("Test facturacion.llamadas")
 public class TestLlamadas {
 
     private static GeneradorDatosINE generador;
@@ -59,7 +59,7 @@ public class TestLlamadas {
         );
     }
 
-    @DisplayName("Mostrar llamadas")
+    @DisplayName("Mostrar facturacion.llamadas")
     @Test
     public void testMostrarLlamadasDeCliente() {
         assertNull(gestion.listarLlamadas(cliente.getNif()));

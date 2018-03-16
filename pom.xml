@@ -6,7 +6,7 @@
 
     <groupId>al315579.uji.es</groupId>
     <artifactId>Facturación</artifactId>
-    <version>0.5.1</version>
+    <version>1.1.1</version>
 
     <dependencies>
         <dependency>

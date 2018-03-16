@@ -1,9 +1,9 @@
-package gestion;
+package facturacion.gestion;
 
-import clientes.Cliente;
-import facturas.Factura;
-import facturas.Llamada;
-import facturas.Tarifa;
+import facturacion.clientes.Cliente;
+import facturacion.facturas.Factura;
+import facturacion.facturas.Llamada;
+import facturacion.facturas.Tarifa;
 
 import java.util.*;
 

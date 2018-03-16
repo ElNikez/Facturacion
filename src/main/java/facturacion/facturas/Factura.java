@@ -1,6 +1,6 @@
-package facturas;
+package facturacion.facturas;
 
-import interfaces.Fecha;
+import facturacion.interfaces.Fecha;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -58,5 +58,15 @@ public class Factura implements Fecha {
 
     public double getImporteTotal() {
         return importeTotal;
+    }
+
+    @Override
+    public String toString() {
+        return "Factura{" +
+                "codigoFactura=" + codigoFactura +
+                ", tarifaAplicada=" + tarifaAplicada +
+                ", fechaDeEmision=" + fechaDeEmision.get(Calendar.DAY_OF_MONTH) + "/" + fechaDeEmision.get(Calendar.MONTH) + "/" + fechaDeEmision.get(Calendar.YEAR) +
+                ", importeTotal=" + importeTotal +
+                "}" + "\n";
     }
 }

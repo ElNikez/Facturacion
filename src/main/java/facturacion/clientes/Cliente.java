@@ -1,10 +1,9 @@
-package clientes;
+package facturacion.clientes;
 
-import facturas.Tarifa;
-import interfaces.Fecha;
+import facturacion.facturas.Tarifa;
+import facturacion.interfaces.Fecha;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class Cliente implements Fecha {
 
@@ -37,11 +36,23 @@ public class Cliente implements Fecha {
         this.tarifa = cliente.tarifa;
     }
 
-    public String getNif(){
+    public String getNif() {
         return nif;
     }
 
-    public Tarifa getTarifa(){
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getCorreo() {
+        return correoElectronico;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public Tarifa getTarifa() {
         return tarifa;
     }
 
@@ -49,8 +60,9 @@ public class Cliente implements Fecha {
         this.tarifa = tarifa;
     }
 
-    public Calendar getFecha(){
+    public Calendar getFecha() {
         return fechaDeAlta;
 
     }
+
 }

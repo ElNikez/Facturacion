@@ -1,4 +1,4 @@
-package interfaces;
+package facturacion.interfaces;
 
 import java.util.Calendar;
 

@@ -1,13 +1,13 @@
-package clientes;
+package facturacion.clientes;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
-import facturas.Tarifa;
-import gestion.Gestion;
+import facturacion.facturas.Tarifa;
+import facturacion.gestion.Gestion;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test clientes")
+@DisplayName("Test facturacion.clientes")
 public class TestClientes {
 
     private static Gestion gestion;
@@ -104,7 +104,7 @@ public class TestClientes {
         );
     }
 
-    @DisplayName("Mostrar los clientes")
+    @DisplayName("Mostrar los facturacion.clientes")
     @Test
     public void testListarClientes() {
         gestion.darDeAltaCliente(empresa);

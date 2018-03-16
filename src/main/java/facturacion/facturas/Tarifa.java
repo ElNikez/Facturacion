@@ -1,24 +1,24 @@
-package facturas;
+package facturacion.facturas;
 
 public class Tarifa {
 
     private float precio;
 
-    public Tarifa(){
+    public Tarifa() {
         super();
     }
 
-    public Tarifa(float precio){
+    public Tarifa(float precio) {
 
-        this.precio= precio;
+        this.precio = precio;
     }
 
-    public Tarifa(Tarifa tarifa){
+    public Tarifa(Tarifa tarifa) {
 
-        this.precio= tarifa.precio;
+        this.precio = tarifa.precio;
     }
 
-    public float getPrecio(){
+    public float getPrecio() {
 
         return precio;
     }

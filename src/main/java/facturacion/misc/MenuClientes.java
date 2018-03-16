@@ -1,13 +1,11 @@
-package misc;
+package facturacion.misc;
 
 public enum MenuClientes {
 
-    // CLIENTES
-    DAR_ALTA_EMPRESA("Dar de alta una empresa"),
-    DAR_ALTA_PARTICULAR("Dar de alta un particular"),
+    VOLVER("Volver"),
 
-    // OTROS
-    SALIR("Salir");
+    DAR_ALTA_EMPRESA("Dar de alta una nueva empresa"),
+    DAR_ALTA_PARTICULAR("Dar de alta un nuevo particular");
 
     private String descripcion;
 
@@ -25,6 +23,7 @@ public enum MenuClientes {
 
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
+        menu.append(Mensaje.MENU_CLIENTES);
         for(MenuClientes opcion : MenuClientes.values())
             menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
 

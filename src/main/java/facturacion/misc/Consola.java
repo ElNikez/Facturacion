@@ -1,4 +1,4 @@
-package misc;
+package facturacion.misc;
 
 import java.util.Scanner;
 
@@ -11,11 +11,17 @@ public class Consola {
     }
 
     public void mostrarDatos(Object dato) {
-        System.out.println(dato);
+        System.out.print(dato);
     }
 
     public String pedirDatos() {
         return scanner.nextLine();
+    }
+
+    public String pedirDatos(Mensaje mensaje) {
+        mostrarDatos(mensaje.mostrarMensaje());
+
+        return scanner.next();
     }
 
 }

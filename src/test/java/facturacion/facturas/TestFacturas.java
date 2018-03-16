@@ -1,9 +1,9 @@
-package facturas;
+package facturacion.facturas;
 
-import clientes.Cliente;
-import clientes.Direccion;
+import facturacion.clientes.Cliente;
+import facturacion.clientes.Direccion;
 import es.uji.belfern.generador.GeneradorDatosINE;
-import gestion.Gestion;
+import facturacion.gestion.Gestion;
 import org.junit.jupiter.api.*;
 
 import java.util.Calendar;
@@ -66,7 +66,7 @@ public class TestFacturas {
         assertEquals(factura, facturaTest);
     }
 
-    @DisplayName("Listar facturas")
+    @DisplayName("Listar facturacion.facturas")
     @Test
     public void testListarFacturasDeCliente() {
         assertNull(gestion.listarFacturas(cliente.getNif()));

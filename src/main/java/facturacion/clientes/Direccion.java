@@ -1,4 +1,4 @@
-package clientes;
+package facturacion.clientes;
 
 public class Direccion {
 
@@ -22,4 +22,7 @@ public class Direccion {
         this.provincia = direccion.provincia;
     }
 
+    public String toString() {
+        return codigoPostal + " " + poblacion + ", " + provincia;
+    }
 }
