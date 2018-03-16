@@ -1,6 +1,7 @@
-package facturacion.gestion;
+package facturacion.misc;
 
 import facturacion.facturas.Llamada;
+import facturacion.gestion.Gestion;
 import facturacion.misc.Consola;
 import facturacion.misc.GestionEntreFechas;
 import facturacion.misc.Mensaje;

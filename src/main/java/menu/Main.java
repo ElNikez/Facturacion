@@ -3,7 +3,7 @@ package menu;
 import facturacion.gestion.Gestion;
 import facturacion.misc.GestionClientes;
 import facturacion.misc.GestionFacturas;
-import facturacion.gestion.GestionLlamadas;
+import facturacion.misc.GestionLlamadas;
 import facturacion.misc.Consola;
 import facturacion.misc.Mensaje;
 import facturacion.misc.MenuClientes;
