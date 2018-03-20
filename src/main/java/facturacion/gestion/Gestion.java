@@ -12,10 +12,10 @@ import java.util.*;
 
 public class Gestion {
 
-    private static Map<String, Cliente> listaClientes;
-    private static Map<String, HashSet<Llamada>> listaLlamadas;
-    private static Map<String, HashSet<Factura>> listafacturasCliente;
-    private static Map<Integer, Factura> listaFacturasCodigo;
+    private Map<String, Cliente> listaClientes;
+    private Map<String, HashSet<Llamada>> listaLlamadas;
+    private Map<String, HashSet<Factura>> listafacturasCliente;
+    private Map<Integer, Factura> listaFacturasCodigo;
 
     public Gestion() {
         listaClientes = new HashMap<>();
@@ -24,7 +24,11 @@ public class Gestion {
         listaFacturasCodigo = new HashMap<>();
     }
 
-    public static boolean darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
+
+    // GESTIÓN DE CLIENTES
+
+    public boolean darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
+
         String nif = cliente.getNif();
 
         if (listaClientes.containsKey(nif)) {
@@ -35,9 +39,7 @@ public class Gestion {
         return true;
     }
 
-    // GESTIÓN DE CLIENTES
-
-    public static boolean darDeBajaCliente(String nif) {
+    public boolean darDeBajaCliente(String nif) {
         if (listaClientes.containsKey(nif)) {
             listaClientes.remove(nif);
 
@@ -47,7 +49,7 @@ public class Gestion {
         return false;
     }
 
-    public static boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) {
+    public boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) {
         if (listaClientes.containsKey(nif)) {
             listaClientes.get(nif).setTarifa(nuevaTarifa);
 
@@ -57,20 +59,20 @@ public class Gestion {
         return false;
     }
 
-    public static Cliente mostrarCliente(String nif) throws ClienteNoEncontrado {
-        if (!listaClientes.containsKey(nif)){
-            throw new ClienteNoEncontrado();
-        }
-        return listaClientes.get(nif);
 
+    public Cliente mostrarCliente(String nif) throws ClienteNoEncontrado {
+            if (!listaClientes.containsKey(nif)){
+                throw new ClienteNoEncontrado();
+            }
+            return listaClientes.get(nif);
 
     }
 
-    public static Collection<Cliente> listarClientes() {
+    public Collection<Cliente> listarClientes() {
         return listaClientes.values();
     }
 
-    public static boolean darDeAltaLlamada(String nif, Llamada llamada) {
+    public boolean darDeAltaLlamada(String nif, Llamada llamada) {
         if (!listaLlamadas.containsKey(nif))
             listaLlamadas.put(nif, new HashSet<>());
 
@@ -81,14 +83,15 @@ public class Gestion {
 
     // GESTIÓN DE LLAMADAS
 
-    public static HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoLlamadas {
+
+    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoLlamadas {
         if (!listaLlamadas.containsKey(nif))
             throw new ClienteNoLlamadas();
         return listaLlamadas.get(nif);
 
     }
 
-    public static Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
+    public Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
         Tarifa tarifaAplicada = listaClientes.get(nif).getTarifa();
         HashSet<Llamada> llamadasCliente = listaLlamadas.get(nif);
 
@@ -113,25 +116,27 @@ public class Gestion {
 
     // GESTIÓN DE FACTURAS
 
-    public static Factura mostrarFactura(int codigo) throws FacturaNoEncontrada {
-        if (!listaFacturasCodigo.containsKey(codigo))
-            throw new FacturaNoEncontrada();
-        return listaFacturasCodigo.get(codigo);
 
+    public Factura mostrarFactura(int codigo) throws FacturaNoEncontrada {
+            if (!listaFacturasCodigo.containsKey(codigo))
+                throw new FacturaNoEncontrada();
+            return listaFacturasCodigo.get(codigo);
 
     }
 
-    public static HashSet<Factura> listarFacturas(String nif) throws ClienteNoFacturas {
+
+    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoFacturas {
         if (!listafacturasCliente.containsKey(nif))
             throw new ClienteNoFacturas();
         return listafacturasCliente.get(nif);
 
-
     }
 
-    public static int cantidadFacturas() {
+    public int cantidadFacturas() {
         return listaFacturasCodigo.size();
     }
+
+    // OTROS
 
     public void cargarDatos() {
         try {
