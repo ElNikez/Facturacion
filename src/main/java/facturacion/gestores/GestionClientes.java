@@ -1,4 +1,4 @@
-package facturacion.misc;
+package facturacion.gestores;
 
 import facturacion.clientes.Cliente;
 import facturacion.clientes.Direccion;
@@ -7,6 +7,8 @@ import facturacion.clientes.Particular;
 import facturacion.facturas.Tarifa;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
+import facturacion.misc.Consola;
+import facturacion.misc.Mensaje;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -98,7 +100,7 @@ public class GestionClientes {
         if(Gestion.listarClientes() != null) {
             consola.mostrarDatos(Mensaje.LISTA_CLIENTES);
             for (Cliente cliente : Gestion.listarClientes())
-                consola.mostrarDatos("  " + cliente);
+                consola.mostrarDatos(cliente);
         }
         else
             consola.mostrarDatos(Mensaje.CLIENTES_VACIO);

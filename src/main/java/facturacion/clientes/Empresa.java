@@ -2,9 +2,10 @@ package facturacion.clientes;
 
 import facturacion.facturas.Tarifa;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Empresa extends Cliente {
+public class Empresa extends Cliente implements Serializable {
 
     public Empresa() {
         super();
@@ -20,14 +21,14 @@ public class Empresa extends Cliente {
 
     @Override
     public String toString() {
-        return "Empresa{" + "\n" +
+        return "Empresa {" + "\n" +
                 "   nif=" + getNif() + "\n" +
                 "   nombre=" + getNombre() + "\n" +
                 "   correoElectronico=" + getCorreo() + "\n" +
                 "   direccion=" + getDireccion() + "\n" +
                 "   fechaDeAlta=" + getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (getFecha().get(Calendar.MONTH) + 1) + "/" + getFecha().get(Calendar.YEAR) + "\n" +
                 "   tarifa=" + getTarifa().getPrecio() + "e/min" + "\n" +
-                "   }" + "\n";
+                "}" + "\n";
     }
 
 }

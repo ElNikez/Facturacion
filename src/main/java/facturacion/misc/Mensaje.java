@@ -17,8 +17,9 @@ public enum Mensaje {
     INTRODUCE_PROVINCIA("Introduce la provincia: "),
     INTRODUCE_TARIFA("Introduce la tarifa (en euros): "),
     INTRODUCE_TELEFONO("Introduce el número de teléfono: "),
-    INTRODUCE_DURACION("Introduce la duración (en ms): "),
+    INTRODUCE_DURACION("Introduce la duración (en segundos): "),
     INTRODUCE_CODIGO("Introduce el código de la factura: "),
+    INTRODUCE_FECHA("Introduce una fecha de facturación (dd/mm/aaaa): "),
     INTRODUCE_FECHA_INICIO("Introduce una fecha de inicio (dd/mm/aaaa): "),
     INTRODUCE_FECHA_FINAL("Introduce una fecha de fin (dd/mm/aaaa): "),
 

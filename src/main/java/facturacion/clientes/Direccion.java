@@ -1,6 +1,8 @@
 package facturacion.clientes;
 
-public class Direccion {
+import java.io.Serializable;
+
+public class Direccion implements Serializable {
 
     private int codigoPostal;
     private String poblacion;
