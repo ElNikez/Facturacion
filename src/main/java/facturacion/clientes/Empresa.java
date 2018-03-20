@@ -5,7 +5,7 @@ import facturacion.facturas.Tarifa;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class Empresa extends Cliente implements Serializable {
+public class Empresa extends Cliente{
 
     public Empresa() {
         super();

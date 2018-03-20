@@ -3,9 +3,10 @@ package facturacion.clientes;
 import facturacion.facturas.Tarifa;
 import facturacion.interfaces.Fecha;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Cliente implements Fecha {
+public class Cliente implements Fecha,Serializable {
 
     private String nif;
     private String nombre;
