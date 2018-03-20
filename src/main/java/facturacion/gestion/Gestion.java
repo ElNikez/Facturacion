@@ -1,6 +1,7 @@
 package facturacion.gestion;
 
 import facturacion.clientes.Cliente;
+import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.facturas.Factura;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
@@ -55,11 +56,13 @@ public  class Gestion{
         return false;
     }
 
-    public static Cliente mostrarCliente(String nif) {
-        if (listaClientes.containsKey(nif))
-            return listaClientes.get(nif);
+    public static Cliente mostrarCliente(String nif) throws ClienteNoEncontrado {
+        if (!listaClientes.containsKey(nif)){
+            throw new ClienteNoEncontrado();
+        }
+        return listaClientes.get(nif);
 
-        return null;
+
     }
 
     public static Collection<Cliente> listarClientes() {
