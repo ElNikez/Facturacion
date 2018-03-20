@@ -1,6 +1,8 @@
 package facturacion.facturas;
 
-public class Tarifa {
+import java.io.Serializable;
+
+public class Tarifa implements Serializable {
 
     private float precio;
 
@@ -25,6 +27,6 @@ public class Tarifa {
 
     @Override
     public String toString() {
-        return "Tarifa{" + "precio=" + precio + '}';
+        return "Tarifa {" + "precio=" + precio + "}";
     }
 }

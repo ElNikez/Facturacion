@@ -2,10 +2,11 @@ package facturacion.facturas;
 
 import facturacion.interfaces.Fecha;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-public class Factura implements Fecha {
+public class Factura implements Fecha, Serializable {
 
     private int codigoFactura;
     private Tarifa tarifaAplicada;
@@ -62,11 +63,11 @@ public class Factura implements Fecha {
 
     @Override
     public String toString() {
-        return "Factura{" +
-                "codigoFactura=" + codigoFactura +
-                ", tarifaAplicada=" + tarifaAplicada +
-                ", fechaDeEmision=" + fechaDeEmision.get(Calendar.DAY_OF_MONTH) + "/" + fechaDeEmision.get(Calendar.MONTH) + "/" + fechaDeEmision.get(Calendar.YEAR) +
-                ", importeTotal=" + importeTotal +
+        return "Factura {" +
+                "   codigoFactura=" + codigoFactura + "\n" +
+                "   tarifaAplicada=" + tarifaAplicada + "\n" +
+                "   fechaDeEmision=" + fechaDeEmision.get(Calendar.DAY_OF_MONTH) + "/" + (fechaDeEmision.get(Calendar.MONTH) + 1) + "/" + fechaDeEmision.get(Calendar.YEAR) + "\n" +
+                "   importeTotal=" + importeTotal + "\n" +
                 "}" + "\n";
     }
 }

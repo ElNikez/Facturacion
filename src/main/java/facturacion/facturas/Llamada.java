@@ -2,9 +2,10 @@ package facturacion.facturas;
 
 import facturacion.interfaces.Fecha;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Llamada implements Fecha {
+public class Llamada implements Fecha, Serializable {
 
     private int numeroDeTelefono;
     private Calendar fechaDeLlamada;
@@ -40,10 +41,10 @@ public class Llamada implements Fecha {
 
     @Override
     public String toString() {
-        return "Llamada{" +
-                "numeroDeTelefono=" + numeroDeTelefono +
-                ", fechaDeLlamada=" + fechaDeLlamada.get(Calendar.DAY_OF_MONTH) + "/" + fechaDeLlamada.get(Calendar.MONTH) + "/" + fechaDeLlamada.get(Calendar.YEAR) +
-                ", duracionDeLlamada=" + duracionDeLlamada + " ms" +
+        return "Llamada {" + "\n" +
+                "   numeroDeTelefono=" + numeroDeTelefono + "\n" +
+                "   fechaDeLlamada=" + fechaDeLlamada.get(Calendar.DAY_OF_MONTH) + "/" + (fechaDeLlamada.get(Calendar.MONTH) + 1) + "/" + fechaDeLlamada.get(Calendar.YEAR) + "\n" +
+                "   duracionDeLlamada=" + duracionDeLlamada + " s" + "\n" +
                 "}" + "\n";
     }
 }
