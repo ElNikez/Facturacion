@@ -1,7 +1,7 @@
 package facturacion.gestion;
 
 import facturacion.clientes.Cliente;
-import facturacion.excepciones.ClienteNoEncontrado;
+import facturacion.excepciones.*;
 import facturacion.facturas.Factura;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
@@ -24,16 +24,15 @@ public class Gestion {
         listaFacturasCodigo = new HashMap<>();
     }
 
-    public static boolean darDeAltaCliente(Cliente cliente) {
+    public static boolean darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
         String nif = cliente.getNif();
 
-        if (!listaClientes.containsKey(nif)) {
-            listaClientes.put(nif, cliente);
-
-            return true;
+        if (listaClientes.containsKey(nif)) {
+            throw new ClienteYaExiste();
         }
+        listaClientes.put(nif, cliente);
 
-        return false;
+        return true;
     }
 
     // GESTIÓN DE CLIENTES
@@ -82,11 +81,11 @@ public class Gestion {
 
     // GESTIÓN DE LLAMADAS
 
-    public static HashSet<Llamada> listarLlamadas(String nif) {
-        if (listaLlamadas.containsKey(nif))
-            return listaLlamadas.get(nif);
+    public static HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoLlamadas {
+        if (!listaLlamadas.containsKey(nif))
+            throw new ClienteNoLlamadas();
+        return listaLlamadas.get(nif);
 
-        return null;
     }
 
     public static Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
@@ -114,18 +113,20 @@ public class Gestion {
 
     // GESTIÓN DE FACTURAS
 
-    public static Factura mostrarFactura(int codigo) {
-        if (listaFacturasCodigo.containsKey(codigo))
-            return listaFacturasCodigo.get(codigo);
+    public static Factura mostrarFactura(int codigo) throws FacturaNoEncontrada {
+        if (!listaFacturasCodigo.containsKey(codigo))
+            throw new FacturaNoEncontrada();
+        return listaFacturasCodigo.get(codigo);
 
-        return null;
+
     }
 
-    public static HashSet<Factura> listarFacturas(String nif) {
-        if (listafacturasCliente.containsKey(nif))
-            return listafacturasCliente.get(nif);
+    public static HashSet<Factura> listarFacturas(String nif) throws ClienteNoFacturas {
+        if (!listafacturasCliente.containsKey(nif))
+            throw new ClienteNoFacturas();
+        return listafacturasCliente.get(nif);
 
-        return null;
+
     }
 
     public static int cantidadFacturas() {
