@@ -21,7 +21,7 @@ public class Consola {
     public String pedirDatos(Mensaje mensaje) {
         mostrarDatos(mensaje.mostrarMensaje());
 
-        return scanner.next();
+        return scanner.nextLine();
     }
 
 }

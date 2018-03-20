@@ -13,6 +13,11 @@ import java.util.GregorianCalendar;
 public class GestionLlamadas {
 
     private Consola consola = new Consola();
+    private Gestion gestion;
+
+    public GestionLlamadas(Gestion gestion) {
+        this.gestion = gestion;
+    }
 
     public void darDeAltaLlamada() {
         consola.mostrarDatos(Mensaje.INTRODUCE_NIF);
@@ -22,10 +27,7 @@ public class GestionLlamadas {
         consola.mostrarDatos(Mensaje.INTRODUCE_DURACION);
         int duracionDeLlamada = Integer.parseInt(consola.pedirDatos());
 
-        if(Gestion.darDeAltaLlamada(nif, new Llamada(numeroDeTelefono, duracionDeLlamada)))
-            consola.mostrarDatos(Mensaje.LLAMADA_CREADA);
-        else
-            consola.mostrarDatos(Mensaje.CLIENTE_NO_EXISTE);
+        gestion.darDeAltaLlamada(nif, new Llamada(numeroDeTelefono, duracionDeLlamada));
     }
 
     public void listarLlamadas() {
@@ -33,7 +35,7 @@ public class GestionLlamadas {
         String nif = consola.pedirDatos();
 
         consola.mostrarDatos(Mensaje.LISTA_LLAMADAS);
-        for (Llamada llamada : Gestion.listarLlamadas(nif))
+        for (Llamada llamada : gestion.listarLlamadas(nif))
             consola.mostrarDatos(llamada);
     }
 
@@ -50,7 +52,7 @@ public class GestionLlamadas {
         Calendar fechaInicio = new GregorianCalendar(Integer.parseInt(vectorInicio[2]), Integer.parseInt(vectorInicio[1]) - 1, Integer.parseInt(vectorInicio[0]));
         Calendar fechaFinal = new GregorianCalendar(Integer.parseInt(vectorFinal[2] + 1), Integer.parseInt(vectorFinal[1]) - 1, Integer.parseInt(vectorFinal[0]));
 
-        Collection<Llamada> listaLlamadas = new GestionEntreFechas<Llamada>().muestraColeccionEntreFechas(Gestion.listarLlamadas(nif), fechaInicio, fechaFinal);
+        Collection<Llamada> listaLlamadas = new GestionEntreFechas<Llamada>().muestraColeccionEntreFechas(gestion.listarLlamadas(nif), fechaInicio, fechaFinal);
         for(Llamada llamada : listaLlamadas)
             consola.mostrarDatos(llamada);
     }

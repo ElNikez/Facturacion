@@ -13,6 +13,11 @@ import java.util.GregorianCalendar;
 public class GestionFacturas {
 
     private Consola consola = new Consola();
+    private Gestion gestion;
+
+    public GestionFacturas(Gestion gestion) {
+        this.gestion = gestion;
+    }
 
     public void emitirFactura() {
         consola.mostrarDatos(Mensaje.INTRODUCE_NIF);
@@ -24,17 +29,14 @@ public class GestionFacturas {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = new GregorianCalendar(Integer.parseInt(vectorFacturacion[2]), Integer.parseInt(vectorFacturacion[1]) - 1, Integer.parseInt(vectorFacturacion[0]));
 
-        if(Gestion.emitirFactura(nif, fechaFacturacion, fechaEmision) != null)
-            consola.mostrarDatos(Mensaje.FACTURA_EMITIDA);
-        else
-            consola.mostrarDatos(Mensaje.CLIENTE_NO_EXISTE);
+        gestion.emitirFactura(nif, fechaFacturacion, fechaEmision);
     }
 
     public void mostrarFactura() {
         consola.mostrarDatos(Mensaje.INTRODUCE_CODIGO);
         int codigo = Integer.parseInt(consola.pedirDatos());
 
-        consola.mostrarDatos(Gestion.mostrarFactura(codigo));
+        consola.mostrarDatos(gestion.mostrarFactura(codigo));
     }
 
     public void listarFacturas() {
@@ -42,7 +44,7 @@ public class GestionFacturas {
         String nif = consola.pedirDatos();
 
         consola.mostrarDatos(Mensaje.LISTA_FACTURAS);
-        for (Factura factura : Gestion.listarFacturas(nif))
+        for (Factura factura : gestion.listarFacturas(nif))
             consola.mostrarDatos(factura);
     }
 
@@ -60,7 +62,7 @@ public class GestionFacturas {
         Calendar fechaInicio = new GregorianCalendar(Integer.parseInt(vectorInicio[2]), Integer.parseInt(vectorInicio[1]) - 1, Integer.parseInt(vectorInicio[0]));
         Calendar fechaFinal = new GregorianCalendar(Integer.parseInt(vectorFinal[2] + 1), Integer.parseInt(vectorFinal[1]) - 1, Integer.parseInt(vectorFinal[0]));
 
-        Collection<Factura> listaFacturas = new GestionEntreFechas<Factura>().muestraColeccionEntreFechas(Gestion.listarFacturas(nif), fechaInicio, fechaFinal);
+        Collection<Factura> listaFacturas = new GestionEntreFechas<Factura>().muestraColeccionEntreFechas(gestion.listarFacturas(nif), fechaInicio, fechaFinal);
         consola.mostrarDatos(Mensaje.LISTA_FACTURAS);
         for (Factura llamada : listaFacturas)
             consola.mostrarDatos(llamada);

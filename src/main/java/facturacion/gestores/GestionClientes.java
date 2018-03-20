@@ -17,6 +17,11 @@ import java.util.GregorianCalendar;
 public class GestionClientes {
 
     private Consola consola = new Consola();
+    private Gestion gestion;
+
+    public GestionClientes(Gestion gestion) {
+        this.gestion = gestion;
+    }
 
     public void darDeAltaCliente(boolean particular) {
         String nif = consola.pedirDatos(Mensaje.INTRODUCE_NIF);
@@ -55,20 +60,14 @@ public class GestionClientes {
         else
             cliente = new Empresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
 
-        if(Gestion.darDeAltaCliente(cliente))
-            consola.mostrarDatos(Mensaje.CLIENTE_DAR_DE_ALTA);
-        else
-            consola.mostrarDatos(Mensaje.CLIENTE_YA_EXISTE);
+        gestion.darDeAltaCliente(cliente);
     }
 
     public void darDeBajaCliente() {
         String nif = consola.pedirDatos(Mensaje.INTRODUCE_NIF);
 //        consola.mostrarDatos(mensaje.INTRODUCE_NIF);
 
-        if(Gestion.darDeBajaCliente(nif))
-            consola.mostrarDatos(Mensaje.CLIENTE_DAR_DE_BAJA);
-        else
-            consola.mostrarDatos(Mensaje.CLIENTE_NO_EXISTE);
+        gestion.darDeBajaCliente(nif);
     }
 
     public void cambiarTarifa() {
@@ -79,10 +78,7 @@ public class GestionClientes {
 //        consola.mostrarDatos(mensaje.INTRODUCE_TARIFA);
 //        float tarifa = Float.parseFloat(consola.pedirDatos());
 
-        if(Gestion.cambiarTarifa(nif, new Tarifa(tarifa)))
-            consola.mostrarDatos(Mensaje.CLIENTE_CAMBIAR_TARIFA);
-        else
-            consola.mostrarDatos(Mensaje.CLIENTE_NO_EXISTE);
+        gestion.cambiarTarifa(nif, new Tarifa(tarifa));
     }
 
     public void mostrarCliente() {
@@ -90,20 +86,13 @@ public class GestionClientes {
 //        consola.mostrarDatos(mensaje.INTRODUCE_NIF);
 //        String nif = consola.pedirDatos();
 
-        if(Gestion.mostrarCliente(nif) != null)
-            consola.mostrarDatos(Gestion.mostrarCliente(nif));
-        else
-            consola.mostrarDatos(Mensaje.CLIENTE_NO_EXISTE);
+        gestion.mostrarCliente(nif);
     }
 
     public void listarClientes() {
-        if(Gestion.listarClientes() != null) {
-            consola.mostrarDatos(Mensaje.LISTA_CLIENTES);
-            for (Cliente cliente : Gestion.listarClientes())
-                consola.mostrarDatos(cliente);
-        }
-        else
-            consola.mostrarDatos(Mensaje.CLIENTES_VACIO);
+        consola.mostrarDatos(Mensaje.LISTA_CLIENTES);
+        for (Cliente cliente : gestion.listarClientes())
+            consola.mostrarDatos(cliente);
     }
 
     public void listarClientesEntreFechas() {
@@ -117,7 +106,7 @@ public class GestionClientes {
         Calendar fechaInicio = new GregorianCalendar(Integer.parseInt(vectorInicio[2]), Integer.parseInt(vectorInicio[1]) - 1, Integer.parseInt(vectorInicio[0]));
         Calendar fechaFinal = new GregorianCalendar(Integer.parseInt(vectorFinal[2] + 1), Integer.parseInt(vectorFinal[1]) - 1, Integer.parseInt(vectorFinal[0]));
 
-        Collection<Cliente> listaClientes = new GestionEntreFechas<Cliente>().muestraColeccionEntreFechas(Gestion.listarClientes(), fechaInicio, fechaFinal);
+        Collection<Cliente> listaClientes = new GestionEntreFechas<Cliente>().muestraColeccionEntreFechas(gestion.listarClientes(), fechaInicio, fechaFinal);
         consola.mostrarDatos(Mensaje.LISTA_CLIENTES);
         for(Cliente cliente : listaClientes)
             consola.mostrarDatos("  " + cliente);
