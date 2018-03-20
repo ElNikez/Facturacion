@@ -5,6 +5,7 @@ import facturacion.excepciones.*;
 import facturacion.facturas.Factura;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
+import org.junit.jupiter.api.function.Executable;
 
 import java.io.*;
 import java.util.*;
@@ -27,7 +28,7 @@ public class Gestion {
 
     // GESTIÓN DE CLIENTES
 
-    public boolean darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
+    public Executable darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
 
         String nif = cliente.getNif();
 

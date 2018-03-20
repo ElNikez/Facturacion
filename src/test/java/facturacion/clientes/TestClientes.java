@@ -1,6 +1,7 @@
 package facturacion.clientes;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
+import facturacion.excepciones.ClienteYaExiste;
 import facturacion.facturas.Tarifa;
 import facturacion.gestion.Gestion;
 import org.junit.jupiter.api.*;
@@ -10,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Test facturacion.clientes")
 public class TestClientes {
 
-    private static Gestion gestion;
-    private static GeneradorDatosINE generador;
-    private static Cliente empresa;
-    private static Cliente particular;
-    private static Cliente hombre;
-    private static Cliente mujer;
+    private Gestion gestion;
+    private  GeneradorDatosINE generador;
+    private  Cliente empresa;
+    private  Cliente particular;
+    private  Cliente hombre;
+    private  Cliente mujer;
 
     @BeforeAll
-    public static void init() {
+    public  void init() {
         generador = new GeneradorDatosINE();
         empresa = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(10));
         particular = new Particular(generador.getNIF(), generador.getNombre(), generador.getApellido(), "particular@gmail.com", new Direccion(54321, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(5));
@@ -27,7 +28,7 @@ public class TestClientes {
     }
 
     @AfterAll
-    public static void finish() {
+    public  void finish() {
         generador = null;
         empresa = null;
         particular = null;
@@ -58,7 +59,8 @@ public class TestClientes {
 
     @DisplayName("Dar de baja")
     @Test
-    public void testDarDeBaja() {
+    public void testDarDeBaja() throws ClienteYaExiste {
+
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -74,7 +76,7 @@ public class TestClientes {
 
     @DisplayName("Cambiar la tarifa")
     @Test
-    public void testCambiarTarifa() {
+    public void testCambiarTarifa() throws ClienteYaExiste {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -90,7 +92,7 @@ public class TestClientes {
 
     @DisplayName("Mostrar un cliente")
     @Test
-    public void testMostrarCliente() {
+    public void testMostrarCliente() throws ClienteYaExiste {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -106,7 +108,7 @@ public class TestClientes {
 
     @DisplayName("Mostrar los facturacion.clientes")
     @Test
-    public void testListarClientes() {
+    public void testListarClientes() throws ClienteYaExiste {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -115,4 +117,10 @@ public class TestClientes {
         assertNotNull(gestion.listarClientes());
     }
 
+    @DisplayName("Excepciones")
+    @Test
+    public void testExcepciones() throws ClienteYaExiste {
+        gestion.darDeAltaCliente(hombre);
+        assertThrows( ClienteYaExiste.class,gestion.darDeAltaCliente(hombre));
+    }
 }
