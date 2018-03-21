@@ -5,6 +5,7 @@ import facturacion.excepciones.*;
 import facturacion.facturas.Factura;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
+import org.junit.jupiter.api.function.Executable;
 
 import java.io.*;
 import java.util.*;
@@ -26,6 +27,7 @@ public class Gestion {
     // GESTIÓN DE CLIENTES
 
     public Cliente darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
+
         String nif = cliente.getNif();
 
         if(listaClientes.containsKey(nif))
@@ -74,7 +76,9 @@ public class Gestion {
 
     // GESTIÓN DE LLAMADAS
 
-    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoEncontrado, ClienteNoLlamadas {
+    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoEncontrado, ClienteNoLlamadas , ListaLlamadasVacia {
+        if(listaLlamadas.isEmpty())
+            throw new ListaLlamadasVacia();
         if(!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
@@ -118,7 +122,9 @@ public class Gestion {
         return listaFacturasCodigo.get(codigo);
     }
 
-    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoEncontrado, ClienteNoFacturas {
+    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoEncontrado, ClienteNoFacturas, ListaLlamadasVacia {
+        if(listafacturasCliente.isEmpty())
+            throw new ListaLlamadasVacia();
         if(!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 

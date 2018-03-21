@@ -1,7 +1,6 @@
 package facturacion.clientes;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
-import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
 import facturacion.facturas.Tarifa;
@@ -11,7 +10,9 @@ import org.junit.jupiter.api.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Test clientes")
 public class TestClientes {
@@ -24,7 +25,7 @@ public class TestClientes {
     private static Cliente mujer;
 
     @BeforeAll
-    public static void init() {
+    public  void init() {
         generador = new GeneradorDatosINE();
         empresa = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(10));
         particular = new Particular(generador.getNIF(), generador.getNombre(), generador.getApellido(), "particular@gmail.com", new Direccion(54321, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(5));
@@ -33,7 +34,7 @@ public class TestClientes {
     }
 
     @AfterAll
-    public static void finish() {
+    public  void finish() {
         generador = null;
         empresa = null;
         particular = null;
@@ -93,6 +94,7 @@ public class TestClientes {
         } catch (ClienteYaExiste clienteYaExiste) {
             clienteYaExiste.getMessage();
         }
+
         Tarifa tarifa5 = new Tarifa(5);
         Tarifa tarifa10 = new Tarifa(10);
 
@@ -164,5 +166,6 @@ public class TestClientes {
                 })
         );
     }
+
 
 }
