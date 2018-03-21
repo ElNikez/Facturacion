@@ -29,4 +29,5 @@ public class Tarifa implements Serializable {
     public String toString() {
         return "Tarifa {" + "precio=" + precio + "}";
     }
+
 }

@@ -1,10 +1,11 @@
 package facturacion.excepciones;
 
-import facturacion.misc.Mensaje;
+import static facturacion.misc.Mensaje.CLIENTE_NO_FACTURAS;
 
 public class ClienteNoFacturas extends Exception {
 
-        public ClienteNoFacturas() {
-            super(Mensaje.CLIENTE_NO_FACTURAS.mostrarMensaje());
-        }
+    public ClienteNoFacturas() {
+        super(CLIENTE_NO_FACTURAS.mostrarMensaje());
+    }
+
 }

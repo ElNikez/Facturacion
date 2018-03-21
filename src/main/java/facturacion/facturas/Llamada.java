@@ -47,4 +47,5 @@ public class Llamada implements Fecha, Serializable {
                 "   duracionDeLlamada=" + duracionDeLlamada + " s" + "\n" +
                 "}" + "\n";
     }
+
 }

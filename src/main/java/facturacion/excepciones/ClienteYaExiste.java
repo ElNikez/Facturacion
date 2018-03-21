@@ -1,10 +1,11 @@
 package facturacion.excepciones;
 
-import facturacion.misc.Mensaje;
+import static facturacion.misc.Mensaje.CLIENTE_YA_EXISTE;
 
 public class ClienteYaExiste extends Exception {
 
     public ClienteYaExiste() {
-        super(Mensaje.CLIENTE_YA_EXISTE.mostrarMensaje());
+        super(CLIENTE_YA_EXISTE.mostrarMensaje());
     }
+
 }
