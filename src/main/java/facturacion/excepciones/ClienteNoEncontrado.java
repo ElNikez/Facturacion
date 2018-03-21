@@ -1,13 +1,11 @@
 package facturacion.excepciones;
 
-import facturacion.misc.Mensaje;
+import static facturacion.misc.Mensaje.CLIENTE_NO_EXISTE;
 
 public class ClienteNoEncontrado extends Exception {
 
     public ClienteNoEncontrado() {
-        super(Mensaje.CLIENTE_NO_EXISTE.mostrarMensaje());
+        super(CLIENTE_NO_EXISTE.mostrarMensaje());
     }
-
-
 
 }

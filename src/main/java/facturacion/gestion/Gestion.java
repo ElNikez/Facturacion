@@ -10,7 +10,6 @@ import org.junit.jupiter.api.function.Executable;
 import java.io.*;
 import java.util.*;
 
-
 public class Gestion {
 
     private Map<String, Cliente> listaClientes;
@@ -25,75 +24,79 @@ public class Gestion {
         listaFacturasCodigo = new HashMap<>();
     }
 
-
     // GESTIÓN DE CLIENTES
 
-    public Executable darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
+    public Cliente darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
 
         String nif = cliente.getNif();
 
-        if (listaClientes.containsKey(nif)) {
+        if(listaClientes.containsKey(nif))
             throw new ClienteYaExiste();
-        }
-        listaClientes.put(nif, cliente);
 
-        return true;
+        return listaClientes.put(nif, cliente);
     }
 
-    public boolean darDeBajaCliente(String nif) {
-        if (listaClientes.containsKey(nif)) {
-            listaClientes.remove(nif);
+    public Cliente darDeBajaCliente(String nif) throws ClienteNoEncontrado {
+        if(!listaClientes.containsKey(nif))
+            throw new ClienteNoEncontrado();
 
-            return true;
-        }
-
-        return false;
+        return listaClientes.remove(nif);
     }
 
-    public boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) {
-        if (listaClientes.containsKey(nif)) {
-            listaClientes.get(nif).setTarifa(nuevaTarifa);
+    public Tarifa cambiarTarifa(String nif, Tarifa nuevaTarifa) throws ClienteNoEncontrado {
+        if(!listaClientes.containsKey(nif))
+            throw new ClienteNoEncontrado();
 
-            return true;
-        }
-
-        return false;
+        return listaClientes.get(nif).setTarifa(nuevaTarifa);
     }
-
 
     public Cliente mostrarCliente(String nif) throws ClienteNoEncontrado {
-        if (!listaClientes.containsKey(nif)) {
+        if(!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
-        }
-        return listaClientes.get(nif);
 
+        return listaClientes.get(nif);
     }
 
-    public Collection<Cliente> listarClientes() {
+    public Collection<Cliente> listarClientes() throws ListaClientesVacio {
+        if(listaClientes.isEmpty())
+            throw new ListaClientesVacio();
+
         return listaClientes.values();
     }
 
-    public boolean darDeAltaLlamada(String nif, Llamada llamada) {
-        if (!listaLlamadas.containsKey(nif)) listaLlamadas.put(nif, new HashSet<>());
+    public boolean darDeAltaLlamada(String nif, Llamada llamada) throws ClienteNoEncontrado {
+        if(!listaClientes.containsKey(nif))
+            throw new ClienteNoEncontrado();
 
-        listaLlamadas.get(nif).add(llamada);
+        if (!listaLlamadas.containsKey(nif))
+            listaLlamadas.put(nif, new HashSet<>());
 
-        return true;
+        return listaLlamadas.get(nif).add(llamada);
     }
 
     // GESTIÓN DE LLAMADAS
 
+    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoEncontrado, ClienteNoLlamadas , ListaLlamadasVacia {
+        if(listaLlamadas.isEmpty())
+            throw new ListaLlamadasVacia();
+        if(!listaClientes.containsKey(nif))
+            throw new ClienteNoEncontrado();
 
-    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoLlamadas {
-        if (!listaLlamadas.containsKey(nif)) throw new ClienteNoLlamadas();
+        if(!listaLlamadas.containsKey(nif))
+            throw new ClienteNoLlamadas();
+
         return listaLlamadas.get(nif);
-
     }
 
-    public Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) {
+    public Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) throws ClienteNoEncontrado, ClienteNoLlamadas {
+        if(!listaClientes.containsKey(nif))
+            throw new ClienteNoEncontrado();
+
+        if(!listaLlamadas.containsKey(nif))
+            throw new ClienteNoLlamadas();
+
         Tarifa tarifaAplicada = listaClientes.get(nif).getTarifa();
         HashSet<Llamada> llamadasCliente = listaLlamadas.get(nif);
-
         int duracionTotal = 0;
 
         for (Llamada llamada : llamadasCliente)
@@ -107,37 +110,35 @@ public class Gestion {
 
         if (listafacturasCliente.get(nif) == null) listafacturasCliente.put(nif, new HashSet<>());
         listafacturasCliente.get(nif).add(facturaCliente);
-        listaFacturasCodigo.put(codigoFactura, facturaCliente);
-
-        return facturaCliente;
+        return listaFacturasCodigo.put(codigoFactura, facturaCliente);
     }
 
     // GESTIÓN DE FACTURAS
 
-
     public Factura mostrarFactura(int codigo) throws FacturaNoEncontrada {
-        if (!listaFacturasCodigo.containsKey(codigo)) throw new FacturaNoEncontrada();
+        if(!listaFacturasCodigo.containsKey(codigo))
+            throw new FacturaNoEncontrada();
+
         return listaFacturasCodigo.get(codigo);
-
     }
 
+    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoEncontrado, ClienteNoFacturas, ListaLlamadasVacia {
+        if(listafacturasCliente.isEmpty())
+            throw new ListaLlamadasVacia();
+        if(!listaClientes.containsKey(nif))
+            throw new ClienteNoEncontrado();
 
-    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoFacturas {
-        if (!listafacturasCliente.containsKey(nif)) throw new ClienteNoFacturas();
+        if(listafacturasCliente.isEmpty())
+            throw new ClienteNoFacturas();
+
         return listafacturasCliente.get(nif);
-
-    }
-
-    public int cantidadFacturas() {
-        return listaFacturasCodigo.size();
     }
 
     // OTROS
 
-    public void cargarDatos() throws IOException {
-
-        ObjectInputStream ois=null;
-        FileInputStream fis=null;
+    public void cargarDatos() {
+        ObjectInputStream ois = null;
+        FileInputStream fis = null;
         try {
             fis = new FileInputStream("clientes.bin");
             ois = new ObjectInputStream(fis);
@@ -159,18 +160,12 @@ public class Gestion {
             e.printStackTrace();
         }
 
-        finally {
-            ois.close();
-            fis.close();
-        }
-
     }
 
-    public void guardarDatos() throws IOException {
+    public void guardarDatos() {
         ObjectOutputStream oos = null;
-        FileOutputStream fos=null;
+        FileOutputStream fos = null;
         try {
-
             fos = new FileOutputStream("clientes.bin");
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaClientes);
@@ -187,10 +182,6 @@ public class Gestion {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            oos.close();
-            fos.close();
         }
     }
 

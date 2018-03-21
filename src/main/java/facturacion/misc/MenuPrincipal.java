@@ -1,5 +1,7 @@
 package facturacion.misc;
 
+import static facturacion.misc.Mensaje.MENU_GESTION;
+
 public enum MenuPrincipal {
 
     SALIR("Salir"),
@@ -39,7 +41,7 @@ public enum MenuPrincipal {
 
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
-        menu.append(Mensaje.MENU_GESTION);
+        menu.append(MENU_GESTION);
         for(MenuPrincipal opcion : MenuPrincipal.values())
             menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
 

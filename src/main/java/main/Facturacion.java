@@ -1,13 +1,15 @@
 package main;
 
 import facturacion.gestion.Gestion;
-import facturacion.gestores.GestionClientes;
-import facturacion.gestores.GestionFacturas;
-import facturacion.gestores.GestionLlamadas;
+import facturacion.gestores.GestorClientes;
+import facturacion.gestores.GestorFacturas;
+import facturacion.gestores.GestorLlamadas;
 import facturacion.misc.Consola;
-import facturacion.misc.Mensaje;
 import facturacion.misc.MenuClientes;
 import facturacion.misc.MenuPrincipal;
+
+import static facturacion.misc.Mensaje.*;
+import static facturacion.misc.MenuPrincipal.SALIR;
 
 public class Facturacion {
 
@@ -20,79 +22,79 @@ public class Facturacion {
 
     private void start() {
         load();
+
         MenuPrincipal opcionMenu;
-        while(true) {
+        do {
             consola.mostrarDatos(MenuPrincipal.mostrarMenu());
-            consola.mostrarDatos(Mensaje.INTRODUCE_OPCION);
-            byte opcion = Byte.parseByte(consola.pedirDatos());
+            byte opcion = Byte.parseByte(consola.pedirDatos(INTRODUCE_OPCION));
             opcionMenu = MenuPrincipal.opcion(opcion);
             switch (opcionMenu) {
+                case SALIR:
+                    save();
+                    break;
                 case DAR_ALTA_CLIENTE:
                     consola.mostrarDatos(MenuClientes.mostrarMenu());
-                    consola.mostrarDatos(Mensaje.INTRODUCE_OPCION);
-                    byte opcionClientes = Byte.parseByte(consola.pedirDatos());
+                    byte opcionClientes = Byte.parseByte(consola.pedirDatos(INTRODUCE_OPCION));
                     MenuClientes opcionMenuClientes = MenuClientes.opcion(opcionClientes);
                     switch (opcionMenuClientes) {
                         case DAR_ALTA_EMPRESA:
-                            new GestionClientes(gestion).darDeAltaCliente(false);
+                            new GestorClientes(gestion).darDeAltaCliente(false);
                             break;
                         case DAR_ALTA_PARTICULAR:
-                            new GestionClientes(gestion).darDeAltaCliente(true);
+                            new GestorClientes(gestion).darDeAltaCliente(true);
                             break;
                         case VOLVER:
                             break;
                     }
                     break;
                 case DAR_BAJA_CLIENTE:
-                    new GestionClientes(gestion).darDeBajaCliente();
+                    new GestorClientes(gestion).darDeBajaCliente();
                     break;
                 case CAMBIAR_TARIFA_CLIENTE:
-                    new GestionClientes(gestion).cambiarTarifa();
+                    new GestorClientes(gestion).cambiarTarifa();
                     break;
                 case MOSTRAR_DATOS_CLIENTE:
-                    new GestionClientes(gestion).mostrarCliente();
+                    new GestorClientes(gestion).mostrarCliente();
                     break;
                 case MOSTRAR_LISTA_CLIENTES:
-                    new GestionClientes(gestion).listarClientes();
+                    new GestorClientes(gestion).listarClientes();
                     break;
                 case MOSTRAR_CLIENTES_FECHAS:
-                    new GestionClientes(gestion).listarClientesEntreFechas();
+                    new GestorClientes(gestion).listarClientesEntreFechas();
                     break;
                 case DAR_ALTA_LLAMADA:
-                    new GestionLlamadas(gestion).darDeAltaLlamada();
+                    new GestorLlamadas(gestion).darDeAltaLlamada();
                     break;
                 case MOSTRAR_LISTA_LLAMADAS:
-                    new GestionLlamadas(gestion).listarLlamadas();
+                    new GestorLlamadas(gestion).listarLlamadas();
                     break;
                 case MOSTRAR_LLAMADAS_FECHAS:
-                    new GestionLlamadas(gestion).listarLlamadasEntreFechas();
+                    new GestorLlamadas(gestion).listarLlamadasEntreFechas();
                     break;
                 case EMITIR_FACTURA:
-                    new GestionFacturas(gestion).emitirFactura();
+                    new GestorFacturas(gestion).emitirFactura();
                     break;
                 case MOSTRAR_FACTURA_CODIGO:
-                    new GestionFacturas(gestion).mostrarFactura();
+                    new GestorFacturas(gestion).mostrarFactura();
                     break;
                 case MOSTRAR_FACTURAS_CLIENTE:
-                    new GestionFacturas(gestion).listarFacturas();
+                    new GestorFacturas(gestion).listarFacturas();
                     break;
                 case MOSTRAR_FACTURAS_FECHAS:
-                    new GestionFacturas(gestion).listarFacturasEntreFechas();
+                    new GestorFacturas(gestion).listarFacturasEntreFechas();
                     break;
-                case SALIR:
-                    save();
-                    consola.mostrarDatos(Mensaje.SALIR);
-                    System.exit(0);
             }
-        }
+        } while (opcionMenu != SALIR);
     }
 
     private void load() {
         gestion.cargarDatos();
+        consola.mostrarDatos(DATOS_CARGADOS);
     }
 
     private void save() {
         gestion.guardarDatos();
+        consola.mostrarDatos(DATOS_GUARDADOS);
     }
 
 }

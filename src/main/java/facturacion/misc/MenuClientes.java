@@ -1,5 +1,7 @@
 package facturacion.misc;
 
+import static facturacion.misc.Mensaje.MENU_CLIENTES;
+
 public enum MenuClientes {
 
     VOLVER("Volver"),
@@ -23,7 +25,7 @@ public enum MenuClientes {
 
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
-        menu.append(Mensaje.MENU_CLIENTES);
+        menu.append(MENU_CLIENTES);
         for(MenuClientes opcion : MenuClientes.values())
             menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
 

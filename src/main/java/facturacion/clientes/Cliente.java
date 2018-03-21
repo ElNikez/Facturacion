@@ -6,7 +6,7 @@ import facturacion.interfaces.Fecha;
 import java.io.Serializable;
 import java.util.Calendar;
 
-public class Cliente implements Fecha,Serializable {
+public class Cliente implements Fecha, Serializable {
 
     private String nif;
     private String nombre;
@@ -57,8 +57,11 @@ public class Cliente implements Fecha,Serializable {
         return tarifa;
     }
 
-    public void setTarifa(Tarifa tarifa) {
+    public Tarifa setTarifa(Tarifa tarifa) {
+        Tarifa viejaTarifa = this.tarifa;
         this.tarifa = tarifa;
+
+        return viejaTarifa;
     }
 
     public Calendar getFecha() {

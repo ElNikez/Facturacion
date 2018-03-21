@@ -14,10 +14,6 @@ public class Consola {
         System.out.print(dato);
     }
 
-    public String pedirDatos() {
-        return scanner.nextLine();
-    }
-
     public String pedirDatos(Mensaje mensaje) {
         mostrarDatos(mensaje.mostrarMensaje());
 

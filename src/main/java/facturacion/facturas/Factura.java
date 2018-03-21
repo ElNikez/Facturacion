@@ -70,4 +70,5 @@ public class Factura implements Fecha, Serializable {
                 "   importeTotal=" + importeTotal + "\n" +
                 "}" + "\n";
     }
+
 }
