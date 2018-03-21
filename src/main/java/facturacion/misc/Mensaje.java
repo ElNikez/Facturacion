@@ -3,8 +3,11 @@ package facturacion.misc;
 public enum Mensaje {
 
     // MENÚ
-    MENU_GESTION("\nMENÚ DE GESTIÓN DE DATOS\n"),
+    MENU_PRINCIPAL("\nMENÚ PRINCIPAL\n"),
     MENU_CLIENTES("\nMENÚ DE GESTIÓN DE CLIENTES\n"),
+    MENU_LLAMADAS("\nMENÚ DE GESTIÓN DE LLAMADAS\n"),
+    MENU_FACTURAS("\nMENU DE GESTIÓN DE FACTURAS\n"),
+    MENU_OPCION_CORRECTA("\nIntroduce una opción correcta"),
 
     // OPERACIONES
     INTRODUCE_OPCION("\nIntroduce una opción: "),
@@ -45,8 +48,10 @@ public enum Mensaje {
     FACTURAS_VACIO("\nLA BASE DE DATOS DE FACTURAS ESTÁ VACÍA\n"),
 
     // MENSAJES DEL SISTEMA
-    DATOS_CARGADOS("\nSERVIDOR ENCENDIDO, DATOS CARGADOS\n"),
-    DATOS_GUARDADOS("\nDATOS GUARDADOS, APAGANDO SERVIDOR\n");
+    CARGANDO_DATOS("\nCARGANDO DATOS\n"),
+    GUARDANDO_DATOS("\nGUARDANDO DATOS\n"),
+    DATOS_CARGADOS("\nDATOS CARGADOS\n"),
+    DATOS_GUARDADOS("\nDATOS GUARDADOS\n");
 
     public String mensaje;
 
