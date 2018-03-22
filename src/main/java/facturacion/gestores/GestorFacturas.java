@@ -34,6 +34,7 @@ public class GestorFacturas {
 
         try {
             gestion.emitirFactura(nif, fechaFacturacion, fechaEmision);
+            consola.mostrarDatos(FACTURA_EMITIDA);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();
         } catch (ClienteNoLlamadas clienteNoLlamadas) {

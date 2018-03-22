@@ -6,7 +6,8 @@ import facturacion.gestores.GestorFacturas;
 import facturacion.gestores.GestorLlamadas;
 import facturacion.misc.*;
 
-import static facturacion.misc.Mensaje.*;
+import static facturacion.misc.Mensaje.INTRODUCE_OPCION;
+import static facturacion.misc.Mensaje.MENU_OPCION_CORRECTA;
 
 public class Facturacion {
 
@@ -25,11 +26,10 @@ public class Facturacion {
 
     private void mostrarMenuPrincipal() {
         String opcionString;
-        int opcionInt;
         do {
             consola.mostrarDatos(MenuPrincipal.mostrarMenu());
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
-            opcionInt = Integer.parseInt(opcionString);
+            int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuPrincipal.values().length)
                 consola.mostrarDatos(MENU_OPCION_CORRECTA);
             else
@@ -37,7 +37,6 @@ public class Facturacion {
         } while (true);
         byte opcionByte = Byte.parseByte(opcionString);
         MenuPrincipal opcionMenu = MenuPrincipal.opcion(opcionByte);
-//        do {
         switch (opcionMenu) {
             case SALIR:
                 break;
@@ -50,20 +49,15 @@ public class Facturacion {
             case MENU_FACTURAS:
                 mostrarMenuFacturas();
                 break;
-            default:
-                mostrarMenuPrincipal();
-                break;
         }
-//        } while (opcionPrincipal != SALIR);
     }
 
     private void mostrarMenuClientes() {
         String opcionString;
-        int opcionInt;
         do {
             consola.mostrarDatos(MenuClientes.mostrarMenu());
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
-            opcionInt = Integer.parseInt(opcionString);
+            int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuClientes.values().length)
                 consola.mostrarDatos(MENU_OPCION_CORRECTA);
             else
@@ -71,7 +65,6 @@ public class Facturacion {
         } while (true);
         byte opcionByte = Byte.parseByte(opcionString);
         MenuClientes opcionMenu = MenuClientes.opcion(opcionByte);
-//        do {
         switch (opcionMenu) {
             case VOLVER:
                 mostrarMenuPrincipal();
@@ -94,20 +87,15 @@ public class Facturacion {
             case MOSTRAR_CLIENTES_FECHAS:
                 new GestorClientes(gestion).listarClientesEntreFechas();
                 break;
-            default:
-                mostrarMenuClientes();
-                break;
         }
-//        } while (opcionClientes != MenuClientes.VOLVER);
     }
 
     private void mostrarMenuAltaClientes() {
         String opcionString;
-        int opcionInt;
         do {
             consola.mostrarDatos(MenuAltaClientes.mostrarMenu());
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
-            opcionInt = Integer.parseInt(opcionString);
+            int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuAltaClientes.values().length)
                 consola.mostrarDatos(MENU_OPCION_CORRECTA);
             else
@@ -115,7 +103,6 @@ public class Facturacion {
         } while (true);
         byte opcionByte = Byte.parseByte(opcionString);
         MenuAltaClientes opcionMenu = MenuAltaClientes.opcion(opcionByte);
-//        do {
         switch (opcionMenu) {
             case VOLVER:
                 mostrarMenuClientes();
@@ -126,20 +113,15 @@ public class Facturacion {
             case DAR_ALTA_PARTICULAR:
                 new GestorClientes(gestion).darDeAltaCliente(true);
                 break;
-            default:
-                mostrarMenuAltaClientes();
-                break;
         }
-//        } while (opcionAltaClientes != MenuAltaClientes.VOLVER);
     }
 
     private void mostrarMenuLlamadas() {
         String opcionString;
-        int opcionInt;
         do {
             consola.mostrarDatos(MenuLlamadas.mostrarMenu());
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
-            opcionInt = Integer.parseInt(opcionString);
+            int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuLlamadas.values().length)
                 consola.mostrarDatos(MENU_OPCION_CORRECTA);
             else
@@ -147,7 +129,6 @@ public class Facturacion {
         } while (true);
         byte opcionByte = Byte.parseByte(opcionString);
         MenuLlamadas opcionMenu = MenuLlamadas.opcion(opcionByte);
-//        do {
         switch (opcionMenu) {
             case VOLVER:
                 mostrarMenuPrincipal();
@@ -159,22 +140,17 @@ public class Facturacion {
                 new GestorLlamadas(gestion).listarLlamadas();
                 break;
             case MOSTRAR_LLAMADAS_FECHAS:
-                new GestorFacturas(gestion).listarFacturasEntreFechas();
-                break;
-            default:
-                mostrarMenuLlamadas();
+                new GestorLlamadas(gestion).listarLlamadasEntreFechas();
                 break;
         }
-//        } while (opcionLlamadas != MenuLlamadas.VOLVER);
     }
 
     private void mostrarMenuFacturas() {
         String opcionString;
-        int opcionInt;
         do {
             consola.mostrarDatos(MenuFacturas.mostrarMenu());
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
-            opcionInt = Integer.parseInt(opcionString);
+            int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuFacturas.values().length)
                 consola.mostrarDatos(MENU_OPCION_CORRECTA);
             else
@@ -182,7 +158,6 @@ public class Facturacion {
         } while (true);
         byte opcionByte = Byte.parseByte(opcionString);
         MenuFacturas opcionMenu = MenuFacturas.opcion(opcionByte);
-//        do {
         switch (opcionMenu) {
             case VOLVER:
                 mostrarMenuPrincipal();
@@ -199,11 +174,7 @@ public class Facturacion {
             case MOSTRAR_FACTURAS_FECHAS:
                 new GestorFacturas(gestion).listarFacturasEntreFechas();
                 break;
-            default:
-                mostrarMenuFacturas();
-                break;
         }
-//        } while (opcionFacturas != MenuFacturas.VOLVER);
     }
 
 }

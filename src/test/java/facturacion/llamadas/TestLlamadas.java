@@ -10,15 +10,19 @@ import facturacion.excepciones.ClienteYaExiste;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
 import facturacion.gestion.Gestion;
+import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
+
+import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test facturacion.llamadas")
 public class TestLlamadas {
 
-    private static GeneradorDatosINE generador;
     private static Gestion gestion;
+    private static GestionEntreFechas<Llamada> entreFechas;
+    private static GeneradorDatosINE generador;
     private static Cliente cliente;
     private static Llamada llamada1;
     private static Llamada llamada2;
@@ -71,6 +75,21 @@ public class TestLlamadas {
         gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
 
         assertNotNull(gestion.listarLlamadas(cliente.getNif()));
+    }
+
+    @DisplayName("Llamadas entre fechas")
+    @Test
+    public void testListarLlamadasEntreFechas() throws ClienteNoEncontrado, ClienteNoLlamadas {
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
+        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
+
+        entreFechas = new GestionEntreFechas<>();
+        Calendar fechaInicio = Calendar.getInstance();
+        fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
+        Calendar fechaFinal = Calendar.getInstance();
+
+        assertNotNull(entreFechas.muestraColeccionEntreFechas(gestion.listarLlamadas(cliente.getNif()), fechaInicio, fechaFinal));
     }
 
     @DisplayName("Excepciones")

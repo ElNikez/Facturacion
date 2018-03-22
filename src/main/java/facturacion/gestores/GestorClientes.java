@@ -45,6 +45,7 @@ public class GestorClientes {
 
         try {
             gestion.darDeAltaCliente(cliente);
+            consola.mostrarDatos(CLIENTE_DAR_DE_ALTA);
         } catch (ClienteYaExiste clienteYaExiste) {
             clienteYaExiste.getMessage();
         }
@@ -55,6 +56,7 @@ public class GestorClientes {
 
         try {
             gestion.darDeBajaCliente(nif);
+            consola.mostrarDatos(CLIENTE_DAR_DE_BAJA);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();
         }
@@ -66,6 +68,7 @@ public class GestorClientes {
 
         try {
             gestion.cambiarTarifa(nif, new Tarifa(tarifa));
+            consola.mostrarDatos(CLIENTE_CAMBIAR_TARIFA);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();
         }
@@ -75,7 +78,7 @@ public class GestorClientes {
         String nif = consola.pedirDatos(INTRODUCE_NIF);
 
         try {
-            gestion.mostrarCliente(nif);
+            consola.mostrarDatos(gestion.mostrarCliente(nif));
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();
         }
@@ -106,7 +109,7 @@ public class GestorClientes {
             Collection<Cliente> listaClientesEntreFechas = new GestionEntreFechas<Cliente>().muestraColeccionEntreFechas(listaClientes, fechaInicio, fechaFinal);
             consola.mostrarDatos(LISTA_CLIENTES);
             for (Cliente cliente : listaClientesEntreFechas)
-                consola.mostrarDatos("  " + cliente);
+                consola.mostrarDatos(cliente);
         } catch (ListaClientesVacio listaClientesVacio) {
             listaClientesVacio.printStackTrace();
         }

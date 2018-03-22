@@ -6,7 +6,10 @@ import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
 import facturacion.facturas.Tarifa;
 import facturacion.gestion.Gestion;
+import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
+
+import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestClientes {
 
     private static Gestion gestion;
+    private static GestionEntreFechas<Cliente> entreFechas;
     private static GeneradorDatosINE generador;
     private static Cliente empresa;
     private static Cliente particular;
@@ -123,6 +127,22 @@ public class TestClientes {
         gestion.darDeAltaCliente(mujer);
 
         assertNotNull(gestion.listarClientes());
+    }
+
+    @DisplayName("Clientes entre fechas")
+    @Test
+    public void testListarClientesEntreFechas() throws ClienteYaExiste, ListaClientesVacio {
+        gestion.darDeAltaCliente(empresa);
+        gestion.darDeAltaCliente(particular);
+        gestion.darDeAltaCliente(hombre);
+        gestion.darDeAltaCliente(mujer);
+
+        entreFechas = new GestionEntreFechas<>();
+        Calendar fechaInicio = Calendar.getInstance();
+        fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
+        Calendar fechaFinal = Calendar.getInstance();
+
+        assertNotNull(entreFechas.muestraColeccionEntreFechas(gestion.listarClientes(), fechaInicio, fechaFinal));
     }
 
     @DisplayName("Excepciones")

@@ -6,6 +6,7 @@ import facturacion.clientes.Direccion;
 import facturacion.clientes.Empresa;
 import facturacion.excepciones.*;
 import facturacion.gestion.Gestion;
+import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
 
 import java.util.Calendar;
@@ -16,8 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestFacturas {
 
-    private static GeneradorDatosINE generador;
     private static Gestion gestion;
+    private static GestionEntreFechas<Factura> entreFechas;
+    private static GeneradorDatosINE generador;
     private static Cliente cliente;
     private static Llamada llamada1;
     private static Llamada llamada2;
@@ -90,6 +92,23 @@ public class TestFacturas {
         gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
         assertThat(gestion.mostrarFactura(0), is(factura));
+    }
+
+    @DisplayName("Facturas entre fechas")
+    @Test
+    public void testListarLlamadasEntreFechas() throws ClienteNoLlamadas, ClienteNoEncontrado, ClienteNoFacturas {
+        Calendar fechaEmision = Calendar.getInstance();
+        Calendar fechaFacturacion = Calendar.getInstance();
+        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
+
+        gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
+
+        entreFechas = new GestionEntreFechas<>();
+        Calendar fechaInicio = Calendar.getInstance();
+        fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
+        Calendar fechaFinal = Calendar.getInstance();
+
+        assertNotNull(entreFechas.muestraColeccionEntreFechas(gestion.listarFacturas(cliente.getNif()), fechaInicio, fechaFinal));
     }
 
 }

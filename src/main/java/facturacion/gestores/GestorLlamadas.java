@@ -29,6 +29,7 @@ public class GestorLlamadas {
 
         try {
             gestion.darDeAltaLlamada(nif, new Llamada(numeroDeTelefono, duracionDeLlamada));
+            consola.mostrarDatos(LLAMADA_CREADA);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();
         }
