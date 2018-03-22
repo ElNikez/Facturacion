@@ -27,7 +27,9 @@ public class Tarifa implements Serializable {
 
     @Override
     public String toString() {
-        return "Tarifa {" + "precio=" + precio + "}";
+        return "Tarifa {" +
+                "precio=" + precio +
+                "}";
     }
 
 }

@@ -62,7 +62,7 @@ public class GestorLlamadas {
         try {
             Collection<Llamada> listaLlamadas = gestion.listarLlamadas(nif);
             Collection<Llamada> listaLlamadasEntreFechas = new GestionEntreFechas<Llamada>().muestraColeccionEntreFechas(listaLlamadas, fechaInicio, fechaFinal);
-            for(Llamada llamada : listaLlamadasEntreFechas)
+            for (Llamada llamada : listaLlamadasEntreFechas)
                 consola.mostrarDatos(llamada);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();

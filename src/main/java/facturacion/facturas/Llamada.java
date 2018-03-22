@@ -45,7 +45,7 @@ public class Llamada implements Fecha, Serializable {
                 "   numeroDeTelefono=" + numeroDeTelefono + "\n" +
                 "   fechaDeLlamada=" + fechaDeLlamada.get(Calendar.DAY_OF_MONTH) + "/" + (fechaDeLlamada.get(Calendar.MONTH) + 1) + "/" + fechaDeLlamada.get(Calendar.YEAR) + "\n" +
                 "   duracionDeLlamada=" + duracionDeLlamada + " s" + "\n" +
-                "}" + "\n";
+                "}";
     }
 
 }

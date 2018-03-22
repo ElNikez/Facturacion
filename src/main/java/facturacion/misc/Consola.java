@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class Consola {
 
-    private Scanner scanner;
+    private Scanner scanner = new Scanner(System.in);
 
-    public Consola() {
-        scanner = new Scanner(System.in);
-    }
+//    public Consola() {
+//        scanner = new Scanner(System.in);
+//    }
 
     public void mostrarDatos(Object dato) {
         System.out.print(dato);
@@ -17,7 +17,11 @@ public class Consola {
     public String pedirDatos(Mensaje mensaje) {
         mostrarDatos(mensaje.mostrarMensaje());
 
-        return scanner.nextLine();
+        String cadena = "";
+        while(cadena.isEmpty())
+            cadena = scanner.nextLine();
+
+        return cadena;
     }
 
 }

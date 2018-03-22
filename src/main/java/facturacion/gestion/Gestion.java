@@ -5,7 +5,6 @@ import facturacion.excepciones.*;
 import facturacion.facturas.Factura;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
-import org.junit.jupiter.api.function.Executable;
 
 import java.io.*;
 import java.util.*;
@@ -26,46 +25,51 @@ public class Gestion {
 
     // GESTIÓN DE CLIENTES
 
-    public Cliente darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
-
+    public boolean darDeAltaCliente(Cliente cliente) throws ClienteYaExiste {
         String nif = cliente.getNif();
 
-        if(listaClientes.containsKey(nif))
+        if (listaClientes.containsKey(nif))
             throw new ClienteYaExiste();
 
-        return listaClientes.put(nif, cliente);
+        listaClientes.put(nif, cliente);
+
+        return true;
     }
 
-    public Cliente darDeBajaCliente(String nif) throws ClienteNoEncontrado {
-        if(!listaClientes.containsKey(nif))
+    public boolean darDeBajaCliente(String nif) throws ClienteNoEncontrado {
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
-        return listaClientes.remove(nif);
+        listaClientes.remove(nif);
+
+        return true;
     }
 
-    public Tarifa cambiarTarifa(String nif, Tarifa nuevaTarifa) throws ClienteNoEncontrado {
-        if(!listaClientes.containsKey(nif))
+    public boolean cambiarTarifa(String nif, Tarifa nuevaTarifa) throws ClienteNoEncontrado {
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
-        return listaClientes.get(nif).setTarifa(nuevaTarifa);
+        listaClientes.get(nif).setTarifa(nuevaTarifa);
+
+        return true;
     }
 
     public Cliente mostrarCliente(String nif) throws ClienteNoEncontrado {
-        if(!listaClientes.containsKey(nif))
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
         return listaClientes.get(nif);
     }
 
     public Collection<Cliente> listarClientes() throws ListaClientesVacio {
-        if(listaClientes.isEmpty())
+        if (listaClientes.isEmpty())
             throw new ListaClientesVacio();
 
         return listaClientes.values();
     }
 
     public boolean darDeAltaLlamada(String nif, Llamada llamada) throws ClienteNoEncontrado {
-        if(!listaClientes.containsKey(nif))
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
         if (!listaLlamadas.containsKey(nif))
@@ -76,23 +80,21 @@ public class Gestion {
 
     // GESTIÓN DE LLAMADAS
 
-    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoEncontrado, ClienteNoLlamadas , ListaLlamadasVacia {
-        if(listaLlamadas.isEmpty())
-            throw new ListaLlamadasVacia();
-        if(!listaClientes.containsKey(nif))
+    public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoEncontrado, ClienteNoLlamadas {
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
-        if(!listaLlamadas.containsKey(nif))
+        if (!listaLlamadas.containsKey(nif))
             throw new ClienteNoLlamadas();
 
         return listaLlamadas.get(nif);
     }
 
-    public Factura emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) throws ClienteNoEncontrado, ClienteNoLlamadas {
-        if(!listaClientes.containsKey(nif))
+    public boolean emitirFactura(String nif, Calendar fechaFacturacion, Calendar fechaEmision) throws ClienteNoEncontrado, ClienteNoLlamadas {
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
-        if(!listaLlamadas.containsKey(nif))
+        if (!listaLlamadas.containsKey(nif))
             throw new ClienteNoLlamadas();
 
         Tarifa tarifaAplicada = listaClientes.get(nif).getTarifa();
@@ -108,27 +110,28 @@ public class Gestion {
         int codigoFactura = listaFacturasCodigo.size();
         Factura facturaCliente = new Factura(codigoFactura, tarifaAplicada, importe);
 
-        if (listafacturasCliente.get(nif) == null) listafacturasCliente.put(nif, new HashSet<>());
+        if (!listafacturasCliente.containsKey(nif))
+            listafacturasCliente.put(nif, new HashSet<>());
         listafacturasCliente.get(nif).add(facturaCliente);
-        return listaFacturasCodigo.put(codigoFactura, facturaCliente);
+        listaFacturasCodigo.put(codigoFactura, facturaCliente);
+
+        return true;
     }
 
     // GESTIÓN DE FACTURAS
 
     public Factura mostrarFactura(int codigo) throws FacturaNoEncontrada {
-        if(!listaFacturasCodigo.containsKey(codigo))
+        if (!listaFacturasCodigo.containsKey(codigo))
             throw new FacturaNoEncontrada();
 
         return listaFacturasCodigo.get(codigo);
     }
 
-    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoEncontrado, ClienteNoFacturas, ListaLlamadasVacia {
-        if(listafacturasCliente.isEmpty())
-            throw new ListaLlamadasVacia();
-        if(!listaClientes.containsKey(nif))
+    public HashSet<Factura> listarFacturas(String nif) throws ClienteNoEncontrado, ClienteNoFacturas {
+        if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
 
-        if(listafacturasCliente.isEmpty())
+        if (listafacturasCliente.isEmpty())
             throw new ClienteNoFacturas();
 
         return listafacturasCliente.get(nif);
@@ -159,7 +162,6 @@ public class Gestion {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     public void guardarDatos() {

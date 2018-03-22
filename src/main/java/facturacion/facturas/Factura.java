@@ -63,12 +63,12 @@ public class Factura implements Fecha, Serializable {
 
     @Override
     public String toString() {
-        return "Factura {" +
+        return "Factura {" + "\n" +
                 "   codigoFactura=" + codigoFactura + "\n" +
                 "   tarifaAplicada=" + tarifaAplicada + "\n" +
                 "   fechaDeEmision=" + fechaDeEmision.get(Calendar.DAY_OF_MONTH) + "/" + (fechaDeEmision.get(Calendar.MONTH) + 1) + "/" + fechaDeEmision.get(Calendar.YEAR) + "\n" +
                 "   importeTotal=" + importeTotal + "\n" +
-                "}" + "\n";
+                "}";
     }
 
 }

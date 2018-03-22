@@ -18,9 +18,9 @@ public class Facturacion {
     }
 
     private void start() {
-        load();
+        gestion.cargarDatos();
         mostrarMenuPrincipal();
-        save();
+        gestion.guardarDatos();
     }
 
     private void mostrarMenuPrincipal() {
@@ -204,18 +204,6 @@ public class Facturacion {
                 break;
         }
 //        } while (opcionFacturas != MenuFacturas.VOLVER);
-    }
-
-    private void load() {
-        consola.mostrarDatos(CARGANDO_DATOS);
-        gestion.cargarDatos();
-        consola.mostrarDatos(DATOS_CARGADOS);
-    }
-
-    private void save() {
-        consola.mostrarDatos(GUARDANDO_DATOS);
-        gestion.guardarDatos();
-        consola.mostrarDatos(DATOS_GUARDADOS);
     }
 
 }

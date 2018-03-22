@@ -7,7 +7,7 @@ public enum Mensaje {
     MENU_CLIENTES("\nMENÚ DE GESTIÓN DE CLIENTES\n"),
     MENU_LLAMADAS("\nMENÚ DE GESTIÓN DE LLAMADAS\n"),
     MENU_FACTURAS("\nMENU DE GESTIÓN DE FACTURAS\n"),
-    MENU_OPCION_CORRECTA("\nIntroduce una opción correcta"),
+    MENU_OPCION_CORRECTA("\nIntroduce una opción correcta\n"),
 
     // OPERACIONES
     INTRODUCE_OPCION("\nIntroduce una opción: "),
