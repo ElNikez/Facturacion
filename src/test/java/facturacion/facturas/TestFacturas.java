@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Test facturas")
 public class TestFacturas {
 
     private static Gestion gestion;
@@ -109,6 +110,15 @@ public class TestFacturas {
         Calendar fechaFinal = Calendar.getInstance();
 
         assertNotNull(entreFechas.muestraColeccionEntreFechas(gestion.listarFacturas(cliente.getNif()), fechaInicio, fechaFinal));
+    }
+
+    @DisplayName("Excepciones")
+    @Test
+    public void testExcepciones() {
+        assertAll("Excepciones",
+                () -> assertThrows(FacturaNoEncontrada.class, () -> gestion.mostrarFactura(0)),
+                () -> assertThrows(ClienteNoFacturas.class, () -> gestion.listarFacturas(cliente.getNif()))
+        );
     }
 
 }

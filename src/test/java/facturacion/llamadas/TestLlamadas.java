@@ -17,7 +17,7 @@ import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test facturacion.llamadas")
+@DisplayName("Test llamadas")
 public class TestLlamadas {
 
     private static Gestion gestion;
