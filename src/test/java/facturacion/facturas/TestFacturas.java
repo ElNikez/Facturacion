@@ -85,7 +85,7 @@ public class TestFacturas {
 
     @DisplayName("Mostrar facturas")
     @Test
-    public void testMostrarFacturas() throws FacturaNoEncontrada, ClienteNoLlamadas, ClienteNoEncontrado {
+    public void testMostrarFacturas() throws ClienteNoLlamadas, ClienteNoEncontrado, FacturaNoEncontrada, ListaFacturasVacia {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.MONTH - 1);

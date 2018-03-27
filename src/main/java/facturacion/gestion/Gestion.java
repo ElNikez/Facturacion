@@ -120,7 +120,9 @@ public class Gestion {
 
     // GESTIÓN DE FACTURAS
 
-    public Factura mostrarFactura(int codigo) throws FacturaNoEncontrada {
+    public Factura mostrarFactura(int codigo) throws ListaFacturasVacia, FacturaNoEncontrada {
+        if (listaFacturasCodigo.isEmpty())
+            throw new ListaFacturasVacia();
         if (!listaFacturasCodigo.containsKey(codigo))
             throw new FacturaNoEncontrada();
 
@@ -140,8 +142,8 @@ public class Gestion {
     // OTROS
 
     public void cargarDatos() {
-        ObjectInputStream ois = null;
-        FileInputStream fis = null;
+        ObjectInputStream ois;
+        FileInputStream fis;
         try {
             fis = new FileInputStream("clientes.bin");
             ois = new ObjectInputStream(fis);
@@ -156,17 +158,17 @@ public class Gestion {
             ois = new ObjectInputStream(fis);
             listaFacturasCodigo = (Map<Integer, Factura>) ois.readObject();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.getMessage();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 
     public void guardarDatos() {
-        ObjectOutputStream oos = null;
-        FileOutputStream fos = null;
+        ObjectOutputStream oos;
+        FileOutputStream fos;
         try {
             fos = new FileOutputStream("clientes.bin");
             oos = new ObjectOutputStream(fos);
@@ -181,9 +183,9 @@ public class Gestion {
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaFacturasCodigo);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.getMessage();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getMessage();
         }
     }
 

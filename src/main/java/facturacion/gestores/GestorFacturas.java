@@ -1,9 +1,6 @@
 package facturacion.gestores;
 
-import facturacion.excepciones.ClienteNoEncontrado;
-import facturacion.excepciones.ClienteNoFacturas;
-import facturacion.excepciones.ClienteNoLlamadas;
-import facturacion.excepciones.FacturaNoEncontrada;
+import facturacion.excepciones.*;
 import facturacion.facturas.Factura;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
@@ -47,8 +44,10 @@ public class GestorFacturas {
 
         try {
             consola.mostrarDatos(gestion.mostrarFactura(codigo));
+        } catch (ListaFacturasVacia listaFacturasVacia) {
+            listaFacturasVacia.printStackTrace();
         } catch (FacturaNoEncontrada facturaNoEncontrada) {
-            facturaNoEncontrada.getMessage();
+            facturaNoEncontrada.printStackTrace();
         }
     }
 
