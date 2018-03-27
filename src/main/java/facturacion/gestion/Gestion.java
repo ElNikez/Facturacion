@@ -105,8 +105,8 @@ public class Gestion {
             if (llamada.getFecha().after(fechaFacturacion) && llamada.getFecha().before(fechaEmision))
                 duracionTotal += llamada.getDuracionDeLlamada();
 
-        double precioMinuto = tarifaAplicada.getPrecio();
-        double importe = (precioMinuto / 60) * duracionTotal;
+        float precioMinuto = tarifaAplicada.getPrecio();
+        float importe = (precioMinuto / 60) * duracionTotal;
         int codigoFactura = listaFacturasCodigo.size();
         Factura facturaCliente = new Factura(codigoFactura, tarifaAplicada, importe);
 

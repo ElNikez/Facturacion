@@ -11,13 +11,13 @@ public class Factura implements Fecha, Serializable {
     private int codigoFactura;
     private Tarifa tarifaAplicada;
     private Calendar fechaDeEmision;
-    private double importeTotal;
+    private float importeTotal;
 
     public Factura() {
         super();
     }
 
-    public Factura(int codigoFactura, Tarifa tarifaAplicada, double importeTotal) {
+    public Factura(int codigoFactura, Tarifa tarifaAplicada, float importeTotal) {
         this.codigoFactura = codigoFactura;
         this.tarifaAplicada = tarifaAplicada;
         this.fechaDeEmision = Calendar.getInstance();
