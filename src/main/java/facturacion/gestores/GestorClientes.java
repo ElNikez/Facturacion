@@ -8,6 +8,7 @@ import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
 import facturacion.facturas.Tarifa;
+import facturacion.facturas.TarifaBasica;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
 import facturacion.misc.Consola;
@@ -39,9 +40,9 @@ public class GestorClientes {
 
         Cliente cliente;
         if (particular)
-            cliente = new Particular(nif, nombre, apellidos, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
+            cliente = new Particular(nif, nombre, apellidos, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new TarifaBasica(tarifa));
         else
-            cliente = new Empresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
+            cliente = new Empresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new TarifaBasica(tarifa));
 
         try {
             gestion.darDeAltaCliente(cliente);
@@ -67,7 +68,7 @@ public class GestorClientes {
         float tarifa = Float.parseFloat(consola.pedirDatos(INTRODUCE_TARIFA));
 
         try {
-            gestion.cambiarTarifa(nif, new Tarifa(tarifa));
+            gestion.cambiarTarifa(nif, new TarifaBasica(tarifa));
             consola.mostrarDatos(CLIENTE_CAMBIAR_TARIFA);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();

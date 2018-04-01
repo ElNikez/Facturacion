@@ -2,7 +2,7 @@ package facturacion.facturas;
 
 import java.io.Serializable;
 
-public class Tarifa implements Serializable {
+public abstract class Tarifa implements Serializable {
 
     private float precio;
 
@@ -24,6 +24,7 @@ public class Tarifa implements Serializable {
 
         return precio;
     }
+    public abstract float calculaPrecioLlamada(Llamada llamada);
 
     @Override
     public String toString() {
