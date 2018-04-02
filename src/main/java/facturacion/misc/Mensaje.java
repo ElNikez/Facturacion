@@ -7,7 +7,7 @@ public enum Mensaje {
     MENU_CLIENTES("\nMENÚ DE GESTIÓN DE CLIENTES\n"),
     MENU_LLAMADAS("\nMENÚ DE GESTIÓN DE LLAMADAS\n"),
     MENU_FACTURAS("\nMENU DE GESTIÓN DE FACTURAS\n"),
-    MENU_OPCION_CORRECTA("\nIntroduce una opción correcta\n"),
+    MENU_PROMOCIONES("\nMENÚ DE PROMOCIONES\n"),
 
     // OPERACIONES
     INTRODUCE_OPCION("\nIntroduce una opción: "),
@@ -25,6 +25,8 @@ public enum Mensaje {
     INTRODUCE_FECHA("Introduce una fecha de facturación (dd/mm/aaaa): "),
     INTRODUCE_FECHA_INICIO("Introduce una fecha de inicio (dd/mm/aaaa): "),
     INTRODUCE_FECHA_FINAL("Introduce una fecha de fin (dd/mm/aaaa): "),
+
+    INTRODUCE_OPCION_CORRECTA("\nIntroduce una opción correcta\n"),
 
     // RESULTADO DE OPERACIONES
     CLIENTE_DAR_DE_ALTA("\nCLIENTE DADO DE ALTA CON ÉXITO\n"),

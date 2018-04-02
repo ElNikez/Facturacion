@@ -27,7 +27,7 @@ public enum MenuLlamadas {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_LLAMADAS);
-        for(MenuLlamadas opcion : MenuLlamadas.values())
+        for(MenuLlamadas opcion : values())
             menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
 
         return menu.toString();

@@ -7,7 +7,7 @@ import facturacion.gestores.GestorLlamadas;
 import facturacion.misc.*;
 
 import static facturacion.misc.Mensaje.INTRODUCE_OPCION;
-import static facturacion.misc.Mensaje.MENU_OPCION_CORRECTA;
+import static facturacion.misc.Mensaje.INTRODUCE_OPCION_CORRECTA;
 
 public class Facturacion {
 
@@ -31,7 +31,7 @@ public class Facturacion {
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
             int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuPrincipal.values().length)
-                consola.mostrarDatos(MENU_OPCION_CORRECTA);
+                consola.mostrarDatos(INTRODUCE_OPCION_CORRECTA);
             else
                 break;
         } while (true);
@@ -59,7 +59,7 @@ public class Facturacion {
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
             int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuClientes.values().length)
-                consola.mostrarDatos(MENU_OPCION_CORRECTA);
+                consola.mostrarDatos(INTRODUCE_OPCION_CORRECTA);
             else
                 break;
         } while (true);
@@ -97,7 +97,7 @@ public class Facturacion {
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
             int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuAltaClientes.values().length)
-                consola.mostrarDatos(MENU_OPCION_CORRECTA);
+                consola.mostrarDatos(INTRODUCE_OPCION_CORRECTA);
             else
                 break;
         } while (true);
@@ -123,7 +123,7 @@ public class Facturacion {
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
             int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuLlamadas.values().length)
-                consola.mostrarDatos(MENU_OPCION_CORRECTA);
+                consola.mostrarDatos(INTRODUCE_OPCION_CORRECTA);
             else
                 break;
         } while (true);
@@ -152,7 +152,7 @@ public class Facturacion {
             opcionString = consola.pedirDatos(INTRODUCE_OPCION);
             int opcionInt = Integer.parseInt(opcionString);
             if (opcionInt >= MenuFacturas.values().length)
-                consola.mostrarDatos(MENU_OPCION_CORRECTA);
+                consola.mostrarDatos(INTRODUCE_OPCION_CORRECTA);
             else
                 break;
         } while (true);

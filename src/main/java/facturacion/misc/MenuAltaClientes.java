@@ -26,7 +26,7 @@ public enum MenuAltaClientes {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_CLIENTES);
-        for(MenuAltaClientes opcion : MenuAltaClientes.values())
+        for(MenuAltaClientes opcion : values())
             menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
 
         return menu.toString();

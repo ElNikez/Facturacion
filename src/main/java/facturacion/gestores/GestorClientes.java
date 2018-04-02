@@ -2,11 +2,11 @@ package facturacion.gestores;
 
 import facturacion.clientes.Cliente;
 import facturacion.clientes.Direccion;
-import facturacion.clientes.Empresa;
-import facturacion.clientes.Particular;
 import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
+import facturacion.factorias.FactoriaCliente;
+import facturacion.factorias.FactoriaTarifa;
 import facturacion.facturas.Tarifa;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
@@ -22,6 +22,8 @@ public class GestorClientes {
 
     private Consola consola = new Consola();
     private Gestion gestion;
+    private FactoriaCliente factoriaCliente;
+    private FactoriaTarifa factoriaTarifa;
 
     public GestorClientes(Gestion gestion) {
         this.gestion = gestion;
@@ -39,9 +41,9 @@ public class GestorClientes {
 
         Cliente cliente;
         if (particular)
-            cliente = new Particular(nif, nombre, apellidos, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
+            cliente = factoriaCliente.crearParticular(nif, nombre, apellidos, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), factoriaTarifa.tarifaBasica());
         else
-            cliente = new Empresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
+            cliente = factoriaCliente.crearEmpresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), factoriaTarifa.tarifaBasica());
 
         try {
             gestion.darDeAltaCliente(cliente);

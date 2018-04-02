@@ -12,8 +12,6 @@ public enum MenuClientes {
     MOSTRAR_DATOS_CLIENTE("Recuperar los datos de un cliente a partir de su NIF"),
     MOSTRAR_LISTA_CLIENTES("Recuperar el listado de todos los clientes"),
     MOSTRAR_CLIENTES_FECHAS("Mostrar un listado de clientes que fueron dados de alta entre dos fechas");
-//    DAR_ALTA_EMPRESA("Dar de alta una nueva empresa"),
-//    DAR_ALTA_PARTICULAR("Dar de alta un nuevo particular");
 
     private String descripcion;
 
@@ -32,7 +30,7 @@ public enum MenuClientes {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_CLIENTES);
-        for(MenuClientes opcion : MenuClientes.values())
+        for(MenuClientes opcion : values())
             menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
 
         return menu.toString();
