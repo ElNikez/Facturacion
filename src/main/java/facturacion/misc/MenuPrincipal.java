@@ -16,10 +16,6 @@ public enum MenuPrincipal {
         this.descripcion = descripcion;
     }
 
-    public String descripcion() {
-        return descripcion;
-    }
-
     public static MenuPrincipal opcion(int posicion) {
         return values()[posicion];
     }
@@ -27,10 +23,18 @@ public enum MenuPrincipal {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_PRINCIPAL);
-        for(MenuPrincipal opcion : MenuPrincipal.values())
-            menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
+        for (MenuPrincipal opcion : MenuPrincipal.values()) {
+            menu.append(opcion.ordinal());
+            menu.append(".- ");
+            menu.append(opcion.descripcion());
+            menu.append("\n");
+        }
 
         return menu.toString();
+    }
+
+    public String descripcion() {
+        return descripcion;
     }
 
 }

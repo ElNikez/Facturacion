@@ -2,21 +2,12 @@ package facturacion.clientes;
 
 import facturacion.facturas.Tarifa;
 
-import java.io.Serializable;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 
-public class Empresa extends Cliente{
-
-    public Empresa() {
-        super();
-    }
+public class Empresa extends Cliente {
 
     public Empresa(String nif, String nombre, String correoElectronico, Direccion direccion, Tarifa tarifa) {
-        super(nif, nombre, correoElectronico, direccion,tarifa);
-    }
-
-    public Empresa(Empresa empresa) {
-        super(empresa);
+        super(nif, nombre, correoElectronico, direccion, tarifa);
     }
 
     @Override
@@ -26,9 +17,9 @@ public class Empresa extends Cliente{
                 "   nombre=" + getNombre() + "\n" +
                 "   correoElectronico=" + getCorreo() + "\n" +
                 "   direccion=" + getDireccion() + "\n" +
-                "   fechaDeAlta=" + getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (getFecha().get(Calendar.MONTH) + 1) + "/" + getFecha().get(Calendar.YEAR) + "\n" +
-                "   tarifa=" + getTarifa().getPrecio() + "e/min" + "\n" +
-                "}";
+                "   fechaDeAlta=" + getFecha().get(GregorianCalendar.DAY_OF_MONTH) + "/" + (getFecha().get(GregorianCalendar.MONTH) + 1) + "/" + getFecha().get(GregorianCalendar.YEAR) + "\n" +
+                "   tarifa=" + getTarifa().descripcion() + "\n" +
+                "}" + "\n";
     }
 
 }

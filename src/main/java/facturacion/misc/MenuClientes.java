@@ -19,10 +19,6 @@ public enum MenuClientes {
         this.descripcion = descripcion;
     }
 
-    public String descripcion() {
-        return descripcion;
-    }
-
     public static MenuClientes opcion(int posicion) {
         return values()[posicion];
     }
@@ -30,10 +26,18 @@ public enum MenuClientes {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_CLIENTES);
-        for(MenuClientes opcion : values())
-            menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
+        for (MenuClientes opcion : values()) {
+            menu.append(opcion.ordinal());
+            menu.append(".- ");
+            menu.append(opcion.descripcion());
+            menu.append("\n");
+        }
 
         return menu.toString();
+    }
+
+    public String descripcion() {
+        return descripcion;
     }
 
 }

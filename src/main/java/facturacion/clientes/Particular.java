@@ -2,7 +2,7 @@ package facturacion.clientes;
 
 import facturacion.facturas.Tarifa;
 
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Particular extends Cliente {
 
@@ -17,11 +17,6 @@ public class Particular extends Cliente {
         this.apellidos = apellidos;
     }
 
-    public Particular(Particular particular) {
-        super(particular);
-        this.apellidos = particular.apellidos;
-    }
-
     public String getApellidos() {
         return apellidos;
     }
@@ -34,9 +29,9 @@ public class Particular extends Cliente {
                 "   apellidos=" + apellidos + "\n" +
                 "   correoElectronico=" + getCorreo() + "\n" +
                 "   direccion=" + getDireccion() + "\n" +
-                "   fechaDeAlta=" + getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (getFecha().get(Calendar.MONTH) + 1) + "/" + getFecha().get(Calendar.YEAR) + "\n" +
-                "   tarifa=" + getTarifa().getPrecio() + "e/min" + "\n" +
-                "}";
+                "   fechaDeAlta=" + getFecha().get(GregorianCalendar.DAY_OF_MONTH) + "/" + (getFecha().get(GregorianCalendar.MONTH) + 1) + "/" + getFecha().get(GregorianCalendar.YEAR) + "\n" +
+                "   tarifa=" + getTarifa().descripcion() + "\n" +
+                "}" + "\n";
     }
 
 }
