@@ -2,27 +2,30 @@ package facturacion.misc;
 
 import static facturacion.misc.Mensaje.MENU_CLIENTES;
 
-public enum MenuAltaClientes {
+public enum MenuCambioTarifa {
 
-    VOLVER("Volver"),
-
-    DAR_ALTA_EMPRESA("Dar de alta una nueva empresa"),
-    DAR_ALTA_PARTICULAR("Dar de alta un nuevo particular");
+    VOLVER("Volver", 0),
+    TARIFA_BASICA("Tarifa básica", 15),
+    TARIFA_MADRUGADA("Madrugadas extra-reducidas", 5),
+    TARIFA_TARDE("Tardes reducidas", 10),
+    TARIFA_DOMINGO("Domingos gratis", 0);
 
     private String descripcion;
+    private float precio;
 
-    MenuAltaClientes(String descripcion) {
+    MenuCambioTarifa(String descripcion, float precio) {
         this.descripcion = descripcion;
+        this.precio = precio;
     }
 
-    public static MenuAltaClientes opcion(int posicion) {
+    public static MenuCambioTarifa opcion(int posicion) {
         return values()[posicion];
     }
 
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_CLIENTES);
-        for (MenuAltaClientes opcion : values()) {
+        for (MenuCambioTarifa opcion : values()) {
             menu.append(opcion.ordinal());
             menu.append(".- ");
             menu.append(opcion.descripcion());
@@ -34,6 +37,10 @@ public enum MenuAltaClientes {
 
     public String descripcion() {
         return descripcion;
+    }
+
+    public float precio() {
+        return precio;
     }
 
 }

@@ -42,7 +42,7 @@ public class Factura implements Fecha, Serializable {
         Factura factura = (Factura) o;
         return codigoFactura == factura.codigoFactura
                 && Double.compare(factura.importeTotal, importeTotal) == 0
-                && Objects.equals(tarifaAplicada.getPrecio(), factura.tarifaAplicada.getPrecio());
+                && Objects.equals(tarifaAplicada.precio(), factura.tarifaAplicada.precio());
     }
 
     public int getCodigoFactura() {

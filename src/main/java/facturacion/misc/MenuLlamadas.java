@@ -16,10 +16,6 @@ public enum MenuLlamadas {
         this.descripcion = descripcion;
     }
 
-    public String descripcion() {
-        return descripcion;
-    }
-
     public static MenuLlamadas opcion(int posicion) {
         return values()[posicion];
     }
@@ -27,10 +23,18 @@ public enum MenuLlamadas {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_LLAMADAS);
-        for(MenuLlamadas opcion : MenuLlamadas.values())
-            menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
+        for (MenuLlamadas opcion : values()) {
+            menu.append(opcion.ordinal());
+            menu.append(".- ");
+            menu.append(opcion.descripcion());
+            menu.append("\n");
+        }
 
         return menu.toString();
+    }
+
+    public String descripcion() {
+        return descripcion;
     }
 
 }

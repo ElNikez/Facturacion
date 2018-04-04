@@ -1,10 +1,12 @@
 package facturacion.clientes;
 
 import facturacion.facturas.Tarifa;
+import facturacion.facturas.TarifaBasica;
 import facturacion.interfaces.Fecha;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class Cliente implements Fecha, Serializable {
 
@@ -15,20 +17,20 @@ public class Cliente implements Fecha, Serializable {
     private Calendar fechaDeAlta;
     private Tarifa tarifa;
 
-    public Cliente() {
+    Cliente() {
         super();
     }
 
-    public Cliente(String nif, String nombre, String correoElectronico, Direccion direccion, Tarifa tarifa) {
+    Cliente(String nif, String nombre, String correoElectronico, Direccion direccion, Tarifa tarifa) {
         this.nif = nif;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
         this.direccion = direccion;
-        this.fechaDeAlta = Calendar.getInstance();
+        this.fechaDeAlta = GregorianCalendar.getInstance();
         this.tarifa = tarifa;
     }
 
-    public Cliente(Cliente cliente) {
+    Cliente(Cliente cliente) {
         this.nif = cliente.nif;
         this.nombre = cliente.nombre;
         this.correoElectronico = cliente.correoElectronico;
@@ -41,11 +43,11 @@ public class Cliente implements Fecha, Serializable {
         return nif;
     }
 
-    public String getNombre() {
+    String getNombre() {
         return nombre;
     }
 
-    public String getCorreo() {
+    String getCorreo() {
         return correoElectronico;
     }
 
@@ -64,18 +66,6 @@ public class Cliente implements Fecha, Serializable {
     public Calendar getFecha() {
         return fechaDeAlta;
 
-    }
-
-    @Override
-    public String toString() {
-        return "Empresa {" + "\n" +
-                "   nif=" + getNif() + "\n" +
-                "   nombre=" + getNombre() + "\n" +
-                "   correoElectronico=" + getCorreo() + "\n" +
-                "   direccion=" + getDireccion() + "\n" +
-                "   fechaDeAlta=" + getFecha().get(Calendar.DAY_OF_MONTH) + "/" + (getFecha().get(Calendar.MONTH) + 1) + "/" + getFecha().get(Calendar.YEAR) + "\n" +
-                "   tarifa=" + getTarifa().getPrecio() + "e/min" + "\n" +
-                "}" + "\n";
     }
 
 }

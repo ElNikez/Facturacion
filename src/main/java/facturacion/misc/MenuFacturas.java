@@ -17,10 +17,6 @@ public enum MenuFacturas {
         this.descripcion = descripcion;
     }
 
-    public String descripcion() {
-        return descripcion;
-    }
-
     public static MenuFacturas opcion(int posicion) {
         return values()[posicion];
     }
@@ -28,10 +24,18 @@ public enum MenuFacturas {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_FACTURAS);
-        for(MenuFacturas opcion : MenuFacturas.values())
-            menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
+        for (MenuFacturas opcion : values()) {
+            menu.append(opcion.ordinal());
+            menu.append(".- ");
+            menu.append(opcion.descripcion());
+            menu.append("\n");
+        }
 
         return menu.toString();
+    }
+
+    public String descripcion() {
+        return descripcion;
     }
 
 }

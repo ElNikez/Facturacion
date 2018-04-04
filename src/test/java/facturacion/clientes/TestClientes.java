@@ -5,6 +5,7 @@ import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
 import facturacion.facturas.Tarifa;
+import facturacion.facturas.TarifaBasica;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
@@ -16,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test clientes")
-public class TestClientes {
+class TestClientes {
 
     private static Gestion gestion;
     private static GestionEntreFechas<Cliente> entreFechas;
@@ -27,16 +28,16 @@ public class TestClientes {
     private static Cliente mujer;
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         generador = new GeneradorDatosINE();
-        empresa = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(10));
-        particular = new Particular(generador.getNIF(), generador.getNombre(), generador.getApellido(), "particular@gmail.com", new Direccion(54321, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(5));
-        hombre = new Particular(generador.getNIF(), generador.getNombreHombre(), generador.getApellido(), "hombre@hotmail.com", new Direccion(11111, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(15));
-        mujer = new Particular(generador.getNIF(), generador.getNombreMujer(), generador.getApellido(), "mujer@yahoo.es", new Direccion(55555, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(1));
+        empresa = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(10));
+        particular = new Particular(generador.getNIF(), generador.getNombre(), generador.getApellido(), "particular@gmail.com", new Direccion(54321, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(5));
+        hombre = new Particular(generador.getNIF(), generador.getNombreHombre(), generador.getApellido(), "hombre@hotmail.com", new Direccion(11111, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(15));
+        mujer = new Particular(generador.getNIF(), generador.getNombreMujer(), generador.getApellido(), "mujer@yahoo.es", new Direccion(55555, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(1));
     }
 
     @AfterAll
-    public static void finish() {
+    static void finish() {
         generador = null;
         empresa = null;
         particular = null;
@@ -45,18 +46,18 @@ public class TestClientes {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         gestion = new Gestion();
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         gestion = null;
     }
 
     @DisplayName("Dar de alta")
     @Test
-    public void testDarDeAltaCliente() {
+    void testDarDeAltaCliente() {
         assertAll(
                 () -> assertTrue(gestion.darDeAltaCliente(empresa)),
                 () -> assertTrue(gestion.darDeAltaCliente(particular)),
@@ -67,7 +68,7 @@ public class TestClientes {
 
     @DisplayName("Dar de baja")
     @Test
-    public void testDarDeBaja() throws ClienteYaExiste {
+    void testDarDeBaja() throws ClienteYaExiste {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -83,7 +84,7 @@ public class TestClientes {
 
     @DisplayName("Cambiar la tarifa")
     @Test
-    public void testCambiarTarifa() throws ClienteYaExiste {
+    void testCambiarTarifa() throws ClienteYaExiste {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -104,7 +105,7 @@ public class TestClientes {
 
     @DisplayName("Mostrar un cliente")
     @Test
-    public void testMostrarCliente() throws ClienteYaExiste {
+    void testMostrarCliente() throws ClienteYaExiste {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -120,7 +121,7 @@ public class TestClientes {
 
     @DisplayName("Mostrar los clientes")
     @Test
-    public void testListarClientes() throws ClienteYaExiste, ListaClientesVacio {
+    void testListarClientes() throws ClienteYaExiste, ListaClientesVacio {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -131,7 +132,7 @@ public class TestClientes {
 
     @DisplayName("Clientes entre fechas")
     @Test
-    public void testListarClientesEntreFechas() throws ClienteYaExiste, ListaClientesVacio {
+    void testListarClientesEntreFechas() throws ClienteYaExiste, ListaClientesVacio {
         gestion.darDeAltaCliente(empresa);
         gestion.darDeAltaCliente(particular);
         gestion.darDeAltaCliente(hombre);
@@ -147,7 +148,7 @@ public class TestClientes {
 
     @DisplayName("Excepciones")
     @Test
-    public void testExcepciones() throws ClienteYaExiste, ClienteNoEncontrado {
+    void testExcepciones() throws ClienteYaExiste, ClienteNoEncontrado {
         assertThrows(ListaClientesVacio.class, () -> gestion.listarClientes());
 
         gestion.darDeAltaCliente(empresa);

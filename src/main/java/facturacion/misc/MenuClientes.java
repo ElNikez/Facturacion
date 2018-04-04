@@ -12,17 +12,11 @@ public enum MenuClientes {
     MOSTRAR_DATOS_CLIENTE("Recuperar los datos de un cliente a partir de su NIF"),
     MOSTRAR_LISTA_CLIENTES("Recuperar el listado de todos los clientes"),
     MOSTRAR_CLIENTES_FECHAS("Mostrar un listado de clientes que fueron dados de alta entre dos fechas");
-//    DAR_ALTA_EMPRESA("Dar de alta una nueva empresa"),
-//    DAR_ALTA_PARTICULAR("Dar de alta un nuevo particular");
 
     private String descripcion;
 
     MenuClientes(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String descripcion() {
-        return descripcion;
     }
 
     public static MenuClientes opcion(int posicion) {
@@ -32,10 +26,18 @@ public enum MenuClientes {
     public static String mostrarMenu() {
         StringBuilder menu = new StringBuilder();
         menu.append(MENU_CLIENTES);
-        for(MenuClientes opcion : MenuClientes.values())
-            menu.append(opcion.ordinal() + ".- " + opcion.descripcion() + "\n");
+        for (MenuClientes opcion : values()) {
+            menu.append(opcion.ordinal());
+            menu.append(".- ");
+            menu.append(opcion.descripcion());
+            menu.append("\n");
+        }
 
         return menu.toString();
+    }
+
+    public String descripcion() {
+        return descripcion;
     }
 
 }

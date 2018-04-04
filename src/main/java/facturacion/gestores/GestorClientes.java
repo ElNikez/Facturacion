@@ -2,15 +2,15 @@ package facturacion.gestores;
 
 import facturacion.clientes.Cliente;
 import facturacion.clientes.Direccion;
-import facturacion.clientes.Empresa;
-import facturacion.clientes.Particular;
 import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
-import facturacion.facturas.Tarifa;
+import facturacion.factorias.FactoriaClientes;
+import facturacion.factorias.FactoriaTarifas;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
 import facturacion.misc.Consola;
+import facturacion.misc.MenuCambioTarifa;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -22,9 +22,13 @@ public class GestorClientes {
 
     private Consola consola = new Consola();
     private Gestion gestion;
+    private FactoriaClientes factoriaClientes;
+    private FactoriaTarifas factoriaTarifas;
 
     public GestorClientes(Gestion gestion) {
         this.gestion = gestion;
+        factoriaClientes = new FactoriaClientes();
+        factoriaTarifas = new FactoriaTarifas();
     }
 
     public void darDeAltaCliente(boolean particular) {
@@ -35,13 +39,12 @@ public class GestorClientes {
         int codigoPostal = Integer.parseInt(consola.pedirDatos(INTRODUCE_COD_POSTAL));
         String poblacion = consola.pedirDatos(INTRODUCE_POBLACION);
         String provincia = consola.pedirDatos(INTRODUCE_PROVINCIA);
-        float tarifa = Float.parseFloat(consola.pedirDatos(INTRODUCE_TARIFA));
 
         Cliente cliente;
         if (particular)
-            cliente = new Particular(nif, nombre, apellidos, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
+            cliente = factoriaClientes.crearParticular(nif, nombre, apellidos, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), factoriaTarifas.tarifaBasica());
         else
-            cliente = new Empresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), new Tarifa(tarifa));
+            cliente = factoriaClientes.crearEmpresa(nif, nombre, correoElectronico, new Direccion(codigoPostal, poblacion, provincia), factoriaTarifas.tarifaBasica());
 
         try {
             gestion.darDeAltaCliente(cliente);
@@ -64,10 +67,56 @@ public class GestorClientes {
 
     public void cambiarTarifa() {
         String nif = consola.pedirDatos(INTRODUCE_NIF);
-        float tarifa = Float.parseFloat(consola.pedirDatos(INTRODUCE_TARIFA));
 
+        MenuCambioTarifa opcionMenu;
+        do {
+            String opcionString;
+            do {
+                consola.mostrarDatos(MenuCambioTarifa.mostrarMenu());
+                opcionString = consola.pedirDatos(INTRODUCE_OPCION);
+                int opcionInt = Integer.parseInt(opcionString);
+                if (opcionInt >= MenuCambioTarifa.values().length)
+                    consola.mostrarDatos(INTRODUCE_OPCION_CORRECTA);
+                else
+                    break;
+            } while (true);
+            byte opcionByte = Byte.parseByte(opcionString);
+            opcionMenu = MenuCambioTarifa.opcion(opcionByte);
+            switch (opcionMenu) {
+                case VOLVER:
+                    break;
+                case TARIFA_BASICA:
+                    cambiarTarifa(nif, MenuCambioTarifa.TARIFA_BASICA);
+                    break;
+                case TARIFA_MADRUGADA:
+                    cambiarTarifa(nif, MenuCambioTarifa.TARIFA_MADRUGADA);
+                    break;
+                case TARIFA_TARDE:
+                    cambiarTarifa(nif, MenuCambioTarifa.TARIFA_TARDE);
+                    break;
+                case TARIFA_DOMINGO:
+                    cambiarTarifa(nif, MenuCambioTarifa.TARIFA_DOMINGO);
+                    break;
+            }
+        } while (opcionMenu != MenuCambioTarifa.VOLVER);
+    }
+
+    private void cambiarTarifa(String nif, MenuCambioTarifa tarifa) {
         try {
-            gestion.cambiarTarifa(nif, new Tarifa(tarifa));
+            switch (tarifa) {
+                case TARIFA_BASICA:
+                    gestion.cambiarTarifa(nif, factoriaTarifas.tarifaBasica());
+                    break;
+                case TARIFA_MADRUGADA:
+                    gestion.cambiarTarifa(nif, factoriaTarifas.promocion(gestion.mostrarCliente(nif).getTarifa(), MenuCambioTarifa.TARIFA_MADRUGADA));
+                    break;
+                case TARIFA_TARDE:
+                    gestion.cambiarTarifa(nif, factoriaTarifas.promocion(gestion.mostrarCliente(nif).getTarifa(), MenuCambioTarifa.TARIFA_TARDE));
+                    break;
+                case TARIFA_DOMINGO:
+                    gestion.cambiarTarifa(nif, factoriaTarifas.promocion(gestion.mostrarCliente(nif).getTarifa(), MenuCambioTarifa.TARIFA_DOMINGO));
+                    break;
+            }
             consola.mostrarDatos(CLIENTE_CAMBIAR_TARIFA);
         } catch (ClienteNoEncontrado clienteNoEncontrado) {
             clienteNoEncontrado.getMessage();

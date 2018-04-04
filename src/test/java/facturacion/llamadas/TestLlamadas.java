@@ -7,8 +7,10 @@ import facturacion.clientes.Empresa;
 import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteNoLlamadas;
 import facturacion.excepciones.ClienteYaExiste;
+import facturacion.factorias.FactoriaTarifas;
 import facturacion.facturas.Llamada;
 import facturacion.facturas.Tarifa;
+import facturacion.facturas.TarifaBasica;
 import facturacion.gestion.Gestion;
 import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
@@ -21,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestLlamadas {
 
     private static Gestion gestion;
-    private static GestionEntreFechas<Llamada> entreFechas;
     private static GeneradorDatosINE generador;
     private static Cliente cliente;
     private static Llamada llamada1;
@@ -29,16 +30,16 @@ public class TestLlamadas {
     private static Llamada llamada3;
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         generador = new GeneradorDatosINE();
-        cliente = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new Tarifa(10));
+        cliente = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(10));
         llamada1 = new Llamada(666666666, 1000);
         llamada2 = new Llamada(666666666, 500);
         llamada3 = new Llamada(123456789, 666);
     }
 
     @AfterAll
-    public static void finish() {
+    static void finish() {
         generador = null;
         cliente = null;
         llamada1 = null;
@@ -47,19 +48,19 @@ public class TestLlamadas {
     }
 
     @BeforeEach
-    public void setUp() throws ClienteYaExiste {
+    void setUp() throws ClienteYaExiste {
         gestion = new Gestion();
         gestion.darDeAltaCliente(cliente);
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         gestion = null;
     }
 
     @DisplayName("Dar de alta")
     @Test
-    public void testDarDeAltaLlamada() {
+    void testDarDeAltaLlamada() {
         assertAll(
                 () -> assertTrue(gestion.darDeAltaLlamada(cliente.getNif(), llamada1)),
                 () -> assertTrue(gestion.darDeAltaLlamada(cliente.getNif(), llamada2)),
@@ -69,7 +70,7 @@ public class TestLlamadas {
 
     @DisplayName("Mostrar llamadas")
     @Test
-    public void testMostrarLlamadasDeCliente() throws ClienteNoEncontrado, ClienteNoLlamadas {
+    void testMostrarLlamadasDeCliente() throws ClienteNoEncontrado, ClienteNoLlamadas {
         gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
@@ -79,12 +80,12 @@ public class TestLlamadas {
 
     @DisplayName("Llamadas entre fechas")
     @Test
-    public void testListarLlamadasEntreFechas() throws ClienteNoEncontrado, ClienteNoLlamadas {
+    void testListarLlamadasEntreFechas() throws ClienteNoEncontrado, ClienteNoLlamadas {
         gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
 
-        entreFechas = new GestionEntreFechas<>();
+        GestionEntreFechas<Llamada> entreFechas = new GestionEntreFechas<>();
         Calendar fechaInicio = Calendar.getInstance();
         fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
         Calendar fechaFinal = Calendar.getInstance();
@@ -94,7 +95,7 @@ public class TestLlamadas {
 
     @DisplayName("Excepciones")
     @Test
-    public void testExcepciones() {
+    void testExcepciones() {
         assertThrows(ClienteNoLlamadas.class, () -> gestion.listarLlamadas(cliente.getNif()));
     }
 
