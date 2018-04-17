@@ -68,6 +68,8 @@ public class Gestion {
         return listaClientes.values();
     }
 
+    // GESTIÓN DE LLAMADAS
+
     public boolean darDeAltaLlamada(String nif, Llamada llamada) throws ClienteNoEncontrado {
         if (!listaClientes.containsKey(nif))
             throw new ClienteNoEncontrado();
@@ -77,8 +79,6 @@ public class Gestion {
 
         return listaLlamadas.get(nif).add(llamada);
     }
-
-    // GESTIÓN DE LLAMADAS
 
     public HashSet<Llamada> listarLlamadas(String nif) throws ClienteNoEncontrado, ClienteNoLlamadas {
         if (!listaClientes.containsKey(nif))
@@ -141,6 +141,7 @@ public class Gestion {
 
     // OTROS
 
+    @SuppressWarnings("unchecked")
     public void cargarDatos() {
         ObjectInputStream ois;
         FileInputStream fis;
@@ -157,12 +158,8 @@ public class Gestion {
             fis = new FileInputStream("facturasCodigo.bin");
             ois = new ObjectInputStream(fis);
             listaFacturasCodigo = (Map<Integer, Factura>) ois.readObject();
-        } catch (FileNotFoundException e) {
-            e.getMessage();
-        } catch (IOException e) {
-            e.getMessage();
-        } catch (ClassNotFoundException e) {
-            e.getMessage();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -182,8 +179,6 @@ public class Gestion {
             fos = new FileOutputStream("facturasCodigo.bin");
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaFacturasCodigo);
-        } catch (FileNotFoundException e) {
-            e.getMessage();
         } catch (IOException e) {
             e.getMessage();
         }

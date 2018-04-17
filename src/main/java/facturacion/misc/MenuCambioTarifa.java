@@ -4,18 +4,17 @@ import static facturacion.misc.Mensaje.MENU_CLIENTES;
 
 public enum MenuCambioTarifa {
 
-    VOLVER("Volver", 0),
-    TARIFA_BASICA("Tarifa básica", 15),
-    TARIFA_MADRUGADA("Madrugadas extra-reducidas", 5),
-    TARIFA_TARDE("Tardes reducidas", 10),
-    TARIFA_DOMINGO("Domingos gratis", 0);
+    VOLVER("Volver"),
+    TARIFA_BASICA("Tarifa básica"),
+    TARIFA_MADRUGADA("Madrugadas extra-reducidas"),
+    TARIFA_TARDE("Tardes reducidas"),
+    TARIFA_DOMINGO("Domingos gratis"),
+    TARIFA_FESTIVO("Festivos gratis");
 
     private String descripcion;
-    private float precio;
 
-    MenuCambioTarifa(String descripcion, float precio) {
+    MenuCambioTarifa(String descripcion) {
         this.descripcion = descripcion;
-        this.precio = precio;
     }
 
     public static MenuCambioTarifa opcion(int posicion) {
@@ -37,10 +36,6 @@ public enum MenuCambioTarifa {
 
     public String descripcion() {
         return descripcion;
-    }
-
-    public float precio() {
-        return precio;
     }
 
 }

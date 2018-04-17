@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class GestionEntreFechas <T extends Fecha> {
+public class GestionEntreFechas <T extends Fecha> extends Gestion {
 
     public Collection<T> muestraColeccionEntreFechas(Collection<T> coleccion, Calendar fechaInicio, Calendar fechaFin) {
         Collection<T> listaResultado = new HashSet<T>();

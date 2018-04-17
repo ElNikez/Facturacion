@@ -7,6 +7,9 @@ public class TarifaBasica extends Tarifa {
     }
 
     public float calcularPrecioLlamada(Llamada llamada) {
+        if (esFestivo(llamada.getFecha()))
+            return 0;
+
         return llamada.getDuracionDeLlamada() * precio();
     }
 

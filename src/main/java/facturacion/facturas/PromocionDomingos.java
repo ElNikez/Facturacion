@@ -2,11 +2,11 @@ package facturacion.facturas;
 
 import java.util.Calendar;
 
-public class PromocionDomingo extends Promocion {
+public class PromocionDomingos extends Promocion {
 
     private Tarifa tarifa;
 
-    public PromocionDomingo(Tarifa tarifa, float precio) {
+    public PromocionDomingos(Tarifa tarifa, float precio) {
         super(tarifa, precio);
         this.tarifa = tarifa;
     }

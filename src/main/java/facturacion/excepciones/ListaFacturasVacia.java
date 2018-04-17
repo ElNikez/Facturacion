@@ -1,11 +1,11 @@
 package facturacion.excepciones;
 
-import static facturacion.misc.Mensaje.FACTURAS_VACIO;
+import static facturacion.misc.Mensaje.LISTA_FACTURAS_VACIO;
 
 public class ListaFacturasVacia extends Exception {
 
     public ListaFacturasVacia() {
-        super(FACTURAS_VACIO.mostrarMensaje());
+        super(LISTA_FACTURAS_VACIO.mostrarMensaje());
     }
 
 }

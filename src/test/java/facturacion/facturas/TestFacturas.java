@@ -16,10 +16,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test facturas")
-public class TestFacturas {
+class TestFacturas {
 
     private static Gestion gestion;
-    private static GestionEntreFechas<Factura> entreFechas;
     private static GeneradorDatosINE generador;
     private static Cliente cliente;
     private static Llamada llamada1;
@@ -28,7 +27,7 @@ public class TestFacturas {
     private static Factura factura;
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         generador = new GeneradorDatosINE();
         cliente = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(10));
         llamada1 = new Llamada(666666666, 1000);
@@ -38,7 +37,7 @@ public class TestFacturas {
     }
 
     @AfterAll
-    public static void finish() {
+    static void finish() {
         generador = null;
         cliente = null;
         llamada1 = null;
@@ -48,7 +47,7 @@ public class TestFacturas {
     }
 
     @BeforeEach
-    public void setUp() throws ClienteYaExiste, ClienteNoEncontrado {
+    void setUp() throws ClienteYaExiste, ClienteNoEncontrado {
         gestion = new Gestion();
         gestion.darDeAltaCliente(cliente);
         gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
@@ -57,13 +56,13 @@ public class TestFacturas {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         gestion = null;
     }
 
     @DisplayName("Emitir factura")
     @Test
-    public void testEmitirFactura() throws ClienteNoLlamadas, ClienteNoEncontrado {
+    void testEmitirFactura() throws ClienteNoLlamadas, ClienteNoEncontrado {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
@@ -73,10 +72,10 @@ public class TestFacturas {
 
     @DisplayName("Listar facturas")
     @Test
-    public void testListarFacturas() throws ClienteNoEncontrado, ClienteNoFacturas, ClienteNoLlamadas {
+    void testListarFacturas() throws ClienteNoEncontrado, ClienteNoFacturas, ClienteNoLlamadas {
         Calendar fechaFacturacion = Calendar.getInstance();
         Calendar fechaEmision = Calendar.getInstance();
-        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.MONTH - 1);
+        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
         gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
@@ -85,10 +84,10 @@ public class TestFacturas {
 
     @DisplayName("Mostrar facturas")
     @Test
-    public void testMostrarFacturas() throws ClienteNoLlamadas, ClienteNoEncontrado, FacturaNoEncontrada, ListaFacturasVacia {
+    void testMostrarFacturas() throws ClienteNoLlamadas, ClienteNoEncontrado, FacturaNoEncontrada, ListaFacturasVacia {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
-        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.MONTH - 1);
+        fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
         gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
@@ -97,14 +96,14 @@ public class TestFacturas {
 
     @DisplayName("Facturas entre fechas")
     @Test
-    public void testListarLlamadasEntreFechas() throws ClienteNoLlamadas, ClienteNoEncontrado, ClienteNoFacturas {
+    void testListarLlamadasEntreFechas() throws ClienteNoLlamadas, ClienteNoEncontrado, ClienteNoFacturas {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
         gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
 
-        entreFechas = new GestionEntreFechas<>();
+        GestionEntreFechas<Factura> entreFechas = new GestionEntreFechas<>();
         Calendar fechaInicio = Calendar.getInstance();
         fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
         Calendar fechaFinal = Calendar.getInstance();
@@ -114,9 +113,9 @@ public class TestFacturas {
 
     @DisplayName("Excepciones")
     @Test
-    public void testExcepciones() {
+    void testExcepciones() {
         assertAll("Excepciones",
-                () -> assertThrows(FacturaNoEncontrada.class, () -> gestion.mostrarFactura(0)),
+                () -> assertThrows(ListaFacturasVacia.class, () -> gestion.mostrarFactura(0)),
                 () -> assertThrows(ClienteNoFacturas.class, () -> gestion.listarFacturas(cliente.getNif()))
         );
     }

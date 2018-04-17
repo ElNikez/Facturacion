@@ -20,7 +20,7 @@ import java.util.Calendar;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test llamadas")
-public class TestLlamadas {
+class TestLlamadas {
 
     private static Gestion gestion;
     private static GeneradorDatosINE generador;

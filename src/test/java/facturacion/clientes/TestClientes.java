@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestClientes {
 
     private static Gestion gestion;
-    private static GestionEntreFechas<Cliente> entreFechas;
     private static GeneradorDatosINE generador;
     private static Cliente empresa;
     private static Cliente particular;
@@ -138,7 +137,7 @@ class TestClientes {
         gestion.darDeAltaCliente(hombre);
         gestion.darDeAltaCliente(mujer);
 
-        entreFechas = new GestionEntreFechas<>();
+        GestionEntreFechas<Cliente> entreFechas = new GestionEntreFechas<>();
         Calendar fechaInicio = Calendar.getInstance();
         fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
         Calendar fechaFinal = Calendar.getInstance();

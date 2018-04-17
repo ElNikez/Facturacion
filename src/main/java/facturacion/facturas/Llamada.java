@@ -11,24 +11,10 @@ public class Llamada implements Fecha, Serializable {
     private Calendar fechaDeLlamada;
     private int duracionDeLlamada;
 
-    public Llamada() {
-        super();
-    }
-
     public Llamada(int numeroDeTelefono, int duracionDeLlamada) {
         this.numeroDeTelefono = numeroDeTelefono;
         this.fechaDeLlamada = Calendar.getInstance();
         this.duracionDeLlamada = duracionDeLlamada;
-    }
-
-    public Llamada(Llamada llamada) {
-        this.numeroDeTelefono = numeroDeTelefono;
-        this.fechaDeLlamada = Calendar.getInstance();
-        this.duracionDeLlamada = duracionDeLlamada;
-    }
-
-    public int getNumero() {
-        return numeroDeTelefono;
     }
 
     public Calendar getFecha() {
