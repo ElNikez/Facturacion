@@ -49,7 +49,7 @@ class TestTarifas {
         tarifaMadrugada = null;
         tarifaTarde = null;
         tarifaDomingo = null;
-        tarifaFestivos = null;
+        tarifaFestivo = null;
     }
 
     @Test
