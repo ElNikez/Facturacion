@@ -11,8 +11,14 @@ public class PromocionDomingos extends Promocion {
         this.tarifa = tarifa;
     }
 
+    @Override
     public float calcularPrecioLlamada(Llamada llamada) {
-        return llamada.getFecha().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ? 0 : tarifa.calcularPrecioLlamada(llamada);
+        float precioLlamada = llamada.getDuracionDeLlamada() * precio();
+        if (llamada.getFecha().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY
+                && precioLlamada < super.calcularPrecioLlamada(llamada))
+            return precioLlamada;
+        else
+            return super.calcularPrecioLlamada(llamada);
     }
 
     @Override

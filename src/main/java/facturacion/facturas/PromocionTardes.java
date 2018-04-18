@@ -13,10 +13,13 @@ public class PromocionTardes extends Promocion {
 
     @Override
     public float calcularPrecioLlamada(Llamada llamada) {
-        if (llamada.getFecha().get(Calendar.HOUR_OF_DAY) > 16 && llamada.getFecha().get(Calendar.HOUR_OF_DAY) < 20)
-            return llamada.getDuracionDeLlamada() * precio();
+        float precioLlamada = llamada.getDuracionDeLlamada() * precio();
+        if (llamada.getFecha().get(Calendar.HOUR_OF_DAY) >= 16
+                && llamada.getFecha().get(Calendar.HOUR_OF_DAY) < 20
+                && precioLlamada < super.calcularPrecioLlamada(llamada))
+            return precioLlamada;
         else
-            return tarifa.calcularPrecioLlamada(llamada);
+            return super.calcularPrecioLlamada(llamada);
     }
 
     @Override
