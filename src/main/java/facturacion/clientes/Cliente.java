@@ -1,7 +1,6 @@
 package facturacion.clientes;
 
 import facturacion.facturas.Tarifa;
-import facturacion.facturas.TarifaBasica;
 import facturacion.interfaces.Fecha;
 
 import java.io.Serializable;

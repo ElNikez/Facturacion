@@ -3,7 +3,6 @@ package facturacion.interfaces;
 import facturacion.clientes.Cliente;
 import facturacion.clientes.Direccion;
 import facturacion.facturas.Tarifa;
-import facturacion.facturas.TarifaBasica;
 
 public interface FactoriaCliente {
 

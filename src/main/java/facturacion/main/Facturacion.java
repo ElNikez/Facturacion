@@ -1,4 +1,4 @@
-package main;
+package facturacion.main;
 
 import facturacion.acciones.MostrarMenuPrincipal;
 import facturacion.gestion.Gestion;
