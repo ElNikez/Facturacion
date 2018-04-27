@@ -9,10 +9,10 @@ public class InterfazGrafica {
 
     private JFrame ventana;
     private Container panel;
-    private JPanel panelSuperior, panelInferior, panelBotones, panelFechas;
-    private JScrollPane panelTexto;
+    private JPanel panelSuperior, panelInferior, panelTexto, panelBotones, panelFechas;
     private JLabel principal, NIF, nombre, apellidos, codPostal, poblacion, provincia, correo, tarifa, fechaInicio, fechaFinal;
     private JTextField datoNIF, datoNombre, datoApellidos, datoCodPostal, datoPoblacion, datoProvincia, datoCorreo, datoFechaInicio, datoFechaFinal;
+    private JComboBox datoTarifa;
     private JTextArea areaTexto;
     private JButton botonAceptar, botonReiniciar, botonVolver;
     private JCheckBox botonFechas;
@@ -26,7 +26,7 @@ public class InterfazGrafica {
         panelSuperior = new JPanel();
         panelInferior = new JPanel();
         panelBotones = new JPanel();
-        panelTexto = new JScrollPane();
+        panelTexto = new JPanel();
         panelFechas = new JPanel();
 
         principal = new JLabel("PANTALLA PRINCIPAL");
@@ -176,9 +176,8 @@ public class InterfazGrafica {
 
             areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
             areaTexto.setEditable(false);
-            panelTexto = new JScrollPane(areaTexto);
-            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelTexto = new JPanel();
+            panelTexto.add(areaTexto);
 
             panelInferior.add(panelTexto);
 
@@ -188,7 +187,7 @@ public class InterfazGrafica {
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro DNI incorrecto\n");
+                    resultado.append("Parámetro NIF incorrecto\n");
                 if (datoNombre.getText().equals(""))
                     resultado.append("Parámetro NOMBRE incorrecto\n");
                 if (datoCodPostal.getText().equals(""))
@@ -205,7 +204,16 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("AÑADIENDO EMPRESA CON NIF " + datoNIF.getText());
             });
-            botonReiniciar.addActionListener(new EscuchadoraBotonReiniciar());
+            botonReiniciar.addActionListener(reiniciar -> {
+                datoNIF.setText("");
+                datoNombre.setText("");
+                datoCodPostal.setText("");
+                datoPoblacion.setText("");
+                datoProvincia.setText("");
+                datoCorreo.setText("");
+
+                areaTexto.setText("");
+            });
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -261,9 +269,8 @@ public class InterfazGrafica {
 
             areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
             areaTexto.setEditable(false);
-            panelTexto = new JScrollPane(areaTexto);
-            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelTexto = new JPanel();
+            panelTexto.add(areaTexto);
 
             panelInferior.add(panelTexto);
 
@@ -274,7 +281,7 @@ public class InterfazGrafica {
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro DNI incorrecto\n");
+                    resultado.append("Parámetro NIF incorrecto\n");
                 if (datoNombre.getText().equals(""))
                     resultado.append("Parámetro NOMBRE incorrecto\n");
                 if (datoApellidos.getText().equals(""))
@@ -293,7 +300,17 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("AÑADIENDO PARTICULAR CON NIF " + datoNIF.getText());
             });
-            botonReiniciar.addActionListener(new EscuchadoraBotonReiniciar());
+            botonReiniciar.addActionListener(reiniciar -> {
+                datoNIF.setText("");
+                datoNombre.setText("");
+                datoApellidos.setText("");
+                datoCodPostal.setText("");
+                datoPoblacion.setText("");
+                datoProvincia.setText("");
+                datoCorreo.setText("");
+
+                areaTexto.setText("");
+            });
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -325,9 +342,8 @@ public class InterfazGrafica {
 
             areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.04), (int) (ventana.getSize().getWidth() * 0.085));
             areaTexto.setEditable(false);
-            panelTexto = new JScrollPane(areaTexto);
-            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelTexto = new JPanel();
+            panelTexto.add(areaTexto);
 
             panelInferior.add(panelTexto);
 
@@ -337,14 +353,18 @@ public class InterfazGrafica {
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro DNI incorrecto\n");
+                    resultado.append("Parámetro NIF incorrecto\n");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else
                     areaTexto.setText("BORRANDO CLIENTE CON NIF " + datoNIF.getText());
             });
-            botonReiniciar.addActionListener(new EscuchadoraBotonReiniciar());
+            botonReiniciar.addActionListener(reiniciar -> {
+                datoNIF.setText("");
+
+                areaTexto.setText("");
+            });
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -372,17 +392,24 @@ public class InterfazGrafica {
             datoNIF = new JTextField();
             panelSuperior.add(datoNIF, 1);
 
-            panelSuperior.add(nombre, 2);
-            datoNombre = new JTextField();
-            panelSuperior.add(datoNombre, 3);
+            panelSuperior.add(tarifa, 2);
+            String[] tarifas = {
+                    "Tarifa básica",
+                    "Promoción madrugadas",
+                    "Promoción tardes",
+                    "Promoción domingos",
+                    "Promoción festivos"
+            };
+            datoTarifa = new JComboBox(tarifas);
+            datoTarifa.setSelectedItem(new StringBuilder("Elige una tarifa"));
+            panelSuperior.add(datoTarifa, 3);
 
             panelInferior = new JPanel();
 
             areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
             areaTexto.setEditable(false);
-            panelTexto = new JScrollPane(areaTexto);
-            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelTexto = new JPanel();
+            panelTexto.add(areaTexto);
 
             panelInferior.add(panelTexto);
 
@@ -393,14 +420,19 @@ public class InterfazGrafica {
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro DNI incorrecto\n");
+                    resultado.append("Parámetro NIF incorrecto\n");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else
                     areaTexto.setText("CAMBIANDO TARIFA DEL CLIENTE CON NIF " + datoNIF.getText());
             });
-            botonReiniciar.addActionListener(new EscuchadoraBotonReiniciar());
+            botonReiniciar.addActionListener(reiniciar -> {
+                datoNIF.setText("");
+                datoTarifa.setSelectedIndex(0);
+
+                areaTexto.setText("");
+            });
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -432,9 +464,8 @@ public class InterfazGrafica {
 
             areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
             areaTexto.setEditable(false);
-            panelTexto = new JScrollPane(areaTexto);
-            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelTexto = new JPanel();
+            panelTexto.add(areaTexto);
 
             panelInferior.add(panelTexto);
 
@@ -444,14 +475,18 @@ public class InterfazGrafica {
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro DNI incorrecto\n");
+                    resultado.append("Parámetro NIF incorrecto\n");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else
                     areaTexto.setText("MOSTRANDO CLIENTE CON NIF " + datoNIF.getText());
             });
-            botonReiniciar.addActionListener(new EscuchadoraBotonReiniciar());
+            botonReiniciar.addActionListener(reiniciar -> {
+                datoNIF.setText("");
+
+                areaTexto.setText("");
+            });
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -506,14 +541,12 @@ public class InterfazGrafica {
 
             panelSuperior.add(panelFechas, BorderLayout.SOUTH);
 
-
             panelInferior = new JPanel();
 
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.04), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.035), (int) (ventana.getSize().getWidth() * 0.085));
             areaTexto.setEditable(false);
-            panelTexto = new JScrollPane(areaTexto);
-            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelTexto = new JPanel();
+            panelTexto.add(areaTexto);
 
             panelInferior.add(panelTexto);
 
@@ -523,10 +556,25 @@ public class InterfazGrafica {
             botonAceptar.addActionListener(aceptar -> {
                 if (!botonFechas.isSelected())
                     areaTexto.setText("LISTANDO CLIENTES");
-                else
-                    areaTexto.setText("LISTANDO CLIENTES ENTRE " + datoFechaInicio.getText() + " Y " + datoFechaFinal.getText());
+                else {
+                    StringBuilder resultado = new StringBuilder();
+                    if (datoFechaInicio.getText().equals(""))
+                        resultado.append("Parámetro FECHA INICIO incorrecto");
+                    if (datoFechaFinal.getText().equals(""))
+                        resultado.append("Parámetro FECHA FINAL incorrecto");
+
+                    if (!resultado.toString().equals(""))
+                        areaTexto.setText(resultado.toString());
+                    else
+                        areaTexto.setText("LISTANDO CLIENTES ENTRE " + datoFechaInicio.getText() + " Y " + datoFechaFinal.getText());
+                }
             });
-            botonReiniciar.addActionListener(new EscuchadoraBotonReiniciar());
+            botonReiniciar.addActionListener(reiniciar -> {
+                datoFechaInicio.setText("");
+                datoFechaFinal.setText("");
+
+                areaTexto.setText("");
+            });
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -598,21 +646,6 @@ public class InterfazGrafica {
             panel.add(texto);
 
             ventana.setContentPane(panel);
-        }
-    }
-
-    private class EscuchadoraBotonReiniciar implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            datoNIF.setText("");
-            datoNombre.setText("");
-            datoApellidos.setText("");
-            datoCodPostal.setText("");
-            datoPoblacion.setText("");
-            datoProvincia.setText("");
-            datoCorreo.setText("");
-
-            areaTexto.setText("");
         }
     }
 
