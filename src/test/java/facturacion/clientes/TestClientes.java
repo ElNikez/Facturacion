@@ -1,10 +1,6 @@
-package swing.modelo;
+package facturacion.clientes;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
-import facturacion.clientes.Cliente;
-import facturacion.clientes.Direccion;
-import facturacion.clientes.Empresa;
-import facturacion.clientes.Particular;
 import facturacion.excepciones.ClienteNoEncontrado;
 import facturacion.excepciones.ClienteYaExiste;
 import facturacion.excepciones.ListaClientesVacio;
