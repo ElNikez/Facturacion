@@ -1,15 +1,15 @@
 package swing.main;
 
-import swing.vista.InterfazGrafica;
+import swing.vista.VistaPrincipal;
 
 import javax.swing.*;
 
 public class Facturacion {
 
     public static void main(String[] args) {
-        InterfazGrafica interfazGrafica = new InterfazGrafica();
+        VistaPrincipal vistaPrincipal = new VistaPrincipal();
 
-        SwingUtilities.invokeLater(interfazGrafica::iniciarPrograma);
+        SwingUtilities.invokeLater(vistaPrincipal::iniciarPrograma);
     }
 
 }

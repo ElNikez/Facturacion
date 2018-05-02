@@ -20,7 +20,7 @@ public class Cliente implements Fecha, Serializable {
         super();
     }
 
-    Cliente(String nif, String nombre, String correoElectronico, Direccion direccion, Tarifa tarifa) {
+    public Cliente(String nif, String nombre, String correoElectronico, Direccion direccion, Tarifa tarifa) {
         this.nif = nif;
         this.nombre = nombre;
         this.correoElectronico = correoElectronico;
