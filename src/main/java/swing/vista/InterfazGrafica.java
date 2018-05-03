@@ -12,7 +12,7 @@ public class InterfazGrafica {
     private JPanel panelSuperior, panelInferior, panelTexto, panelBotones, panelFechas;
     private JLabel principal, NIF, nombre, apellidos, codPostal, poblacion, provincia, correo, tarifa, fechaInicio, fechaFinal;
     private JTextField datoNIF, datoNombre, datoApellidos, datoCodPostal, datoPoblacion, datoProvincia, datoCorreo, datoFechaInicio, datoFechaFinal;
-    private JComboBox datoTarifa;
+    private JComboBox<String> datoTarifa;
     private JTextArea areaTexto;
     private JButton botonAceptar, botonReiniciar, botonVolver;
     private JCheckBox botonFechas;
@@ -184,6 +184,7 @@ public class InterfazGrafica {
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
+            botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
@@ -204,6 +205,7 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("AÑADIENDO EMPRESA CON NIF " + datoNIF.getText());
             });
+            botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
                 datoNIF.setText("");
                 datoNombre.setText("");
@@ -214,6 +216,7 @@ public class InterfazGrafica {
 
                 areaTexto.setText("");
             });
+            botonVolver = new JButton("Volver");
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -245,6 +248,7 @@ public class InterfazGrafica {
             datoNombre = new JTextField();
             panelSuperior.add(datoNombre, 3);
 
+            apellidos.setEnabled(true);
             panelSuperior.add(apellidos, 4);
             datoApellidos = new JTextField();
             panelSuperior.add(datoApellidos, 5);
@@ -300,6 +304,7 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("AÑADIENDO PARTICULAR CON NIF " + datoNIF.getText());
             });
+            botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
                 datoNIF.setText("");
                 datoNombre.setText("");
@@ -311,6 +316,7 @@ public class InterfazGrafica {
 
                 areaTexto.setText("");
             });
+            botonVolver = new JButton("Volver");
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -350,6 +356,7 @@ public class InterfazGrafica {
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
+            botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
@@ -360,11 +367,13 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("BORRANDO CLIENTE CON NIF " + datoNIF.getText());
             });
+            botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
                 datoNIF.setText("");
 
                 areaTexto.setText("");
             });
+            botonVolver = new JButton("Volver");
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -400,7 +409,7 @@ public class InterfazGrafica {
                     "Promoción domingos",
                     "Promoción festivos"
             };
-            datoTarifa = new JComboBox(tarifas);
+            datoTarifa = new JComboBox<>(tarifas);
             datoTarifa.setSelectedItem(new StringBuilder("Elige una tarifa"));
             panelSuperior.add(datoTarifa, 3);
 
@@ -427,12 +436,14 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("CAMBIANDO TARIFA DEL CLIENTE CON NIF " + datoNIF.getText());
             });
+            botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
                 datoNIF.setText("");
                 datoTarifa.setSelectedIndex(0);
 
                 areaTexto.setText("");
             });
+            botonVolver = new JButton("Volver");
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -472,6 +483,7 @@ public class InterfazGrafica {
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
+            botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
                 if (datoNIF.getText().equals(""))
@@ -482,11 +494,13 @@ public class InterfazGrafica {
                 else
                     areaTexto.setText("MOSTRANDO CLIENTE CON NIF " + datoNIF.getText());
             });
-            botonReiniciar.addActionListener(reiniciar -> {
+            botonReiniciar = new JButton("Reiniciar");
+            botonReiniciar.addActionListener(reiniciarDatosCliente -> {
                 datoNIF.setText("");
 
                 areaTexto.setText("");
             });
+            botonVolver = new JButton("Volver");
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
@@ -553,6 +567,7 @@ public class InterfazGrafica {
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
+            botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
                 if (!botonFechas.isSelected())
                     areaTexto.setText("LISTANDO CLIENTES");
@@ -569,12 +584,15 @@ public class InterfazGrafica {
                         areaTexto.setText("LISTANDO CLIENTES ENTRE " + datoFechaInicio.getText() + " Y " + datoFechaFinal.getText());
                 }
             });
-            botonReiniciar.addActionListener(reiniciar -> {
+            botonReiniciar = new JButton("Reiniciar");
+            botonReiniciar.addActionListener(reiniciarListar -> {
+                botonFechas.setSelected(false);
                 datoFechaInicio.setText("");
                 datoFechaFinal.setText("");
 
                 areaTexto.setText("");
             });
+            botonVolver = new JButton("Volver");
             botonVolver.addActionListener(new EscuchadoraBotonVolver());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
