@@ -10,7 +10,8 @@ import javax.xml.transform.sax.SAXSource;
 import java.io.*;
 import java.util.*;
 
-public class Gestion {
+public class Gestion implements VistaGestionParaGrafica,VistaGestionParaControlador{
+
 
     private Map<String, Cliente> listaClientes;
     private Map<String, HashSet<Llamada>> listaLlamadas;

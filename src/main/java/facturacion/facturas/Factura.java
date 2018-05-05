@@ -25,6 +25,22 @@ public class Factura implements Fecha, Serializable {
         return fechaDeEmision;
     }
 
+    public int getCodigoFactura() {
+        return codigoFactura;
+    }
+
+    public Tarifa getTarifaAplicada() {
+        return tarifaAplicada;
+    }
+
+    public Calendar getFechaDeEmision() {
+        return fechaDeEmision;
+    }
+
+    public float getImporteTotal() {
+        return importeTotal;
+    }
+
     @Override
     public String toString() {
         return "Factura {" + "\n" +

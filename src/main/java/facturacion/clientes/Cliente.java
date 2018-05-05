@@ -42,11 +42,11 @@ public class Cliente implements Fecha, Serializable {
         return nif;
     }
 
-    String getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    String getCorreo() {
+    public String getCorreo() {
         return correoElectronico;
     }
 
