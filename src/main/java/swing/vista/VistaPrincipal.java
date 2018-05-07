@@ -1,24 +1,89 @@
 package swing.vista;
 
+import facturacion.clientes.Cliente;
+import facturacion.excepciones.ClienteNoEncontrado;
+import facturacion.excepciones.ListaClientesVacio;
+import facturacion.facturas.*;
+import facturacion.gestion.Gestion;
+import swing.controlador.Controlador;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InterfazGrafica {
+public class VistaPrincipal implements VistaParaControlador {
 
+    private Gestion gestion;
+    private Controlador controlador;
     private JFrame ventana;
     private Container panel;
     private JPanel panelSuperior, panelInferior, panelTexto, panelBotones, panelFechas;
     private JLabel principal, NIF, nombre, apellidos, codPostal, poblacion, provincia, correo, tarifa, fechaInicio, fechaFinal;
     private JTextField datoNIF, datoNombre, datoApellidos, datoCodPostal, datoPoblacion, datoProvincia, datoCorreo, datoFechaInicio, datoFechaFinal;
-    private JComboBox<String> datoTarifa;
+    private JComboBox<Tarifa> datoTarifa;
     private JTextArea areaTexto;
     private JButton botonAceptar, botonReiniciar, botonVolver;
+    private JRadioButton botonEmpresa, botonParticular;
     private JCheckBox botonFechas;
-    private JDialog selectorFechaInicio, selectorFechaFinal;
+
+    @Override
+    public String getNIF() {
+        return datoNIF.getText();
+    }
+
+    @Override
+    public String getNombre() {
+        return datoNombre.getText();
+    }
+
+    @Override
+    public String getApellidos() {
+        return datoApellidos.getText();
+    }
+
+    @Override
+    public int getCodigoPostal() {
+        return Integer.parseInt(datoCodPostal.getText());
+    }
+
+    @Override
+    public String getPoblacion() {
+        return datoPoblacion.getText();
+    }
+
+    @Override
+    public String getProvincia() {
+        return datoProvincia.getText();
+    }
+
+    @Override
+    public String getCorreo() {
+        return datoCorreo.getText();
+    }
+
+    @Override
+    public Tarifa getTarifa() {
+        return (Tarifa) datoTarifa.getSelectedItem();
+    }
+
+    @Override
+    public boolean esEmpresa() {
+        return botonEmpresa.isSelected();
+    }
+
+    @Override
+    public boolean esParticular() {
+        return botonParticular.isSelected();
+    }
 
     public void iniciarPrograma() {
+        gestion = new Gestion();
+
+        controlador = new Controlador();
+        controlador.setGestion(gestion);
+        controlador.setVista(this);
+
         ventana = new JFrame("Facturación");
 
         panel = ventana.getContentPane();
@@ -46,9 +111,6 @@ public class InterfazGrafica {
         botonVolver = new JButton("Volver");
 
         botonFechas = new JCheckBox("Entre fechas");
-
-        selectorFechaInicio = new JDialog();
-        selectorFechaFinal = new JDialog();
 
         cargarVista();
     }
@@ -94,22 +156,22 @@ public class InterfazGrafica {
         menuClientes.add(listarClientes);
 
         JMenuItem altaLlamada = new JMenuItem("Dar de alta");
-        altaLlamada.addActionListener(new EscuchadoraAltaLlamada());
+//        altaLlamada.addActionListener(new EscuchadoraAltaLlamada());
 
         JMenuItem listarLlamadas = new JMenuItem("Listar llamadas");
-        listarLlamadas.addActionListener(new EscuchadoraListarLlamadas());
+//        listarLlamadas.addActionListener(new EscuchadoraListarLlamadas());
 
         menuLlamadas.add(altaLlamada);
         menuLlamadas.add(listarLlamadas);
 
         JMenuItem emitirFactura = new JMenuItem("Emitir factura");
-        emitirFactura.addActionListener(new EscuchadoraEmitirFactura());
+//        emitirFactura.addActionListener(new EscuchadoraEmitirFactura());
 
         JMenuItem mostrarFactura = new JMenuItem("Mostrar factura por código");
-        mostrarFactura.addActionListener(new EscuchadoraMostrarFactura());
+//        mostrarFactura.addActionListener(new EscuchadoraMostrarFactura());
 
         JMenuItem listarFacturas = new JMenuItem("Listar facturas cliente");
-        listarFacturas.addActionListener(new EscuchadoraListarFacturas());
+//        listarFacturas.addActionListener(new EscuchadoraListarFacturas());
         menuFacturas.add(emitirFactura);
         menuFacturas.add(mostrarFactura);
         menuFacturas.add(listarFacturas);
@@ -133,6 +195,18 @@ public class InterfazGrafica {
         ventana.setContentPane(panel);
     }
 
+    private String mostrarClientes(String nif) {
+        try {
+            return "MOSTRANDO CLIENTE CON NIF " + datoNIF.getText() + "/n" +
+                    "MOSTRANDO NIF " + gestion.mostrarCliente(nif).getNif() + "/n" +
+                    "MOSTRANDO DIRECCION " + gestion.mostrarCliente(nif).getDireccion().toString() + "/n" +
+                    "MOSTRANDO Tarifa " + gestion.mostrarCliente(nif).getTarifa().toString();
+        } catch (ClienteNoEncontrado clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
+        return "NO SE HAN PODIDO MOSTRAR DATOS DE CLIENTE";
+    }
+
     private class EscuchadoraAltaEmpresa implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -150,27 +224,22 @@ public class InterfazGrafica {
             datoNombre = new JTextField();
             panelSuperior.add(datoNombre, 3);
 
-            panelSuperior.add(apellidos, 4);
-            apellidos.setEnabled(false);
-            datoApellidos = new JTextField();
-            datoApellidos.setEnabled(false);
-            panelSuperior.add(datoApellidos, 5);
-
-            panelSuperior.add(codPostal, 6);
+            panelSuperior.add(codPostal, 4);
             datoCodPostal = new JTextField();
-            panelSuperior.add(datoCodPostal, 7);
+            panelSuperior.add(datoCodPostal, 5);
 
-            panelSuperior.add(poblacion, 8);
+            panelSuperior.add(poblacion, 6);
             datoPoblacion = new JTextField();
-            panelSuperior.add(datoPoblacion, 9);
+            panelSuperior.add(datoPoblacion, 7);
 
-            panelSuperior.add(provincia, 10);
+            panelSuperior.add(provincia, 8);
             datoProvincia = new JTextField();
-            panelSuperior.add(datoProvincia, 11);
+            panelSuperior.add(datoProvincia, 9);
 
-            panelSuperior.add(correo, 12);
+            panelSuperior.add(correo, 10);
             datoCorreo = new JTextField();
-            panelSuperior.add(datoCorreo, 13);
+            panelSuperior.add(datoCorreo, 11);
+
 
             panelInferior = new JPanel();
 
@@ -202,8 +271,20 @@ public class InterfazGrafica {
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
-                else
-                    areaTexto.setText("AÑADIENDO EMPRESA CON NIF " + datoNIF.getText());
+                else {
+                    boolean anyadido = controlador.darDeAltaCliente();
+                    if (anyadido) {
+                        areaTexto.setText("AÑADIDO EMPRESA CON NIF " + datoNIF.getText());
+                    } else {
+                        areaTexto.setText("NO SE HA PODIDO AÑADIR EMPRESA CON NIF " + datoNIF.getText());
+                    }
+                    datoNIF.setText("");
+                    datoNombre.setText("");
+                    datoCodPostal.setText("");
+                    datoPoblacion.setText("");
+                    datoProvincia.setText("");
+                    datoCorreo.setText("");
+                }
             });
             botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
@@ -217,7 +298,7 @@ public class InterfazGrafica {
                 areaTexto.setText("");
             });
             botonVolver = new JButton("Volver");
-            botonVolver.addActionListener(new EscuchadoraBotonVolver());
+            botonVolver.addActionListener(new EscuchadoraDatosCliente());
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
@@ -238,7 +319,7 @@ public class InterfazGrafica {
             panel.setLayout(new BorderLayout());
 
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(7, 2));
+            panelSuperior.setLayout(new GridLayout(8, 2));
 
             panelSuperior.add(NIF, 0);
             datoNIF = new JTextField();
@@ -268,6 +349,7 @@ public class InterfazGrafica {
             panelSuperior.add(correo, 12);
             datoCorreo = new JTextField();
             panelSuperior.add(datoCorreo, 13);
+
 
             panelInferior = new JPanel();
 
@@ -301,8 +383,23 @@ public class InterfazGrafica {
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
-                else
+                else {
                     areaTexto.setText("AÑADIENDO PARTICULAR CON NIF " + datoNIF.getText());
+
+                    boolean anyadido = controlador.darDeAltaCliente();
+                    if (anyadido) {
+                        areaTexto.append("AÑADIDO PARTICULAR CON NIF " + datoNIF.getText());
+                    } else {
+                        areaTexto.append("NO SE HA PODIDO AÑADIR PARTICULAR CON NIF " + datoNIF.getText());
+                    }
+
+                    datoNIF.setText("");
+                    datoNombre.setText("");
+                    datoCodPostal.setText("");
+                    datoPoblacion.setText("");
+                    datoProvincia.setText("");
+                    datoCorreo.setText("");
+                }
             });
             botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
@@ -366,6 +463,12 @@ public class InterfazGrafica {
                     areaTexto.setText(resultado.toString());
                 else
                     areaTexto.setText("BORRANDO CLIENTE CON NIF " + datoNIF.getText());
+                boolean borrado = controlador.darDeBaja(datoNIF.getText());
+                if (borrado) {
+                    areaTexto.setText("BORRADO CLIENTE CON NIF " + datoNIF.getText());
+                } else {
+                    areaTexto.setText("NO SE HA PODIDO BORRAR CLIENTE CON NIF " + datoNIF.getText());
+                }
             });
             botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciar -> {
@@ -402,13 +505,18 @@ public class InterfazGrafica {
             panelSuperior.add(datoNIF, 1);
 
             panelSuperior.add(tarifa, 2);
-            String[] tarifas = {
-                    "Tarifa básica",
-                    "Promoción madrugadas",
-                    "Promoción tardes",
-                    "Promoción domingos",
-                    "Promoción festivos"
-            };
+            Tarifa[] tarifas = new Tarifa[0];
+            try {
+                tarifas = new Tarifa[]{
+                        new TarifaBasica(Tarifa.PRECIO_BASICA),
+                        new PromocionMadrugadas(gestion.mostrarCliente(datoNIF.getText()).getTarifa(), Tarifa.PRECIO_MADRUGADA),
+                        new PromocionTardes(gestion.mostrarCliente(datoNIF.getText()).getTarifa(), Tarifa.PRECIO_TARDE),
+                        new PromocionDomingos(gestion.mostrarCliente(datoNIF.getText()).getTarifa(), Tarifa.PRECIO_DOMINGO),
+                        new PromocionFestivos(gestion.mostrarCliente(datoNIF.getText()).getTarifa(), Tarifa.PRECIO_FESTIVO),
+                };
+            } catch (ClienteNoEncontrado clienteNoEncontrado) {
+                clienteNoEncontrado.printStackTrace();
+            }
             datoTarifa = new JComboBox<>(tarifas);
             datoTarifa.setSelectedItem(new StringBuilder("Elige una tarifa"));
             panelSuperior.add(datoTarifa, 3);
@@ -491,8 +599,15 @@ public class InterfazGrafica {
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
-                else
-                    areaTexto.setText("MOSTRANDO CLIENTE CON NIF " + datoNIF.getText());
+                else {
+                    try {
+                        areaTexto.setText("MOSTRANDO CLIENTE CON NIF " + datoNIF.getText() + "/n" +
+                                gestion.mostrarCliente(datoNIF.getText()));
+                    } catch (ClienteNoEncontrado clienteNoEncontrado) {
+                        clienteNoEncontrado.printStackTrace();
+                    }
+                }
+
             });
             botonReiniciar = new JButton("Reiniciar");
             botonReiniciar.addActionListener(reiniciarDatosCliente -> {
@@ -569,9 +684,16 @@ public class InterfazGrafica {
 
             botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
-                if (!botonFechas.isSelected())
+                if (!botonFechas.isSelected()) {
                     areaTexto.setText("LISTANDO CLIENTES");
-                else {
+                    try {
+                        for (Cliente cliente : gestion.listarClientes()) {
+                            areaTexto.append(mostrarClientes(cliente.getNif()) + "/n");
+                        }
+                    } catch (ListaClientesVacio listaClientesVacio) {
+                        listaClientesVacio.printStackTrace();
+                    }
+                } else {
                     StringBuilder resultado = new StringBuilder();
                     if (datoFechaInicio.getText().equals(""))
                         resultado.append("Parámetro FECHA INICIO incorrecto");
