@@ -1,5 +1,7 @@
 package swing.main;
 
+import swing.controlador.Controlador;
+import swing.modelo.gestion.Gestion;
 import swing.vista.VistaPrincipal;
 
 import javax.swing.*;
@@ -7,9 +9,17 @@ import javax.swing.*;
 public class Facturacion {
 
     public static void main(String[] args) {
-        VistaPrincipal vistaPrincipal = new VistaPrincipal();
+        Gestion gestion = new Gestion();
+        Controlador controlador = new Controlador();
+        VistaPrincipal vista = new VistaPrincipal();
 
-        SwingUtilities.invokeLater(vistaPrincipal::iniciarPrograma);
+        controlador.cambiarVista(vista);
+        controlador.cambiarGestion(gestion);
+
+        vista.cambiarControlador(controlador);
+        vista.cambiarGestion(gestion);
+
+        SwingUtilities.invokeLater(vista::iniciarPrograma);
     }
 
 }

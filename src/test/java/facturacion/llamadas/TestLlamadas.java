@@ -1,17 +1,17 @@
 package facturacion.llamadas;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
-import facturacion.clientes.Cliente;
-import facturacion.clientes.Direccion;
-import facturacion.clientes.Empresa;
-import facturacion.excepciones.ClienteNoEncontrado;
-import facturacion.excepciones.ClienteNoLlamadas;
-import facturacion.excepciones.ClienteYaExiste;
-import facturacion.facturas.Llamada;
-import facturacion.facturas.TarifaBasica;
-import facturacion.gestion.Gestion;
-import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
+import swing.modelo.clientes.Cliente;
+import swing.modelo.excepciones.ClienteNoEncontrado;
+import swing.modelo.excepciones.ClienteNoLlamadas;
+import swing.modelo.excepciones.ClienteYaExiste;
+import swing.modelo.factorias.FactoriaClientes;
+import swing.modelo.facturas.Llamada;
+import swing.modelo.facturas.Tarifa;
+import swing.modelo.facturas.TarifaBasica;
+import swing.modelo.gestion.Gestion;
+import swing.modelo.gestion.GestionEntreFechas;
 
 import java.util.Calendar;
 
@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Test llamadas")
 class TestLlamadas {
 
+    private static FactoriaClientes factoriaClientes = new FactoriaClientes();
     private static Gestion gestion;
     private static GeneradorDatosINE generador;
     private static Cliente cliente;
@@ -30,7 +31,7 @@ class TestLlamadas {
     @BeforeAll
     static void init() {
         generador = new GeneradorDatosINE();
-        cliente = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(10));
+        cliente = factoriaClientes.crearEmpresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", factoriaClientes.crearDireccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(Tarifa.PRECIO_BASICA));
         llamada1 = new Llamada(666666666, 1000);
         llamada2 = new Llamada(666666666, 500);
         llamada3 = new Llamada(123456789, 666);
@@ -46,9 +47,13 @@ class TestLlamadas {
     }
 
     @BeforeEach
-    void setUp() throws ClienteYaExiste {
+    void setUp() {
         gestion = new Gestion();
-        gestion.darDeAltaCliente(cliente);
+        try {
+            gestion.darAltaCliente(cliente);
+        } catch (ClienteYaExiste clienteYaExiste) {
+            clienteYaExiste.printStackTrace();
+        }
     }
 
     @AfterEach
@@ -60,41 +65,50 @@ class TestLlamadas {
     @Test
     void testDarDeAltaLlamada() {
         assertAll(
-                () -> assertTrue(gestion.darDeAltaLlamada(cliente.getNif(), llamada1)),
-                () -> assertTrue(gestion.darDeAltaLlamada(cliente.getNif(), llamada2)),
-                () -> assertTrue(gestion.darDeAltaLlamada(cliente.getNif(), llamada3))
+                () -> assertTrue(gestion.darAltaLlamada(cliente.nif(), llamada1)),
+                () -> assertTrue(gestion.darAltaLlamada(cliente.nif(), llamada2)),
+                () -> assertTrue(gestion.darAltaLlamada(cliente.nif(), llamada3))
         );
     }
 
     @DisplayName("Mostrar llamadas")
     @Test
-    void testMostrarLlamadasDeCliente() throws ClienteNoEncontrado, ClienteNoLlamadas {
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
+    void testMostrarLlamadasDeCliente() {
+        try {
+            gestion.darAltaLlamada(cliente.nif(), llamada1);
+            gestion.darAltaLlamada(cliente.nif(), llamada2);
+            gestion.darAltaLlamada(cliente.nif(), llamada3);
+        } catch (ClienteNoEncontrado clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
 
-        assertNotNull(gestion.listarLlamadas(cliente.getNif()));
+        try {
+            assertNotNull(gestion.listarLlamadas(cliente.nif()));
+        } catch (ClienteNoEncontrado | ClienteNoLlamadas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
     }
 
     @DisplayName("Llamadas entre fechas")
     @Test
-    void testListarLlamadasEntreFechas() throws ClienteNoEncontrado, ClienteNoLlamadas {
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
+    void testListarLlamadasEntreFechas() {
+        try {
+            gestion.darAltaLlamada(cliente.nif(), llamada1);
+            gestion.darAltaLlamada(cliente.nif(), llamada2);
+            gestion.darAltaLlamada(cliente.nif(), llamada3);
+        } catch (ClienteNoEncontrado clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
 
-        GestionEntreFechas<Llamada> entreFechas = new GestionEntreFechas<>();
+        GestionEntreFechas<Llamada> gestionFechas = new GestionEntreFechas<>();
         Calendar fechaInicio = Calendar.getInstance();
         fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
         Calendar fechaFinal = Calendar.getInstance();
 
-        assertNotNull(entreFechas.muestraColeccionEntreFechas(gestion.listarLlamadas(cliente.getNif()), fechaInicio, fechaFinal));
+        try {
+            assertNotNull(gestionFechas.entreFechas(gestion.listarLlamadas(cliente.nif()), fechaInicio, fechaFinal));
+        } catch (ClienteNoEncontrado | ClienteNoLlamadas e) {
+            e.printStackTrace();
+        }
     }
-
-    @DisplayName("Excepciones")
-    @Test
-    void testExcepciones() {
-        assertThrows(ClienteNoLlamadas.class, () -> gestion.listarLlamadas(cliente.getNif()));
-    }
-
 }

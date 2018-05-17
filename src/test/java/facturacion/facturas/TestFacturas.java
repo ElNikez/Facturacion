@@ -1,13 +1,16 @@
 package facturacion.facturas;
 
 import es.uji.belfern.generador.GeneradorDatosINE;
-import facturacion.clientes.Cliente;
-import facturacion.clientes.Direccion;
-import facturacion.clientes.Empresa;
-import facturacion.excepciones.*;
-import facturacion.gestion.Gestion;
-import facturacion.gestion.GestionEntreFechas;
 import org.junit.jupiter.api.*;
+import swing.modelo.clientes.Cliente;
+import swing.modelo.excepciones.*;
+import swing.modelo.factorias.FactoriaClientes;
+import swing.modelo.facturas.Factura;
+import swing.modelo.facturas.Llamada;
+import swing.modelo.facturas.Tarifa;
+import swing.modelo.facturas.TarifaBasica;
+import swing.modelo.gestion.Gestion;
+import swing.modelo.gestion.GestionEntreFechas;
 
 import java.util.Calendar;
 
@@ -18,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Test facturas")
 class TestFacturas {
 
+    private static FactoriaClientes factoriaClientes = new FactoriaClientes();
     private static Gestion gestion;
     private static GeneradorDatosINE generador;
     private static Cliente cliente;
@@ -29,11 +33,11 @@ class TestFacturas {
     @BeforeAll
     static void init() {
         generador = new GeneradorDatosINE();
-        cliente = new Empresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", new Direccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(10));
+        cliente = factoriaClientes.crearEmpresa(generador.getNIF(), generador.getNombre(), "empresa@uji.es", factoriaClientes.crearDireccion(12345, generador.getPoblacion(generador.getProvincia()), generador.getProvincia()), new TarifaBasica(10));
         llamada1 = new Llamada(666666666, 1000);
         llamada2 = new Llamada(666666666, 500);
         llamada3 = new Llamada(123456789, 666);
-        factura = new Factura(0, new TarifaBasica(10), 361);
+        factura = new Factura(0, new TarifaBasica(Tarifa.PRECIO_BASICA), 361);
     }
 
     @AfterAll
@@ -47,12 +51,20 @@ class TestFacturas {
     }
 
     @BeforeEach
-    void setUp() throws ClienteYaExiste, ClienteNoEncontrado {
+    void setUp() {
         gestion = new Gestion();
-        gestion.darDeAltaCliente(cliente);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada1);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada2);
-        gestion.darDeAltaLlamada(cliente.getNif(), llamada3);
+        try {
+            gestion.darAltaCliente(cliente);
+        } catch (ClienteYaExiste clienteYaExiste) {
+            clienteYaExiste.printStackTrace();
+        }
+        try {
+            gestion.darAltaLlamada(cliente.nif(), llamada1);
+            gestion.darAltaLlamada(cliente.nif(), llamada2);
+            gestion.darAltaLlamada(cliente.nif(), llamada3);
+        } catch (ClienteNoEncontrado clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
     }
 
     @AfterEach
@@ -62,62 +74,81 @@ class TestFacturas {
 
     @DisplayName("Emitir factura")
     @Test
-    void testEmitirFactura() throws ClienteNoLlamadas, ClienteNoEncontrado {
+    void testEmitirFactura() {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
-        assertTrue(gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision));
+        try {
+            assertTrue(gestion.emitirFactura(cliente.nif(), fechaFacturacion, fechaEmision));
+        } catch (ClienteNoEncontrado | ClienteNoLlamadas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
     }
 
     @DisplayName("Listar facturas")
     @Test
-    void testListarFacturas() throws ClienteNoEncontrado, ClienteNoFacturas, ClienteNoLlamadas {
+    void testListarFacturas() {
         Calendar fechaFacturacion = Calendar.getInstance();
         Calendar fechaEmision = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
-        gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
+        try {
+            gestion.emitirFactura(cliente.nif(), fechaFacturacion, fechaEmision);
+        } catch (ClienteNoEncontrado | ClienteNoLlamadas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
 
-        assertNotNull(gestion.listarFacturas(cliente.getNif()));
+        try {
+            assertNotNull(gestion.listarFacturas(cliente.nif()));
+        } catch (ClienteNoEncontrado | ClienteNoFacturas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
     }
 
     @DisplayName("Mostrar facturas")
     @Test
-    void testMostrarFacturas() throws ClienteNoLlamadas, ClienteNoEncontrado, FacturaNoEncontrada, ListaFacturasVacia {
+    void testMostrarFacturas() {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
-        gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
+        try {
+            gestion.emitirFactura(cliente.nif(), fechaFacturacion, fechaEmision);
+        } catch (ClienteNoEncontrado | ClienteNoLlamadas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
 
-        assertThat(gestion.mostrarFactura(0), is(factura));
+        try {
+            assertThat(gestion.mostrarFactura(0), is(factura));
+        } catch (ListaFacturasVacia | FacturaNoEncontrada e) {
+            e.printStackTrace();
+        }
     }
 
     @DisplayName("Facturas entre fechas")
     @Test
-    void testListarLlamadasEntreFechas() throws ClienteNoLlamadas, ClienteNoEncontrado, ClienteNoFacturas {
+    void testListarLlamadasEntreFechas() {
         Calendar fechaEmision = Calendar.getInstance();
         Calendar fechaFacturacion = Calendar.getInstance();
         fechaFacturacion.set(Calendar.MONTH, fechaFacturacion.get(Calendar.MONTH) - 1);
 
-        gestion.emitirFactura(cliente.getNif(), fechaFacturacion, fechaEmision);
+        try {
+            gestion.emitirFactura(cliente.nif(), fechaFacturacion, fechaEmision);
+        } catch (ClienteNoEncontrado | ClienteNoLlamadas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
 
-        GestionEntreFechas<Factura> entreFechas = new GestionEntreFechas<>();
+        GestionEntreFechas<Factura> gestionFechas = new GestionEntreFechas<>();
         Calendar fechaInicio = Calendar.getInstance();
         fechaInicio.set(Calendar.MONTH, fechaInicio.get(Calendar.MONTH) - 1);
         Calendar fechaFinal = Calendar.getInstance();
 
-        assertNotNull(entreFechas.muestraColeccionEntreFechas(gestion.listarFacturas(cliente.getNif()), fechaInicio, fechaFinal));
-    }
-
-    @DisplayName("Excepciones")
-    @Test
-    void testExcepciones() {
-        assertAll("Excepciones",
-                () -> assertThrows(ListaFacturasVacia.class, () -> gestion.mostrarFactura(0)),
-                () -> assertThrows(ClienteNoFacturas.class, () -> gestion.listarFacturas(cliente.getNif()))
-        );
+        try {
+            assertNotNull(gestionFechas.entreFechas(gestion.listarFacturas(cliente.nif()), fechaInicio, fechaFinal));
+        } catch (ClienteNoEncontrado | ClienteNoFacturas clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
     }
 
 }
