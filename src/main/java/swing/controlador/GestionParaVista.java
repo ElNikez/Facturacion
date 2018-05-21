@@ -15,6 +15,8 @@ public interface GestionParaVista {
 
     boolean clienteConLlamadas(String nif);
 
+    boolean clienteConFacturas(String nif);
+
     boolean existeFactura(int codigo);
 
     Cliente mostrarCliente(String nif) throws ClienteNoEncontrado;

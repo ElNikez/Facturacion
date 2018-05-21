@@ -39,7 +39,12 @@ public class Gestion implements GestionParaControlador, GestionParaVista {
 
     @Override
     public boolean clienteConLlamadas(String nif) {
-        return listaLlamadas.containsKey(nif);
+        return !listaLlamadas.get(nif).isEmpty();
+    }
+
+    @Override
+    public boolean clienteConFacturas(String nif) {
+        return !listafacturasCliente.get(nif).isEmpty();
     }
 
     @Override
@@ -215,16 +220,16 @@ public class Gestion implements GestionParaControlador, GestionParaVista {
         ObjectOutputStream oos;
         FileOutputStream fos;
         try {
-            fos = new FileOutputStream(ficheros[0], true);
+            fos = new FileOutputStream(ficheros[0]);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaClientes);
-            fos = new FileOutputStream(ficheros[1], true);
+            fos = new FileOutputStream(ficheros[1]);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaLlamadas);
-            fos = new FileOutputStream(ficheros[2], true);
+            fos = new FileOutputStream(ficheros[2]);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listafacturasCliente);
-            fos = new FileOutputStream(ficheros[3], true);
+            fos = new FileOutputStream(ficheros[3]);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaFacturasCodigo);
         } catch (IOException e) {

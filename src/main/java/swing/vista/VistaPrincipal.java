@@ -996,6 +996,8 @@ public class VistaPrincipal implements VistaParaControlador {
                         resultado.append("Parámetro NIF incorrecto\n");
                     else if (!gestion.existeCliente(datoNIF.getText()))
                         resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe");
+                    else if (gestion.clienteConLlamadas(datoNIF.getText()))
+                        areaTexto.setText("El cliente con NIF " + datoNIF.getText() + " no tiene llamadas\n");
                     if (botonFechas.isSelected()) {
                         if (datoFechaInicio.getText().equals("  /  /    "))
                             resultado.append("Parámetro FECHA INICIO incorrecto\n");
@@ -1006,30 +1008,27 @@ public class VistaPrincipal implements VistaParaControlador {
                     if (!resultado.toString().equals(""))
                         areaTexto.setText(resultado.toString());
                     else {
-                        if (gestion.clienteConLlamadas(datoNIF.getText())) {
-                            try {
-                                Collection<Llamada> listaLlamadas = gestion.listarLlamadas(datoNIF.getText());
-                                if (botonFechas.isSelected()) {
-                                    Calendar fechaInicio = GregorianCalendar.getInstance();
-                                    Calendar fechaFinal = GregorianCalendar.getInstance();
+                        try {
+                            Collection<Llamada> listaLlamadas = gestion.listarLlamadas(datoNIF.getText());
+                            if (botonFechas.isSelected()) {
+                                Calendar fechaInicio = GregorianCalendar.getInstance();
+                                Calendar fechaFinal = GregorianCalendar.getInstance();
 
-                                    String[] vectorFechaInicio = datoFechaInicio.getText().split("/");
-                                    String[] vectorFechaFinal = datoFechaFinal.getText().split("/");
+                                String[] vectorFechaInicio = datoFechaInicio.getText().split("/");
+                                String[] vectorFechaFinal = datoFechaFinal.getText().split("/");
 
-                                    fechaInicio.set(Integer.parseInt(vectorFechaInicio[2]), Integer.parseInt(vectorFechaInicio[1]), Integer.parseInt(vectorFechaInicio[0]));
-                                    fechaFinal.set(Integer.parseInt(vectorFechaFinal[2]), Integer.parseInt(vectorFechaFinal[1]), Integer.parseInt(vectorFechaFinal[0]));
+                                fechaInicio.set(Integer.parseInt(vectorFechaInicio[2]), Integer.parseInt(vectorFechaInicio[1]), Integer.parseInt(vectorFechaInicio[0]));
+                                fechaFinal.set(Integer.parseInt(vectorFechaFinal[2]), Integer.parseInt(vectorFechaFinal[1]), Integer.parseInt(vectorFechaFinal[0]));
 
-                                    listaLlamadas = new GestionEntreFechas<Llamada>().entreFechas(listaLlamadas, fechaInicio, fechaFinal);
-                                }
-
-                                areaTexto.setText("");
-                                for (Llamada llamada : listaLlamadas)
-                                    areaTexto.append(llamada.toString());
-                            } catch (ClienteNoEncontrado | ClienteNoLlamadas ex) {
-                                ex.printStackTrace();
+                                listaLlamadas = new GestionEntreFechas<Llamada>().entreFechas(listaLlamadas, fechaInicio, fechaFinal);
                             }
+
+                            areaTexto.setText("");
+                            for (Llamada llamada : listaLlamadas)
+                                areaTexto.append(llamada.toString());
+                        } catch (ClienteNoEncontrado | ClienteNoLlamadas ex) {
+                            ex.printStackTrace();
                         }
-                        areaTexto.setText("El cliente con NIF " + datoNIF.getText() + " no tiene llamadas\n");
                     }
                 } else
                     areaTexto.setText("No hay clientes en la base de datos");
@@ -1220,15 +1219,18 @@ public class VistaPrincipal implements VistaParaControlador {
             panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
             panelSuperior.setLayout(layout);
 
-            botonFechas.addActionListener(new EscuchadoraBotonFechas());
-            panelSuperior.add(botonFechas, BorderLayout.NORTH);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
             panelFechas = new JPanel();
             panelFechas.setLayout(new GridLayout(3, 2));
 
-            panelFechas.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelFechas.add(datoNIF, 1);
+            botonFechas = new JCheckBox("Entre fechas");
+            botonFechas.addActionListener(new EscuchadoraBotonFechas());
+            panelFechas.add(botonFechas, 0);
+            panelFechas.add(new JLabel(), 1);
 
             panelFechas.add(fechaInicio, 2);
             fechaInicio.setEnabled(false);
@@ -1242,8 +1244,6 @@ public class VistaPrincipal implements VistaParaControlador {
             datoFechaFinal.setEnabled(false);
             panelFechas.add(datoFechaFinal, 5);
 
-            panelSuperior.add(panelFechas, BorderLayout.SOUTH);
-
             areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
             panelTexto = new JScrollPane(areaTexto);
@@ -1252,53 +1252,69 @@ public class VistaPrincipal implements VistaParaControlador {
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
+
             botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
-                StringBuilder resultado = new StringBuilder();
-                if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro NIF incorrecto");
-                if (botonFechas.isSelected()) {
-                    if (datoFechaInicio.getText().equals(""))
-                        resultado.append("Parámetro FECHA INICIO incorrecto");
-                    if (datoFechaFinal.getText().equals(""))
-                        resultado.append("Parámetro FECHA FINAL incorrecto");
-                }
-
-                if (!resultado.toString().equals(""))
-                    areaTexto.setText(resultado.toString());
-                else {
-                    Collection<Factura> listaFacturas = null;
-                    try {
-                        listaFacturas = gestion.listarFacturas(datoNIF.getText());
-                        if (botonFechas.isSelected()) {
-                            Calendar fechaInicio = GregorianCalendar.getInstance();
-                            Calendar fechaFinal = GregorianCalendar.getInstance();
-
-                            String[] vectorFechaInicio = datoFechaInicio.getText().split("/");
-                            String[] vectorFechaFinal = datoFechaFinal.getText().split("/");
-
-                            fechaInicio.set(Integer.parseInt(vectorFechaInicio[2]), Integer.parseInt(vectorFechaInicio[1]), Integer.parseInt(vectorFechaInicio[0]));
-                            fechaFinal.set(Integer.parseInt(vectorFechaFinal[2]), Integer.parseInt(vectorFechaFinal[1]), Integer.parseInt(vectorFechaFinal[0]));
-
-                            listaFacturas = new GestionEntreFechas<Factura>().entreFechas(listaFacturas, fechaInicio, fechaFinal);
-                        }
-                    } catch (ClienteNoEncontrado | ClienteNoFacturas ex) {
-                        ex.printStackTrace();
+                if (gestion.hayClientes()) {
+                    StringBuilder resultado = new StringBuilder();
+                    if (datoNIF.getText().equals(""))
+                        resultado.append("Parámetro NIF incorrecto\n");
+                    else if (!gestion.existeCliente(datoNIF.getText()))
+                        resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe");
+                    if (botonFechas.isSelected()) {
+                        if (datoFechaInicio.getText().equals("  /  /    "))
+                            resultado.append("Parámetro FECHA INICIO incorrecto\n");
+                        if (datoFechaFinal.getText().equals("  /  /    "))
+                            resultado.append("Parámetro FECHA FINAL incorrecto\n");
                     }
 
-                    if (listaFacturas != null)
-                        for (Factura factura : listaFacturas)
-                            areaTexto.append(factura.toString());
-                    else
-                        areaTexto.setText("EL CLIENTE CON NIF " + datoNIF.getText() + " NO TIENE NINGUNA FACTURA");
-                }
+                    if (!resultado.toString().equals(""))
+                        areaTexto.setText(resultado.toString());
+                    else {
+                        if (gestion.clienteConFacturas(datoNIF.getText())) {
+                            try {
+                                Collection<Factura> listaFacturas = gestion.listarFacturas(datoNIF.getText());
+                                if (botonFechas.isSelected()) {
+                                    Calendar fechaInicio = GregorianCalendar.getInstance();
+                                    Calendar fechaFinal = GregorianCalendar.getInstance();
+
+                                    String[] vectorFechaInicio = datoFechaInicio.getText().split("/");
+                                    String[] vectorFechaFinal = datoFechaFinal.getText().split("/");
+
+                                    fechaInicio.set(Integer.parseInt(vectorFechaInicio[2]), Integer.parseInt(vectorFechaInicio[1]), Integer.parseInt(vectorFechaInicio[0]));
+                                    fechaFinal.set(Integer.parseInt(vectorFechaFinal[2]), Integer.parseInt(vectorFechaFinal[1]), Integer.parseInt(vectorFechaFinal[0]));
+
+                                    listaFacturas = new GestionEntreFechas<Factura>().entreFechas(listaFacturas, fechaInicio, fechaFinal);
+                                }
+
+                                areaTexto.setText("");
+                                for (Factura factura : listaFacturas)
+                                    areaTexto.append(factura.toString());
+                            } catch (ClienteNoEncontrado | ClienteNoFacturas ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                        areaTexto.setText("El cliente con NIF " + datoNIF.getText() + " no tiene llamadas\n");
+                    }
+                } else
+                    areaTexto.setText("No hay clientes en la base de datos");
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelFechas, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 175, SpringLayout.NORTH, panelFechas);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelFechas);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);

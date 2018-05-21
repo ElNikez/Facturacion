@@ -29,4 +29,13 @@ public class Llamada implements Fecha, Serializable {
     public Calendar fecha() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Llamada {" +
+                "   Número de teléfono: " + numeroDeTelefono + "\n" +
+                "   Fecha de llamada: " + fechaDeLlamada + "\n" +
+                "   Duración de la llamada: " + duracion + "\n" + 
+                "}" + "\n";
+    }
 }
