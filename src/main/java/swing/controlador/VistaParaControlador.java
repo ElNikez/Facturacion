@@ -18,12 +18,14 @@ public interface VistaParaControlador {
 
     int opcionTarifa();
 
-    String numeroTelefono();
+    int numeroTelefono();
 
-    String duracionLlamada();
+    int duracionLlamada();
 
-    String fechaFacturacion();
+    int codigoFactura();
 
-    String fechaEmision();
+    String fechaInicio();
+
+    String fechaFinal();
 
 }

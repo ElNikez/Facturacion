@@ -33,6 +33,21 @@ public class Gestion implements GestionParaControlador, GestionParaVista {
     }
 
     @Override
+    public boolean hayClientes() {
+        return !listaClientes.isEmpty();
+    }
+
+    @Override
+    public boolean clienteConLlamadas(String nif) {
+        return listaLlamadas.containsKey(nif);
+    }
+
+    @Override
+    public boolean existeFactura(int codigo) {
+        return listaFacturasCodigo.containsKey(codigo);
+    }
+
+    @Override
     public boolean darAltaCliente(Cliente cliente) throws ClienteYaExiste {
         String nif = cliente.nif();
 
@@ -161,19 +176,26 @@ public class Gestion implements GestionParaControlador, GestionParaVista {
     @Override
     @SuppressWarnings("unchecked")
     public void cargarDatos() {
+        String[] ficheros = {
+                "clientes.bin",
+                "llamadas.bin",
+                "facturasCliente.bin",
+                "facturasCodigo.bin"
+        };
+
         ObjectInputStream ois;
         FileInputStream fis;
         try {
-            fis = new FileInputStream("clientes.bin");
+            fis = new FileInputStream(ficheros[0]);
             ois = new ObjectInputStream(fis);
             listaClientes = (Map<String, Cliente>) ois.readObject();
-            fis = new FileInputStream("llamadas.bin");
+            fis = new FileInputStream(ficheros[1]);
             ois = new ObjectInputStream(fis);
             listaLlamadas = (Map<String, HashSet<Llamada>>) ois.readObject();
-            fis = new FileInputStream("facturasCliente.bin");
+            fis = new FileInputStream(ficheros[2]);
             ois = new ObjectInputStream(fis);
             listafacturasCliente = (Map<String, HashSet<Factura>>) ois.readObject();
-            fis = new FileInputStream("facturasCodigo.bin");
+            fis = new FileInputStream(ficheros[3]);
             ois = new ObjectInputStream(fis);
             listaFacturasCodigo = (Map<Integer, Factura>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -184,19 +206,25 @@ public class Gestion implements GestionParaControlador, GestionParaVista {
 
     @Override
     public void guardarDatos() {
+        String[] ficheros = {
+                "clientes.bin",
+                "llamadas.bin",
+                "facturasCliente.bin",
+                "facturasCodigo.bin"
+        };
         ObjectOutputStream oos;
         FileOutputStream fos;
         try {
-            fos = new FileOutputStream("clientes.bin");
+            fos = new FileOutputStream(ficheros[0], true);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaClientes);
-            fos = new FileOutputStream("llamadas.bin");
+            fos = new FileOutputStream(ficheros[1], true);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaLlamadas);
-            fos = new FileOutputStream("facturasCliente.bin");
+            fos = new FileOutputStream(ficheros[2], true);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listafacturasCliente);
-            fos = new FileOutputStream("facturasCodigo.bin");
+            fos = new FileOutputStream(ficheros[3], true);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(listaFacturasCodigo);
         } catch (IOException e) {

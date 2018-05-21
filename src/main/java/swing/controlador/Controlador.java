@@ -7,6 +7,7 @@ import swing.modelo.excepciones.ClienteNoEncontrado;
 import swing.modelo.excepciones.ClienteNoLlamadas;
 import swing.modelo.excepciones.ClienteYaExiste;
 import swing.modelo.factorias.FactoriaClientes;
+import swing.modelo.factorias.FactoriaLlamadas;
 import swing.modelo.factorias.FactoriaTarifas;
 import swing.modelo.facturas.Llamada;
 import swing.modelo.facturas.Tarifa;
@@ -24,12 +25,16 @@ public class Controlador {
 
     private FactoriaClientes factoriaClientes = new FactoriaClientes();
     private FactoriaTarifas factoriaTarifas = new FactoriaTarifas();
+    private FactoriaLlamadas factoriaLlamadas = new FactoriaLlamadas();
     private Empresa empresa;
     private Particular particular;
     private String nif, nombre, apellidos, correo, poblacion, provincia;
     private int codigoPostal;
     private Direccion direccion;
     private Tarifa tarifa;
+    private int numeroDeTelefono;
+    private int duracionDeLlamada;
+    private int codigoFactura;
 
     public void cambiarGestion(GestionParaControlador gestion) {
         this.gestion = gestion;
@@ -94,39 +99,41 @@ public class Controlador {
         return false;
     }
 
-    public void cambiarTarifa() {
-        nif = vista.nif();
+    public boolean cambiarTarifa() {
         try {
+            nif = vista.nif();
             tarifa = gestion.mostrarCliente(nif).tarifa();
+
+            switch (vista.opcionTarifa()) {
+                case 0: /*"Tarifa básica":*/
+                    gestion.cambiarTarifa(nif, factoriaTarifas.crearTarifa());
+                    return true;
+                case 1: /*"Promoción madrugadas":*/
+                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(0)));
+                    return true;
+                case 2: /*"Promoción tardes":*/
+                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(1)));
+                    return true;
+                case 3: /*"Promoción domingos":*/
+                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(2)));
+                    return true;
+                case 4: /*"Promoción festivos":*/
+                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(3)));
+                    return true;
+            }
         } catch (ClienteNoEncontrado ex) {
             ex.printStackTrace();
         }
 
-        try {
-            switch (vista.opcionTarifa()) {
-                case 0: /*"Tarifa básica":*/
-                    gestion.cambiarTarifa(nif, factoriaTarifas.crearTarifa());
-                case 1: /*"Promoción madrugadas":*/
-                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(0)));
-                case 2: /*"Promoción tardes":*/
-                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(1)));
-                case 3: /*"Promoción domingos":*/
-                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(2)));
-                case 4: /*"Promoción festivos":*/
-                    gestion.cambiarTarifa(nif, factoriaTarifas.añadirPromocion(tarifa, TipoPromocion.promocion(3)));
-            }
-        } catch (ClienteNoEncontrado clienteNoEncontrado) {
-            clienteNoEncontrado.printStackTrace();
-        }
-
+        return false;
     }
 
     public boolean darAltaLlamada() {
         nif = vista.nif();
 
-        int numeroDeTelefono = Integer.parseInt(vista.numeroTelefono());
-        int duracionDeLlamada = Integer.parseInt(vista.duracionLlamada());
-        Llamada llamada = new Llamada(numeroDeTelefono, duracionDeLlamada);
+        numeroDeTelefono = vista.numeroTelefono();
+        duracionDeLlamada = vista.duracionLlamada();
+        Llamada llamada = factoriaLlamadas.crearLlamada(numeroDeTelefono, duracionDeLlamada);
 
         try {
             gestion.darAltaLlamada(nif, llamada);
@@ -137,11 +144,11 @@ public class Controlador {
         return true;
     }
 
-    public void emitirFactura() {
+    public boolean emitirFactura() {
         nif = vista.nif();
 
-        String fecha1 = vista.fechaEmision();
-        String fecha2 = vista.fechaFacturacion();
+        String fecha1 = vista.fechaInicio();
+        String fecha2 = vista.fechaFinal();
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
@@ -155,11 +162,12 @@ public class Controlador {
         }
 
         try {
-            gestion.emitirFactura(nif, fechaFacturacion, fechaEmision);
+            return gestion.emitirFactura(nif, fechaFacturacion, fechaEmision);
         } catch (ClienteNoEncontrado | ClienteNoLlamadas clienteNoEncontrado) {
             clienteNoEncontrado.printStackTrace();
         }
 
+        return false;
     }
 
 }

@@ -12,12 +12,11 @@ import swing.modelo.facturas.TipoPromocion;
 import swing.modelo.gestion.GestionEntreFechas;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collection;
@@ -30,20 +29,24 @@ public class VistaPrincipal implements VistaParaControlador {
 
     private JFrame ventana;
     private Container panel;
-    private JPanel panelSuperior, panelInferior, panelTexto, panelDatos, panelBotones, panelFechas;
-    private JLabel principal, NIF, nombre, apellidos, codPostal, poblacion, provincia, correo, tarifa, fechaInicio, fechaFinal, fechaFacturacion, fechaEmision;
+    private JPanel panelSuperior, panelBotones, panelFechas;
+    private JScrollPane panelTexto;
+    private JPanel panelNIF, panelNombre, panelApellidos, panelCorreo, panelCodPostal, panelPoblacion, panelProvincia, panelTarifa;
+    private JPanel panelNumeroDeTelefono, panelDuracionDeLlamada;
+    private JPanel panelCodigoFactura;
+    private JLabel principal, NIF, nombre, apellidos, codPostal, poblacion, provincia, correo, tarifa;
     private JLabel numeroDeTelefono, duracionDeLlamada;
     private JLabel codigoFactura;
+    private JLabel fechaInicio, fechaFinal, fechaFacturacion, fechaEmision;
     private JTextField datoNIF, datoNombre, datoApellidos, datoCodPostal, datoPoblacion, datoProvincia, datoCorreo;
+    private JComboBox<String> datoTarifa;
     private JTextField datoNumeroDeTelefono, datoDuracionLLamada;
     private JTextField datoCodigoFactura;
-    private JFormattedTextField datoFechaInicio, datoFechaFinal, datoFechaFacturacion, datoFechaEmision;
-    private JComboBox<String> datoTarifa;
+    private JFormattedTextField datoFechaInicio, datoFechaFinal;
+    private JFormattedTextField datoFechaFacturacion, datoFechaEmision;
     private JTextArea areaTexto;
     private JButton botonAceptar, botonReiniciar, botonVolver;
     private JCheckBox botonFechas;
-    private JList lista;
-    private JScrollPane panelLista;
     private MaskFormatter formatoFecha;
 
     public void cambiarGestion(GestionParaVista gestion) {
@@ -63,11 +66,18 @@ public class VistaPrincipal implements VistaParaControlador {
 
         panel = ventana.getContentPane();
         panelSuperior = new JPanel();
-        panelInferior = new JPanel();
         panelBotones = new JPanel();
-        panelTexto = new JPanel();
-        panelDatos = new JPanel();
+        panelTexto = new JScrollPane();
         panelFechas = new JPanel();
+
+        panelNIF = new JPanel();
+        panelNombre = new JPanel();
+        panelApellidos = new JPanel();
+        panelCorreo = new JPanel();
+        panelCodPostal = new JPanel();
+        panelPoblacion = new JPanel();
+        panelProvincia = new JPanel();
+        panelTarifa = new JPanel();
 
         principal = new JLabel("PANTALLA PRINCIPAL");
         NIF = new JLabel("NIF: ");
@@ -78,15 +88,16 @@ public class VistaPrincipal implements VistaParaControlador {
         provincia = new JLabel("Provincia: ");
         correo = new JLabel("Correo electrónico: ");
         tarifa = new JLabel("Tarifa: ");
-        fechaInicio = new JLabel("Fecha inicio: ");
-        fechaFinal = new JLabel("Fecha final: ");
-        fechaFacturacion = new JLabel("Fecha de facturacion (dd/MM/yyyy)");
-        fechaEmision = new JLabel("Fecha de emision (dd/MM/yyyy)");
 
-        numeroDeTelefono = new JLabel("Número de teléfono");
-        duracionDeLlamada = new JLabel("Duración de la llamada");
+        numeroDeTelefono = new JLabel("Número de teléfono: ");
+        duracionDeLlamada = new JLabel("Duración de la llamada: ");
 
-        codigoFactura = new JLabel("Codigo de la factura");
+        codigoFactura = new JLabel("Codigo de la factura: ");
+
+        fechaInicio = new JLabel("Fecha inicio (dd/MM/yyyy): ");
+        fechaFinal = new JLabel("Fecha final (dd/MM/yyyy): ");
+        fechaFacturacion = new JLabel("Fecha de facturación (dd/MM/yyyy): ");
+        fechaEmision = new JLabel("Fecha de emisión (dd/MM/yyyy): ");
 
         datoNIF = new JTextField();
         datoNombre = new JTextField();
@@ -104,10 +115,10 @@ public class VistaPrincipal implements VistaParaControlador {
         datoNumeroDeTelefono = new JTextField();
         datoDuracionLLamada = new JTextField();
         datoCodigoFactura = new JTextField();
-        datoFechaFacturacion = new JFormattedTextField(formatoFecha);
-        datoFechaEmision = new JFormattedTextField(formatoFecha);
         datoFechaInicio = new JFormattedTextField(formatoFecha);
         datoFechaFinal = new JFormattedTextField(formatoFecha);
+        datoFechaFacturacion = new JFormattedTextField(formatoFecha);
+        datoFechaEmision = new JFormattedTextField(formatoFecha);
 
         botonAceptar = new JButton("Aceptar");
         botonReiniciar = new JButton("Reiniciar");
@@ -117,11 +128,6 @@ public class VistaPrincipal implements VistaParaControlador {
 
         botonFechas = new JCheckBox("Entre fechas");
 
-        lista = new JList<>();
-        panelLista = new JScrollPane();
-
-//        ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        ventana.setUndecorated(true);
         Dimension resolucion = Toolkit.getDefaultToolkit().getScreenSize();
         ventana.setSize((int) (resolucion.getWidth() * 0.8), (int) (resolucion.getHeight() * 0.8));
         ventana.setLocation((int) (resolucion.getWidth() * 0.08), (int) (resolucion.getHeight() * 0.08));
@@ -190,9 +196,15 @@ public class VistaPrincipal implements VistaParaControlador {
 
         panel = ventana.getContentPane();
 
-        gestion.cargarDatos();
+        cargarDatos();
+
+        guardarDatos();
 
         cargarPanelPrincipal();
+    }
+
+    private void cargarDatos() {
+        gestion.cargarDatos();
     }
 
     private void guardarDatos() {
@@ -248,34 +260,56 @@ public class VistaPrincipal implements VistaParaControlador {
     }
 
     @Override
-    public String numeroTelefono() {
-        return datoNumeroDeTelefono.getText();
+    public int numeroTelefono() {
+        return Integer.parseInt(datoNumeroDeTelefono.getText());
     }
 
     @Override
-    public String duracionLlamada() {
-        return datoDuracionLLamada.getText();
+    public int duracionLlamada() {
+        return Integer.parseInt(datoDuracionLLamada.getText());
     }
 
     @Override
-    public String fechaEmision() {
-        return datoFechaEmision.getText();
+    public int codigoFactura() {
+        return Integer.parseInt(datoCodigoFactura.getText());
     }
 
     @Override
-    public String fechaFacturacion() {
-        return datoFechaFacturacion.getText();
+    public String fechaInicio() {
+        return datoFechaInicio.getText();
     }
 
-    private String mostrarCliente(Cliente cliente) {
+    @Override
+    public String fechaFinal() {
+        return datoFechaFinal.getText();
+    }
+
+    private String mostrarCliente(String nif) {
+        try {
+            Cliente cliente = gestion.mostrarCliente(nif);
+            StringBuilder datos = new StringBuilder();
+            datos.append("Nif: " + cliente.nif() + "\n");
+            datos.append("Nombre: " + cliente.nombre() + "\n");
+            if (cliente instanceof Particular)
+                datos.append("Apellidos: " + ((Particular) cliente).apellidos() + "\n");
+            datos.append("Correo: " + cliente.correo() + "\n");
+            datos.append("Direccion: " + cliente.direccion().toString() + "\n");
+            datos.append("Tarifa: " + cliente.tarifa().toString() + "\n");
+
+            return datos.toString();
+        } catch (ClienteNoEncontrado clienteNoEncontrado) {
+            clienteNoEncontrado.printStackTrace();
+        }
+
+        return "El cliente no existe en la base de datos";
+    }
+
+    private String mostrarFactura(Factura factura) {
         StringBuilder datos = new StringBuilder();
-        datos.append("Nif: " + cliente.nif() + "\n");
-        datos.append("Nombre: " + cliente.nombre() + "\n");
-        if (cliente instanceof Particular)
-            datos.append("Apellidos: " + ((Particular) cliente).apellidos() + "\n");
-        datos.append("Correo: " + cliente.correo() + "\n");
-        datos.append("Direccion: " + cliente.direccion().toString() + "\n");
-        datos.append("Tarifa: " + cliente.tarifa().toString() + "\n");
+        datos.append("Código: " + factura.codigoFactura() + "\n");
+        datos.append("Tarifa: " + factura.tarifaAplicada().toString() + "\n");
+        datos.append("Importe: " + factura.importeTotal() + "\n");
+        datos.append("Fecha de emisión: " + factura.fecha().toString() + "\n");
 
         return datos.toString();
     }
@@ -286,42 +320,46 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(7, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelSuperior.add(datoNIF, 1);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
-            panelSuperior.add(nombre, 2);
-            datoNombre = new JTextField();
-            panelSuperior.add(datoNombre, 3);
+            panelNombre = new JPanel();
+            panelNombre.add(nombre);
+            datoNombre = new JTextField(30);
+            panelNombre.add(datoNombre);
 
-            panelSuperior.add(correo, 4);
-            datoCorreo = new JTextField();
-            panelSuperior.add(datoCorreo, 5);
+            panelCorreo = new JPanel();
+            panelCorreo.add(correo);
+            datoCorreo = new JTextField(30);
+            panelCorreo.add(datoCorreo);
 
-            panelSuperior.add(codPostal, 6);
-            datoCodPostal = new JTextField();
-            panelSuperior.add(datoCodPostal, 7);
+            panelCodPostal = new JPanel();
+            panelCodPostal.add(codPostal);
+            datoCodPostal = new JTextField(30);
+            panelCodPostal.add(datoCodPostal);
 
-            panelSuperior.add(poblacion, 8);
-            datoPoblacion = new JTextField();
-            panelSuperior.add(datoPoblacion, 9);
+            panelPoblacion = new JPanel();
+            panelPoblacion.add(poblacion);
+            datoPoblacion = new JTextField(30);
+            panelPoblacion.add(datoPoblacion);
 
-            panelSuperior.add(provincia, 10);
-            datoProvincia = new JTextField();
-            panelSuperior.add(datoProvincia, 11);
+            panelProvincia = new JPanel();
+            panelProvincia.add(provincia);
+            datoProvincia = new JTextField(30);
+            panelProvincia.add(datoProvincia);
 
-            panelInferior = new JPanel();
-            panelInferior.setLayout(new BorderLayout());
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto, BorderLayout.CENTER);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
@@ -332,7 +370,7 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (datoNIF.getText().equals(""))
                     resultado.append("Parámetro NIF incorrecto\n");
                 else if (gestion.existeCliente(datoNIF.getText()))
-                    resultado.append("El cliente con NIF " + datoNIF.getText() + " YA EXISTE\n");
+                    resultado.append("El cliente con NIF " + datoNIF.getText() + " ya existe\n");
                 if (datoNombre.getText().equals(""))
                     resultado.append("Parámetro NOMBRE incorrecto\n");
                 if (datoCorreo.getText().equals(""))
@@ -347,21 +385,40 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else {
-                    if (controlador.darAltaEmpresa())
-                        areaTexto.setText("AÑADIDO EMPRESA CON NIF " + datoNIF.getText() + "\n");
-                    else
-                        areaTexto.setText("NO SE HA PODIDO AÑADIR EMPRESA CON NIF " + datoNIF.getText() + "\n");
+                    if (controlador.darAltaEmpresa()) {
+                        areaTexto.setText("Añadida la empresa con NIF " + datoNIF.getText() + "\n");
+                        areaTexto.append(mostrarCliente(datoNIF.getText()));
+                    } else
+                        areaTexto.setText("No se ha podido añadir la empresa con NIF " + datoNIF.getText() + "\n");
 
                     guardarDatos();
+                    new EscuchadoraBotonReiniciar();
                 }
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelNombre, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelCorreo, 25, SpringLayout.NORTH, panelNombre);
+            layout.putConstraint(SpringLayout.NORTH, panelCodPostal, 25, SpringLayout.NORTH, panelCorreo);
+            layout.putConstraint(SpringLayout.NORTH, panelPoblacion, 25, SpringLayout.NORTH, panelCodPostal);
+            layout.putConstraint(SpringLayout.NORTH, panelProvincia, 25, SpringLayout.NORTH, panelPoblacion);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 75, SpringLayout.NORTH, panelProvincia);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelNombre);
+            panelSuperior.add(panelCorreo);
+            panelSuperior.add(panelCodPostal);
+            panelSuperior.add(panelPoblacion);
+            panelSuperior.add(panelProvincia);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -374,45 +431,51 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(8, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelSuperior.add(datoNIF, 1);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
-            panelSuperior.add(nombre, 2);
-            datoNombre = new JTextField();
-            panelSuperior.add(datoNombre, 3);
+            panelNombre = new JPanel();
+            panelNombre.add(nombre);
+            datoNombre = new JTextField(30);
+            panelNombre.add(datoNombre);
 
-            panelSuperior.add(apellidos, 4);
-            datoApellidos = new JTextField();
-            panelSuperior.add(datoApellidos, 5);
+            panelApellidos = new JPanel();
+            panelApellidos.add(apellidos);
+            datoApellidos = new JTextField(30);
+            panelApellidos.add(datoApellidos);
 
-            panelSuperior.add(correo, 6);
-            datoCorreo = new JTextField();
-            panelSuperior.add(datoCorreo, 7);
+            panelCorreo = new JPanel();
+            panelCorreo.add(correo);
+            datoCorreo = new JTextField(30);
+            panelCorreo.add(datoCorreo);
 
-            panelSuperior.add(codPostal, 8);
-            datoCodPostal = new JTextField();
-            panelSuperior.add(datoCodPostal, 9);
+            panelCodPostal = new JPanel();
+            panelCodPostal.add(codPostal);
+            datoCodPostal = new JTextField(30);
+            panelCodPostal.add(datoCodPostal);
 
-            panelSuperior.add(poblacion, 10);
-            datoPoblacion = new JTextField();
-            panelSuperior.add(datoPoblacion, 11);
+            panelPoblacion = new JPanel();
+            panelPoblacion.add(poblacion);
+            datoPoblacion = new JTextField(30);
+            panelPoblacion.add(datoPoblacion);
 
-            panelSuperior.add(provincia, 12);
-            datoProvincia = new JTextField();
-            panelSuperior.add(datoProvincia, 13);
+            panelProvincia = new JPanel();
+            panelProvincia.add(provincia);
+            datoProvincia = new JTextField(30);
+            panelProvincia.add(datoProvincia);
 
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
@@ -423,7 +486,7 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (datoNIF.getText().equals(""))
                     resultado.append("Parámetro NIF incorrecto\n");
                 else if (gestion.existeCliente(datoNIF.getText()))
-                    resultado.append("El cliente con NIF " + datoNIF.getText() + " YA EXISTE\n");
+                    resultado.append("El cliente con NIF " + datoNIF.getText() + " ya existe\n");
                 if (datoNombre.getText().equals(""))
                     resultado.append("Parámetro NOMBRE incorrecto\n");
                 if (datoApellidos.getText().equals(""))
@@ -440,21 +503,41 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else {
-                    if (controlador.darAltaParticular())
-                        areaTexto.append("AÑADIDO PARTICULAR CON NIF " + datoNIF.getText());
-                    else
-                        areaTexto.append("NO SE HA PODIDO AÑADIR PARTICULAR CON NIF " + datoNIF.getText());
+                    if (controlador.darAltaParticular()) {
+                        areaTexto.setText("Añadido el particular con NIF " + datoNIF.getText() + "\n");
+                        areaTexto.append(mostrarCliente(datoNIF.getText()));
+                    } else
+                        areaTexto.setText("No se ha podido añadir el particular con NIF " + datoNIF.getText() + "\n");
 
                     guardarDatos();
                 }
             });
 
+            layout.putConstraint(SpringLayout.NORTH, panelNombre, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelApellidos, 25, SpringLayout.NORTH, panelNombre);
+            layout.putConstraint(SpringLayout.NORTH, panelCorreo, 25, SpringLayout.NORTH, panelApellidos);
+            layout.putConstraint(SpringLayout.NORTH, panelCodPostal, 25, SpringLayout.NORTH, panelCorreo);
+            layout.putConstraint(SpringLayout.NORTH, panelPoblacion, 25, SpringLayout.NORTH, panelCodPostal);
+            layout.putConstraint(SpringLayout.NORTH, panelProvincia, 25, SpringLayout.NORTH, panelPoblacion);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 50, SpringLayout.NORTH, panelProvincia);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelNombre);
+            panelSuperior.add(panelApellidos);
+            panelSuperior.add(panelCorreo);
+            panelSuperior.add(panelCodPostal);
+            panelSuperior.add(panelPoblacion);
+            panelSuperior.add(panelProvincia);
+            panelSuperior.add(panelTexto);
+
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -467,21 +550,21 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(1, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelSuperior.add(datoNIF, 1);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.04), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
@@ -492,26 +575,33 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (datoNIF.getText().equals(""))
                     resultado.append("Parámetro NIF incorrecto\n");
                 else if (!gestion.existeCliente(datoNIF.getText()))
-                    resultado.append("El cliente con NIF " + datoNIF.getText() + " NO EXISTE");
+                    resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe\n");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else {
                     if (controlador.darBajaCliente())
-                        areaTexto.setText("BORRADO CLIENTE CON NIF " + datoNIF.getText());
+                        areaTexto.setText("Borrado el cliente con NIF " + datoNIF.getText() + "\n");
                     else
-                        areaTexto.setText("NO SE HA PODIDO BORRAR CLIENTE CON NIF " + datoNIF.getText());
+                        areaTexto.setText("No se ha podido borrar el cliente con NIF " + datoNIF.getText() + "\n");
 
                     guardarDatos();
                 }
             });
 
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 200, SpringLayout.NORTH, panelNIF);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelTexto);
+
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -524,32 +614,34 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(2, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelSuperior.add(datoNIF, 1);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
-            panelSuperior.add(tarifa, 2);
+            panelTarifa = new JPanel();
+            panelTarifa.add(tarifa);
             String[] tarifas = {
+                    TipoPromocion.BASICA.descripcion(),
                     TipoPromocion.MADRUGADA.descripcion(),
                     TipoPromocion.TARDE.descripcion(),
                     TipoPromocion.DOMINGO.descripcion(),
                     TipoPromocion.FESTIVO.descripcion()
             };
             datoTarifa = new JComboBox<>(tarifas);
-            datoTarifa.setSelectedItem(new StringBuilder("Elige una tarifa"));
-            panelSuperior.add(datoTarifa, 3);
+            datoTarifa.setSelectedItem("Elige una tarifa");
+            panelTarifa.add(datoTarifa);
 
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
@@ -560,27 +652,37 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (datoNIF.getText().equals(""))
                     resultado.append("Parámetro NIF incorrecto\n");
                 else if (!gestion.existeCliente(datoNIF.getText()))
-                    resultado.append("El cliente con NIF " + datoNIF.getText() + " NO EXISTE\n");
+                    resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe\n");
+                if (datoTarifa.getSelectedItem() == "Elige una tarifa")
+                    resultado.append("Elige una tarifa");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else {
-                    if (gestion.existeCliente(datoNIF.getText())) {
-                        controlador.cambiarTarifa();
-                        areaTexto.setText("CAMBIADA TARIFA DE CLIENTE CON NIF " + datoNIF.getText());
-                    } else
-                        areaTexto.setText("NO SE HA PODIDO CAMBIAR LA TARIFA");
+                    if (controlador.cambiarTarifa())
+                        areaTexto.setText("Cambiada tarifa del cliente con NIF " + datoNIF.getText() + "\n");
+                    else
+                        areaTexto.setText("No se ha podido cambiar la tarifa del cliente con NIF " + datoNIF.getText() + "\n");
 
                     guardarDatos();
                 }
             });
 
+            layout.putConstraint(SpringLayout.NORTH, panelTarifa, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 175, SpringLayout.NORTH, panelTarifa);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelTarifa);
+            panelSuperior.add(panelTexto);
+
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -593,21 +695,21 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(1, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelSuperior.add(datoNIF, 1);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
@@ -618,28 +720,36 @@ public class VistaPrincipal implements VistaParaControlador {
                 if (datoNIF.getText().equals(""))
                     resultado.append("Parámetro NIF incorrecto\n");
                 else if (!gestion.existeCliente(datoNIF.getText()))
-                    resultado.append("El cliente con NIF " + datoNIF.getText() + " NO EXISTE\n");
+                    resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe\n");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else {
-                    Cliente cliente = null;
                     try {
-                        cliente = gestion.mostrarCliente(datoNIF.getText());
-                    } catch (ClienteNoEncontrado clienteNoEncontrado) {
-                        clienteNoEncontrado.printStackTrace();
+                        Cliente cliente = gestion.mostrarCliente(datoNIF.getText());
+                        areaTexto.setText("MOSTRANDO CLIENTE CON NIF " + cliente.nif());
+                        areaTexto.append("\n" + cliente);
+                    } catch (ClienteNoEncontrado ex) {
+                        ex.printStackTrace();
                     }
-                    areaTexto.setText("MOSTRANDO CLIENTE CON NIF " + cliente.nif());
-                    areaTexto.append("\n" + cliente);
+
+                    guardarDatos();
                 }
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 200, SpringLayout.NORTH, panelTarifa);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -652,72 +762,56 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new BorderLayout());
-
-            botonFechas.addActionListener(new EscuchadoraBotonFechas());
-            panelSuperior.add(botonFechas, BorderLayout.NORTH);
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
             panelFechas = new JPanel();
-            panelFechas.setLayout(new GridLayout(2, 2));
+            panelFechas.setLayout(new GridLayout(3, 2));
 
-            panelFechas.add(fechaInicio, 0);
+            botonFechas = new JCheckBox("Entre fechas");
+            botonFechas.addActionListener(new EscuchadoraBotonFechas());
+            panelFechas.add(botonFechas, 0);
+            panelFechas.add(new JLabel(), 1);
+
+            panelFechas.add(fechaInicio, 2);
             fechaInicio.setEnabled(false);
             datoFechaInicio = new JFormattedTextField(formatoFecha);
             datoFechaInicio.setEnabled(false);
-            panelFechas.add(datoFechaInicio, 1);
+            panelFechas.add(datoFechaInicio, 3);
 
-            panelFechas.add(fechaFinal, 2);
+            panelFechas.add(fechaFinal, 4);
             fechaFinal.setEnabled(false);
             datoFechaFinal = new JFormattedTextField(formatoFecha);
             datoFechaFinal.setEnabled(false);
-            panelFechas.add(datoFechaFinal, 3);
+            panelFechas.add(datoFechaFinal, 5);
 
-            panelSuperior.add(panelFechas, BorderLayout.SOUTH);
-
-            panelInferior = new JPanel();
-            panelInferior.setLayout(new BorderLayout());
-
-            panelTexto = new JPanel();
-            panelDatos = new JPanel();
-
-            panelInferior.add(panelTexto, BorderLayout.WEST);
-            panelInferior.add(panelDatos, BorderLayout.EAST);
+            areaTexto = new JTextArea(15, 95);
+            areaTexto.setEditable(false);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
+
             botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
-                if (!botonFechas.isSelected()) {
-                    try {
-                        String[] listaClientes = new String[gestion.listarClientes().size()];
-                        int i = 0;
-                        for (Cliente cliente : gestion.listarClientes())
-                            listaClientes[i++] = cliente.nif();
-
-                        lista = new JList<>(listaClientes);
-                        lista.addMouseListener(new EscuchadoraDobleClick());
-                        panelLista = new JScrollPane(lista);
-                        panelLista.setSize((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.025));
-                        panelTexto.add(panelLista);
-                        panelDatos = new JPanel();
-                        panelInferior.updateUI();
-                    } catch (ListaClientesVacio listaClientesVacio) {
-                        listaClientesVacio.printStackTrace();
-                    }
-                } else {
+                if (gestion.hayClientes()) {
                     StringBuilder resultado = new StringBuilder();
-                    if (datoFechaInicio.getText().equals(""))
-                        resultado.append("Parámetro FECHA INICIO incorrecto");
-                    if (datoFechaFinal.getText().equals(""))
-                        resultado.append("Parámetro FECHA FINAL incorrecto");
+                    if (botonFechas.isSelected()) {
+                        if (datoFechaInicio.getText().equals("  /  /    "))
+                            resultado.append("Parámetro FECHA INICIO incorrecto\n");
+                        if (datoFechaFinal.getText().equals("  /  /    "))
+                            resultado.append("Parámetro FECHA FINAL incorrecto\n");
+                    }
 
                     if (!resultado.toString().equals(""))
                         areaTexto.setText(resultado.toString());
                     else {
-                        Collection<Cliente> listaClientes = null;
                         try {
-                            listaClientes = gestion.listarClientes();
+                            Collection<Cliente> listaClientes = gestion.listarClientes();
                             if (botonFechas.isSelected()) {
                                 Calendar fechaInicio = GregorianCalendar.getInstance();
                                 Calendar fechaFinal = GregorianCalendar.getInstance();
@@ -730,25 +824,34 @@ public class VistaPrincipal implements VistaParaControlador {
 
                                 listaClientes = new GestionEntreFechas<Cliente>().entreFechas(listaClientes, fechaInicio, fechaFinal);
                             }
-                        } catch (ListaClientesVacio listaClientesVacio) {
-                            listaClientesVacio.printStackTrace();
-                        }
 
-                        if (listaClientes != null)
-                            for (Cliente cliente : listaClientes)
-                                areaTexto.append(cliente.toString());
-                        else
-                            areaTexto.setText("EL CLIENTE CON NIF " + datoNIF.getText() + " NO HA REALIZADO NINGUNA LLAMADA");
+                            areaTexto.setText("");
+                            if (!listaClientes.isEmpty())
+                                for (Cliente cliente : listaClientes)
+                                    areaTexto.append(cliente.toString());
+                            else
+                                areaTexto.setText("No hay clientes en la base de datos");
+                        } catch (ListaClientesVacio ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                }
+                } else
+                    areaTexto.setText("No hay clientes en la base de datos");
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 200, SpringLayout.NORTH, panelFechas);
+
+            panelSuperior.add(panelFechas);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -759,65 +862,81 @@ public class VistaPrincipal implements VistaParaControlador {
         @Override
         public void actionPerformed(ActionEvent e) {
             panel.removeAll();
+            panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(4, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelSuperior.add(datoNIF, 1);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
-            panelSuperior.add(numeroDeTelefono, 2);
-            datoNumeroDeTelefono = new JTextField();
-            panelSuperior.add(datoNumeroDeTelefono, 3);
+            panelNumeroDeTelefono = new JPanel();
+            panelNumeroDeTelefono.add(numeroDeTelefono);
+            datoNumeroDeTelefono = new JTextField(10);
+            panelNumeroDeTelefono.add(datoNumeroDeTelefono);
 
+            panelDuracionDeLlamada = new JPanel();
+            panelDuracionDeLlamada.add(duracionDeLlamada);
+            datoDuracionLLamada = new JTextField(10);
+            panelDuracionDeLlamada.add(datoDuracionLLamada);
 
-            panelSuperior.add(duracionDeLlamada, 4);
-            datoDuracionLLamada = new JTextField();
-            panelSuperior.add(datoDuracionLLamada, 5);
-
-            JLabel texto = new JLabel("Texto inútil en ALTA LLAMADA");
-            panel.add(texto);
-
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
             botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
-                StringBuilder resultado = new StringBuilder();
-                if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro NIF incorrecto\n");
-                if (datoNumeroDeTelefono.getText().equals(""))
-                    resultado.append("Parámetro NumeroTelefono incorrecto\n");
-                if (datoDuracionLLamada.getText().equals(""))
-                    resultado.append("Parámetro DuracionDeLlamada incorrecto\n");
-                if (!resultado.toString().equals(""))
-                    areaTexto.setText(resultado.toString());
-                else {
-                    if (controlador.darAltaLlamada())
-                        areaTexto.setText("AÑADIDA LLAMADA CON NIF " + datoNIF.getText());
-                    else
-                        areaTexto.setText("NO SE HA PODIDO AÑADIR LA LLAMADA CON NIF " + datoNIF.getText());
+                if (gestion.hayClientes()) {
+                    StringBuilder resultado = new StringBuilder();
+                    if (datoNIF.getText().equals(""))
+                        resultado.append("Parámetro NIF incorrecto\n");
+                    else if (!gestion.existeCliente(datoNIF.getText()))
+                        resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe\n");
+                    if (datoNumeroDeTelefono.getText().equals(""))
+                        resultado.append("Parámetro NUMERO incorrecto\n");
+                    if (datoDuracionLLamada.getText().equals(""))
+                        resultado.append("Parámetro DURACION incorrecto\n");
 
-                    guardarDatos();
-                }
+                    if (!resultado.toString().equals(""))
+                        areaTexto.setText(resultado.toString());
+                    else {
+                        if (controlador.darAltaLlamada())
+                            areaTexto.setText("Añadida la llamada al cliente con NIF " + datoNIF.getText() + "\n");
+                        else
+                            areaTexto.setText("No se ha podido añadir la llamada al cliente con NIF " + datoNIF.getText() + "\n");
+
+                        guardarDatos();
+                    }
+                } else
+                    areaTexto.setText("No hay clientes en la base de datos");
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelNumeroDeTelefono, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelDuracionDeLlamada, 25, SpringLayout.NORTH, panelNumeroDeTelefono);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 150, SpringLayout.NORTH, panelDuracionDeLlamada);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelNumeroDeTelefono);
+            panelSuperior.add(panelDuracionDeLlamada);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -830,17 +949,23 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new BorderLayout());
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            botonFechas.addActionListener(new EscuchadoraBotonFechas());
-            panelSuperior.add(botonFechas, BorderLayout.NORTH);
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
+
             panelFechas = new JPanel();
             panelFechas.setLayout(new GridLayout(3, 2));
 
-            panelFechas.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelFechas.add(datoNIF, 1);
+            botonFechas = new JCheckBox("Entre fechas");
+            botonFechas.addActionListener(new EscuchadoraBotonFechas());
+            panelFechas.add(botonFechas, 0);
+            panelFechas.add(new JLabel(), 1);
 
             panelFechas.add(fechaInicio, 2);
             fechaInicio.setEnabled(false);
@@ -854,66 +979,77 @@ public class VistaPrincipal implements VistaParaControlador {
             datoFechaFinal.setEnabled(false);
             panelFechas.add(datoFechaFinal, 5);
 
-            panelSuperior.add(panelFechas, BorderLayout.SOUTH);
-
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.035), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
+
             botonAceptar = new JButton("Aceptar");
             botonAceptar.addActionListener(aceptar -> {
-                StringBuilder resultado = new StringBuilder();
-                if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro NIF incorrecto");
-                if (botonFechas.isSelected()) {
-                    if (datoFechaInicio.getText().equals(""))
-                        resultado.append("Parámetro FECHA INICIO incorrecto");
-                    if (datoFechaFinal.getText().equals(""))
-                        resultado.append("Parámetro FECHA FINAL incorrecto");
-                }
+                if (gestion.hayClientes()) {
+                    StringBuilder resultado = new StringBuilder();
+                    if (datoNIF.getText().equals(""))
+                        resultado.append("Parámetro NIF incorrecto\n");
+                    else if (!gestion.existeCliente(datoNIF.getText()))
+                        resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe");
+                    if (botonFechas.isSelected()) {
+                        if (datoFechaInicio.getText().equals("  /  /    "))
+                            resultado.append("Parámetro FECHA INICIO incorrecto\n");
+                        if (datoFechaFinal.getText().equals("  /  /    "))
+                            resultado.append("Parámetro FECHA FINAL incorrecto\n");
+                    }
 
-                if (!resultado.toString().equals(""))
-                    areaTexto.setText(resultado.toString());
-                else {
-                    try {
-                        Collection<Llamada> listaLlamadas = gestion.listarLlamadas(datoNIF.getText());
-                        if (botonFechas.isSelected()) {
-                            Calendar fechaInicio = GregorianCalendar.getInstance();
-                            Calendar fechaFinal = GregorianCalendar.getInstance();
+                    if (!resultado.toString().equals(""))
+                        areaTexto.setText(resultado.toString());
+                    else {
+                        if (gestion.clienteConLlamadas(datoNIF.getText())) {
+                            try {
+                                Collection<Llamada> listaLlamadas = gestion.listarLlamadas(datoNIF.getText());
+                                if (botonFechas.isSelected()) {
+                                    Calendar fechaInicio = GregorianCalendar.getInstance();
+                                    Calendar fechaFinal = GregorianCalendar.getInstance();
 
-                            String[] vectorFechaInicio = datoFechaInicio.getText().split("/");
-                            String[] vectorFechaFinal = datoFechaFinal.getText().split("/");
+                                    String[] vectorFechaInicio = datoFechaInicio.getText().split("/");
+                                    String[] vectorFechaFinal = datoFechaFinal.getText().split("/");
 
-                            fechaInicio.set(Integer.parseInt(vectorFechaInicio[2]), (Integer.parseInt(vectorFechaInicio[1]) - 1), Integer.parseInt(vectorFechaInicio[0]));
-                            fechaFinal.set(Integer.parseInt(vectorFechaFinal[2]), (Integer.parseInt(vectorFechaFinal[1]) - 1), Integer.parseInt(vectorFechaFinal[0]));
+                                    fechaInicio.set(Integer.parseInt(vectorFechaInicio[2]), Integer.parseInt(vectorFechaInicio[1]), Integer.parseInt(vectorFechaInicio[0]));
+                                    fechaFinal.set(Integer.parseInt(vectorFechaFinal[2]), Integer.parseInt(vectorFechaFinal[1]), Integer.parseInt(vectorFechaFinal[0]));
 
-                            listaLlamadas = new GestionEntreFechas<Llamada>().entreFechas(listaLlamadas, fechaInicio, fechaFinal);
+                                    listaLlamadas = new GestionEntreFechas<Llamada>().entreFechas(listaLlamadas, fechaInicio, fechaFinal);
+                                }
 
-                            if (listaLlamadas != null)
+                                areaTexto.setText("");
                                 for (Llamada llamada : listaLlamadas)
                                     areaTexto.append(llamada.toString());
-                            else
-                                areaTexto.setText("EL CLIENTE CON NIF " + datoNIF.getText() + " NO HA REALIZADO NINGUNA LLAMADA");
-
+                            } catch (ClienteNoEncontrado | ClienteNoLlamadas ex) {
+                                ex.printStackTrace();
+                            }
                         }
-                    } catch (ClienteNoEncontrado | ClienteNoLlamadas ex) {
-                        ex.printStackTrace();
+                        areaTexto.setText("El cliente con NIF " + datoNIF.getText() + " no tiene llamadas\n");
                     }
-                }
+                } else
+                    areaTexto.setText("No hay clientes en la base de datos");
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelFechas, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 175, SpringLayout.NORTH, panelFechas);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelFechas);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -925,40 +1061,81 @@ public class VistaPrincipal implements VistaParaControlador {
         public void actionPerformed(ActionEvent e) {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
-            panelTexto = new JPanel();
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new BorderLayout());
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
+
+            panelNIF = new JPanel();
+            panelNIF.add(NIF);
+            datoNIF = new JTextField(10);
+            panelNIF.add(datoNIF);
 
             panelFechas = new JPanel();
-            panelFechas.setLayout(new GridLayout(3, 2));
+            panelFechas.setLayout(new GridLayout(2, 2));
 
-            panelFechas.add(NIF, 0);
-            datoNIF = new JTextField();
-            panelFechas.add(datoNIF, 1);
-
-            panelFechas.add(fechaFacturacion, 2);
+            panelFechas.add(fechaFacturacion, 0);
             datoFechaFacturacion = new JFormattedTextField(formatoFecha);
-            panelFechas.add(datoFechaFacturacion, 3);
+            panelFechas.add(datoFechaFacturacion, 1);
 
-            panelFechas.add(fechaEmision, 4);
+            panelFechas.add(fechaEmision, 2);
             datoFechaEmision = new JFormattedTextField(formatoFecha);
-            panelFechas.add(datoFechaEmision, 5);
+            panelFechas.add(datoFechaEmision, 3);
 
-            panelSuperior.add(panelFechas, BorderLayout.SOUTH);
+            areaTexto = new JTextArea(15, 95);
+            areaTexto.setEditable(false);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
             botonAceptar = new JButton("Aceptar");
-            botonAceptar.addActionListener(aceptar -> controlador.emitirFactura());
+            botonAceptar.addActionListener(aceptar -> {
+                if (gestion.hayClientes()) {
+                    StringBuilder resultado = new StringBuilder();
+                    if (datoNIF.getText().equals(""))
+                        resultado.append("Parámetro NIF incorrecto\n");
+                    else if (!gestion.existeCliente(datoNIF.getText()))
+                        resultado.append("El cliente con NIF " + datoNIF.getText() + " no existe\n");
+                    else if (!gestion.clienteConLlamadas(datoNIF.getText()))
+                        areaTexto.setText("El cliente con NIF " + datoNIF.getText() + " no ha realizado ninguna llamada");
+                    if (datoFechaInicio.getText().equals("  /  /    "))
+                        resultado.append("Parámetro FECHA EMISIÓN incorrecto\n");
+                    if (datoFechaFinal.getText().equals("  /  /    "))
+                        resultado.append("Parámetro FECHA FACTURACIÓN incorrecto\n");
+
+                    if (!resultado.toString().equals(""))
+                        areaTexto.setText(resultado.toString());
+                    else {
+                        if (controlador.emitirFactura())
+                            areaTexto.setText("Emitida la factura del cliente con NIF " + datoNIF.getText() + "\n");
+                        else
+                            areaTexto.setText("No se ha podido emitir la factura del cliente con NIF " + datoNIF.getText() + "\n");
+
+                        guardarDatos();
+                    }
+                } else
+                    areaTexto.setText("No hay clientes en la base de datos");
+            });
+
+            layout.putConstraint(SpringLayout.NORTH, panelFechas, 25, SpringLayout.NORTH, panelNIF);
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 175, SpringLayout.NORTH, panelFechas);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelFechas);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -971,50 +1148,61 @@ public class VistaPrincipal implements VistaParaControlador {
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new GridLayout(1, 2));
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
-            panelSuperior.add(codigoFactura, 0);
-            datoCodigoFactura = new JTextField();
-            panelSuperior.add(datoCodigoFactura, 1);
+            panelCodigoFactura = new JPanel();
+            panelCodigoFactura.add(codigoFactura);
+            datoCodigoFactura = new JTextField(10);
+            panelCodigoFactura.add(datoCodigoFactura);
 
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-            panelTexto.add(areaTexto);
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
 
             botonAceptar = new JButton("Aceptar");
-            botonAceptar.addActionListener(aceptarMostrarFactura -> {
+            botonAceptar.addActionListener(aceptar -> {
                 StringBuilder resultado = new StringBuilder();
-
-                if (datoNIF.getText().equals(""))
-                    resultado.append("Parámetro NIF incorrecto\n");
+                if (datoCodigoFactura.getText().equals(""))
+                    resultado.append("Parámetro CÓDIGO FACTURA incorrecto\n");
+                else if (!gestion.existeFactura(Integer.parseInt(datoCodigoFactura.getText())))
+                    resultado.append("La factura con CÓDIGO " + datoCodigoFactura.getText() + " no existe\n");
 
                 if (!resultado.toString().equals(""))
                     areaTexto.setText(resultado.toString());
                 else {
-                    int codigo = Integer.parseInt(codigoFactura.getText());
                     try {
-                        areaTexto.setText("MOSTRANDO FACTURA CON CODIGO " + datoCodigoFactura.getText() + "/n" + gestion.mostrarFactura(codigo));
-                    } catch (ListaFacturasVacia | FacturaNoEncontrada listaFacturasVacia) {
-                        listaFacturasVacia.printStackTrace();
+                        Factura factura = gestion.mostrarFactura(codigoFactura());
+                        areaTexto.setText("MOSTRANDO FACTURA CON CÓDIGO " + factura.codigoFactura());
+                        areaTexto.append("\n" + factura);
+                    } catch (ListaFacturasVacia | FacturaNoEncontrada ex) {
+                        ex.printStackTrace();
                     }
+
+                    guardarDatos();
                 }
             });
+
+            layout.putConstraint(SpringLayout.NORTH, panelTexto, 200, SpringLayout.NORTH, panelTarifa);
+
+            panelSuperior.add(panelNIF);
+            panelSuperior.add(panelTexto);
 
             panelBotones.add(botonAceptar, FlowLayout.LEFT);
             panelBotones.add(botonReiniciar, FlowLayout.CENTER);
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
-            panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
+            panelSuperior.updateUI();
+            panelBotones.updateUI();
+
+            panel.add(panelSuperior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -1024,12 +1212,13 @@ public class VistaPrincipal implements VistaParaControlador {
     private class EscuchadoraListarFacturas implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
             panel.removeAll();
             panel.setLayout(new BorderLayout());
 
+            SpringLayout layout = new SpringLayout();
             panelSuperior = new JPanel();
-            panelSuperior.setLayout(new BorderLayout());
+            panelSuperior.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelSuperior.setLayout(layout);
 
             botonFechas.addActionListener(new EscuchadoraBotonFechas());
             panelSuperior.add(botonFechas, BorderLayout.NORTH);
@@ -1055,13 +1244,11 @@ public class VistaPrincipal implements VistaParaControlador {
 
             panelSuperior.add(panelFechas, BorderLayout.SOUTH);
 
-            panelInferior = new JPanel();
-
-            areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.035), (int) (ventana.getSize().getWidth() * 0.085));
+            areaTexto = new JTextArea(15, 95);
             areaTexto.setEditable(false);
-            panelTexto = new JPanel();
-
-            panelInferior.add(panelTexto);
+            panelTexto = new JScrollPane(areaTexto);
+            panelTexto.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+            panelTexto.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             panelBotones = new JPanel();
             panelBotones.setLayout(new FlowLayout());
@@ -1112,7 +1299,6 @@ public class VistaPrincipal implements VistaParaControlador {
             panelBotones.add(botonVolver, FlowLayout.RIGHT);
 
             panel.add(panelSuperior, BorderLayout.NORTH);
-            panel.add(panelInferior, BorderLayout.CENTER);
             panel.add(panelBotones, BorderLayout.SOUTH);
 
             ventana.setContentPane(panel);
@@ -1158,8 +1344,6 @@ public class VistaPrincipal implements VistaParaControlador {
             datoCodigoFactura.setText("");
             datoFechaInicio.setText("");
             datoFechaFinal.setText("");
-            datoFechaFacturacion.setText("");
-            datoFechaEmision.setText("");
             areaTexto.setText("");
 
             fechaInicio.setEnabled(false);
@@ -1169,53 +1353,4 @@ public class VistaPrincipal implements VistaParaControlador {
         }
     }
 
-    private class EscuchadoraDobleClick implements MouseListener {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            lista = (JList) e.getSource();
-            if (e.getClickCount() == 2) {
-                int index = lista.locationToIndex(e.getPoint());
-                if (index >= 0) {
-                    Object o = lista.getModel().getElementAt(index);
-                    System.out.println("Double-clicked on: " + o.toString());
-
-                    areaTexto = new JTextArea((int) (ventana.getSize().getHeight() * 0.02), (int) (ventana.getSize().getWidth() * 0.05));
-                    areaTexto.setEditable(false);
-                    panelTexto = new JPanel();
-                    panelTexto.add(areaTexto);
-
-                    panelInferior.add(panelTexto, BorderLayout.EAST);
-
-                    try {
-                        Cliente cliente = gestion.mostrarCliente(o.toString());
-
-                        areaTexto.setText(mostrarCliente(cliente));
-
-                    } catch (ClienteNoEncontrado clienteNoEncontrado) {
-                        clienteNoEncontrado.printStackTrace();
-                    }
-                }
-            }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-    }
 }

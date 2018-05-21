@@ -4,7 +4,6 @@ import swing.modelo.misc.Fecha;
 
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class Llamada implements Fecha, Serializable {
 
@@ -27,7 +26,7 @@ public class Llamada implements Fecha, Serializable {
     }
 
     @Override
-    public GregorianCalendar fecha() {
+    public Calendar fecha() {
         return null;
     }
 }

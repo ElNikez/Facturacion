@@ -2,6 +2,7 @@ package swing.modelo.facturas;
 
 public enum TipoPromocion {
 
+    BASICA("Tarifa básica"),
     MADRUGADA("Madrugadas extra-reducidas"),
     TARDE("Tardes reducidas"),
     DOMINGO("Domingos gratis"),

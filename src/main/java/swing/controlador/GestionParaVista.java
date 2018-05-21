@@ -11,6 +11,12 @@ public interface GestionParaVista {
 
     boolean existeCliente(String nif);
 
+    boolean hayClientes();
+
+    boolean clienteConLlamadas(String nif);
+
+    boolean existeFactura(int codigo);
+
     Cliente mostrarCliente(String nif) throws ClienteNoEncontrado;
 
     Collection<Cliente> listarClientes() throws ListaClientesVacio;
